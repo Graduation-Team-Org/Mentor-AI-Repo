@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/add_messages_cubit/cubit/add_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/chat_message_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
