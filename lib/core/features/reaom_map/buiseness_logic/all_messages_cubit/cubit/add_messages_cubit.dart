@@ -5,6 +5,7 @@ import 'package:road_map_mentor/core/errors/dio_erros.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typing_animation.dart';
 
 part 'add_messages_state.dart';
 
@@ -32,18 +33,16 @@ class AllMessagesCubit extends Cubit<AllMessagesState> {
     try {
       // Poll for new messages
       for (int i = 0; i < 10; i++) {
-        final assistantMessages = await (roadMapRepos as RoadMapReposImp).getMessages();
-        
+        final assistantMessages =
+            await (roadMapRepos as RoadMapReposImp).getMessages();
+
         if (assistantMessages.length > messages.length) {
           // We have new messages from the assistant
           messages = assistantMessages;
           emit(AllMessagesScussess(chatMessagesModel: List.from(messages)));
           break;
         }
-        // else{
-        //   emit();
-        // }
-        
+
         await Future.delayed(const Duration(seconds: 1));
       }
     } catch (e) {

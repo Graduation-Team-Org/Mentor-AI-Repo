@@ -15,12 +15,3 @@ class AllMessagesFailure extends AllMessagesState {
   final String errorMessage;
   AllMessagesFailure({required this.errorMessage});
 }
-class LoadingForMessages extends AllMessagesState {
-  final String errorMessage;
-  LoadingForMessages({required this.errorMessage});
-}
-// final class GetMessagesScussess extends AllMessagesState {
-//   final List<ChatMessageModel> chatMessagesModel;
-
-//   GetMessagesScussess({required this.chatMessagesModel});
-// }
