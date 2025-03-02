@@ -4,6 +4,8 @@ import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_mess
 import 'package:road_map_mentor/core/features/reaom_map/functions/fun.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/back_ground_gift.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_body_list_view.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/prompt_text_field.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/send_prompt_button.dart';
 import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -36,44 +38,13 @@ class ChatScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      decoration: InputDecoration(
-                        hintText: "Enter your message",
-                        filled: true,
-                        fillColor: const Color.fromARGB(217, 30, 17, 50),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                    ),
+                  PromptTextField(
+                    controller: _controller,
                   ),
-
                   //add messages cubit
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(40),
-                        color: const Color.fromARGB(217, 97, 63, 147),
-                      ),
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          if (_controller.text.trim().isNotEmpty) {
-                            BlocProvider.of<AllMessagesCubit>(context)
-                                .addmessage(content: _controller.text);
-                            _controller.clear();
-                            Fun().scrollToBottom(
-                                scrollController: _scrollController);
-                          }
-                        },
-                      ),
-                    ),
+                  SendPromptButtom(
+                    controller: _controller,
+                    scrollController: _scrollController,
                   ),
                 ],
               ),
@@ -84,3 +55,7 @@ class ChatScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+
