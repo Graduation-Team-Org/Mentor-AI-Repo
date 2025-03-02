@@ -5,6 +5,7 @@ import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_message
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/animated_text_widget.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/steve_say_hi.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typing_animation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,30 +53,7 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
         return ListView(
           controller: widget.scrollController,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.asset(
-                  'assets/images/steve.jpg',
-                  width: 120,
-                  height: 120,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: AnimatedTextWidget(
-                  response:
-                      'Hello, my name is Steve, your road map mentor & i am here to guide you throw your road map learning journey. So what is the road map you want me guide you with ?\nFeel free to ask about any thing 😃',
-                ),
-              ),
-            ),
+            const SteveSayHi(),
             // Show all messages
             ...messages.map(
               (message) => Padding(
