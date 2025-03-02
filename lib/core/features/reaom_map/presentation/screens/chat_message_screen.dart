@@ -42,29 +42,38 @@ class ChatScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: "Enter your message",
                         filled: true,
-                        fillColor:const Color.fromARGB(217, 30, 17, 50),
+                        fillColor: const Color.fromARGB(217, 30, 17, 50),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
                     ),
                   ),
-            
+
                   //add messages cubit
-                  IconButton(
-                    icon: const Icon(
-                      Icons.send,
-                      color: Colors.white,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                        color: const Color.fromARGB(217, 97, 63, 147),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.send,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          if (_controller.text.trim().isNotEmpty) {
+                            BlocProvider.of<AllMessagesCubit>(context)
+                                .addmessage(content: _controller.text);
+                            _controller.clear();
+                            Fun().scrollToBottom(
+                                scrollController: _scrollController);
+                          }
+                        },
+                      ),
                     ),
-                    onPressed: () {
-                      if (_controller.text.trim().isNotEmpty) {
-                        BlocProvider.of<AllMessagesCubit>(context)
-                            .addmessage(content: _controller.text);
-                        _controller.clear();
-                        Fun().scrollToBottom(
-                            scrollController: _scrollController);
-                      }
-                    },
                   ),
                 ],
               ),
