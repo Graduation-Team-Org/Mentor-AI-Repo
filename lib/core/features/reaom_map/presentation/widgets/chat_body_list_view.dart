@@ -76,126 +76,64 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                 ),
               ),
             ),
+            // Show all messages
+            ...messages.map(
+              (message) => Padding(
+                padding: const EdgeInsets.all(16),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 5,
+                              vertical: 5,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Image.asset(
+                                message.senderAvatar,
+                                width: 30,
+                                height: 30,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            message.senderName,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ResponseWidget(
+                          responseText: message.content,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // Show typing animation only after the last message if it's from user
             if (messages.isNotEmpty && messages.last.isUser)
-              ...messages.map(
-                (message) => Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 5,
-                                    vertical: 5,
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: Image.asset(
-                                      message.senderAvatar,
-                                      width: 30,
-                                      height: 30,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  message.senderName,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ResponseWidget(
-                                responseText: message.content,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        right: MediaQuery.of(context).size.width * .8,
-                        top: MediaQuery.of(context).size.width * .05,
-                      ),
-                      child: const TypingAnimation(),
-                    ),
-                  ],
+              Padding(
+                padding: EdgeInsets.only(
+                  right: MediaQuery.of(context).size.width * .8,
+                  top: MediaQuery.of(context).size.width * .01,
                 ),
+                child: const TypingAnimation(),
               ),
-            if (messages.isNotEmpty && !messages.last.isUser)
-              ...messages.map(
-                (message) => Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 5,
-                                    vertical: 5,
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: Image.asset(
-                                      message.senderAvatar,
-                                      width: 30,
-                                      height: 30,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  message.senderName,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ResponseWidget(
-                                responseText: message.content,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    // const TypingAnimation(),
-                  ],
-                ),
-              ),
-            // Show loading indicator if waiting for response
-            // if (state is AllMessagesLoading)
-            //   const Padding(
-            //     padding: EdgeInsets.all(16),
-            //     child: Center(
-            //       child: TypingAnimation(),
-            //     ),
-            //   ),
 
             const SizedBox(height: 20),
           ],
