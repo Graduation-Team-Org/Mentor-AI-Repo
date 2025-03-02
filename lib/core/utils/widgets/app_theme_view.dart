@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:road_map_mentor/core/utils/widgets/custom_filter.dart';
 
-class NotesViewColor extends StatelessWidget {
-  const NotesViewColor({super.key});
+class AppViewColor extends StatelessWidget {
+  const AppViewColor({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class NotesViewColor extends StatelessWidget {
             height: 600,
             width: 300,
             decoration: const BoxDecoration(
-              color: Color(0xff110A2B),
+              color: Color.fromARGB(255, 48, 10, 75),
             ),
           ),
         ),
@@ -24,7 +24,7 @@ class NotesViewColor extends StatelessWidget {
             height: 500,
             width: 300,
             decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 11, 6, 28),
+              color:Color.fromARGB(255, 46, 25, 75),
             ),
           ),
         ),
@@ -34,7 +34,7 @@ class NotesViewColor extends StatelessWidget {
             height: 500,
             width: 300,
             decoration: const BoxDecoration(
-              color:Color.fromARGB(255, 11, 6, 28),
+              color: Color.fromARGB(255, 48, 25, 75),
             ),
           ),
         ),
@@ -44,7 +44,7 @@ class NotesViewColor extends StatelessWidget {
             height: 300,
             width: 300,
             decoration: const BoxDecoration(
-              color:Color.fromARGB(255, 11, 6, 28),
+              color: Color.fromARGB(255, 46, 21, 80),
             ),
           ),
         ),
