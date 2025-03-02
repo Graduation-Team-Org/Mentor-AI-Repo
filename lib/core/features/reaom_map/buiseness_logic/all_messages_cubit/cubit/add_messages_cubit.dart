@@ -41,7 +41,8 @@ class AllMessagesCubit extends Cubit<AllMessagesState> {
           messages = assistantMessages;
           emit(AllMessagesScussess(chatMessagesModel: List.from(messages)));
           break;
-        }
+        } 
+        // emit(AllMessagesLoading());
 
         await Future.delayed(const Duration(seconds: 1));
       }

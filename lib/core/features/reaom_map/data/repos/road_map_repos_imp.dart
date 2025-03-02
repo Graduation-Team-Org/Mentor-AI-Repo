@@ -127,7 +127,7 @@ class RoadMapReposImp extends RoadMapRepos {
   }
 
   // New method to handle API calls separately
-  Future<void> _processApiCalls(String content) async {
+  Future<List<ChatMessageModel>> _processApiCalls(String content) async {
     try {
       await SharedPreferencesDB(prefs: preferences!).removeEmptyThread(threadId!);
       
@@ -136,8 +136,12 @@ class RoadMapReposImp extends RoadMapRepos {
         data: {"role": "user", "content": content},
       );
       await runAssistant();
+      
+      // Get and return all messages including bot response
+      return await getMessages();
     } catch (e) {
       print("Error in _processApiCalls: $e");
+      return messages;
     }
   }
 
