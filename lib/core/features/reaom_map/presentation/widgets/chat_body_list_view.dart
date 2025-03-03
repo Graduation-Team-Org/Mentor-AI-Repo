@@ -7,6 +7,7 @@ import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/res
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/steve_say_hi.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typing_animation.dart';
 import 'package:road_map_mentor/core/utils/widgets/back_button.dart';
+import 'package:road_map_mentor/core/utils/widgets/text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatBodyListView extends StatefulWidget {
@@ -140,8 +141,14 @@ class RoadMapAppBar extends StatelessWidget {
         horizontal: 5,
         vertical: MediaQuery.of(context).size.height * 0.02,
       ),
-      child: const Row(
-        children: [MyBackButton()],
+      child: Row(
+        children: [
+          const MyBackButton(),
+          Text(
+            'Roadmap',
+            style: title1Bold,
+          ),
+        ],
       ),
     );
   }
