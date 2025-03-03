@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/animated_text_widget.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/steve_say_hi.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typing_animation.dart';
@@ -57,48 +56,56 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
             // Show all messages
             ...messages.map(
               (message) => Padding(
-                padding: const EdgeInsets.all(16),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.8),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
+                padding: message.isUser
+                    ? const EdgeInsets.only(
+                        left: 70,
+                        top: 40,
+                        right: 20,
+                      ) // User messages padding from left
+                    : const EdgeInsets.only(
+                        right: 70,
+                        top: 20,
+                        left: 20,
+                      ), // Bot messages padding from right
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: message.isUser
+                          ? MainAxisAlignment.end
+                          : MainAxisAlignment.start,
+                      children: [
+                        SenderAvatar(message: message),
+                      ],
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: message.isUser
+                            ? Colors.white.withValues(alpha: 0.1)
+                            : Colors.white.withValues(alpha: 0.2),
+                        borderRadius: message.isUser
+                            ? const BorderRadius.only(
+                                bottomLeft: Radius.circular(16),
+                                bottomRight: Radius.circular(16),
+                                topLeft: Radius.circular(16),
+                              )
+                            : const BorderRadius.only(
+                                bottomLeft: Radius.circular(16),
+                                bottomRight: Radius.circular(16),
+                                topRight: Radius.circular(16),
+                              ),
+                      ),
+                      child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                              vertical: 5,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image.asset(
-                                message.senderAvatar,
-                                width: 30,
-                                height: 30,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            message.senderName,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                            padding: const EdgeInsets.all(8.0),
+                            child: ResponseWidget(
+                              responseText: message.content,
                             ),
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ResponseWidget(
-                          responseText: message.content,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -117,6 +124,50 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
           ],
         );
       },
+    );
+  }
+}
+
+class SenderName extends StatelessWidget {
+  const SenderName({
+    super.key,
+    required this.message,
+  });
+  final ChatMessageModel message;
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      message.senderName,
+      style: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+}
+
+class SenderAvatar extends StatelessWidget {
+  const SenderAvatar({
+    super.key,
+    required this.message,
+  });
+
+  final ChatMessageModel message;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 5,
+        vertical: 5,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: Image.asset(
+          message.senderAvatar,
+          width: 30,
+          height: 30,
+        ),
+      ),
     );
   }
 }

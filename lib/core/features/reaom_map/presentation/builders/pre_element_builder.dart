@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'dart:ui' as ui;
 
+import 'package:road_map_mentor/core/utils/colors.dart';
+
 class PreElementBuilder extends MarkdownElementBuilder {
   final BuildContext parentContext;
 
@@ -14,7 +16,7 @@ class PreElementBuilder extends MarkdownElementBuilder {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: AppColors.white.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Stack(
@@ -24,7 +26,7 @@ class PreElementBuilder extends MarkdownElementBuilder {
             child: SelectableText(
               codeText,
               style: TextStyle(
-                backgroundColor: Colors.grey[100],
+                backgroundColor:AppColors.white.withValues(alpha: 0.2),
                 foreground: Paint()
                   ..shader = ui.Gradient.linear(
                     const Offset(0, 20),
@@ -54,7 +56,7 @@ class PreElementBuilder extends MarkdownElementBuilder {
                       'Code copied to clipboard!',
                       style: TextStyle(color: Colors.white),
                     ),
-                    backgroundColor: Color(0xff240f20),
+                    backgroundColor: Color.fromARGB(255, 61, 21, 85),
                   ),
                 );
               },

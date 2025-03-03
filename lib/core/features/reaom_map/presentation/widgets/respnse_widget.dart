@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/builders/pre_element_builder.dart';
+import 'package:road_map_mentor/core/utils/colors.dart';
 import 'dart:ui' as ui;
 
 import 'package:url_launcher/url_launcher.dart';
@@ -77,8 +78,8 @@ class _ResponseWidget2State extends State<ResponseWidget> {
                   const Offset(0, 20),
                   const Offset(150, 20),
                   <Color>[
-                    const Color(0xff220901),
-                    const Color(0xff941b0c),
+                    Colors.purpleAccent,
+                    AppColors.white,
                   ],
                 ),
             ),
@@ -88,12 +89,12 @@ class _ResponseWidget2State extends State<ResponseWidget> {
                   const Offset(0, 20),
                   const Offset(150, 20),
                   <Color>[
-                    Colors.red,
-                    Colors.blue.shade900,
+                    Colors.purpleAccent,
+                    AppColors.white,
                   ],
                 ),
             ),
-            strong: const TextStyle(color: Color(0xff2c2217)),
+            strong: const TextStyle(color: AppColors.white),
             codeblockDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
             ),
@@ -104,14 +105,13 @@ class _ResponseWidget2State extends State<ResponseWidget> {
                   const Offset(0, 20),
                   const Offset(150, 20),
                   <Color>[
-                    Colors.black,
-                    const Color.fromARGB(255, 81, 81, 81),
+                    AppColors.white,
+                    const Color.fromARGB(255, 203, 203, 203),
                   ],
                 ),
             ),
           ),
           onTapLink: (text, href, title) {
-            print("Txt=> $text, Link=>$href, title=>$title");
             if (href != null) {
               onLinkTap(href);
             }
@@ -125,7 +125,6 @@ class _ResponseWidget2State extends State<ResponseWidget> {
   void onLinkTap(String markdown) async {
     // final link = extractLink(markdown);
     final link = markdown;
-    print(link);
     if (await canLaunchUrl(Uri.parse(link))) {
       await launchUrl(Uri.parse(link));
     } else {

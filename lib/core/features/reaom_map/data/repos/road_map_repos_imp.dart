@@ -1,21 +1,17 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:road_map_mentor/core/constants/constants.dart';
 import 'package:road_map_mentor/core/errors/dio_erros.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/preferences/shared_preferences.dart';
-import 'package:road_map_mentor/core/features/reaom_map/functions/fun.dart';
 import 'package:road_map_mentor/core/features/reaom_map/utils/services/custom_gpt_api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:dartz/dartz.dart';
 
 class RoadMapReposImp extends RoadMapRepos {
   SharedPreferences? preferences;
   String? threadId;
 
   List<ChatMessageModel> messages = [];
-  final ScrollController _scrollController = ScrollController();
 
   RoadMapReposImp({
     this.preferences,
@@ -23,26 +19,6 @@ class RoadMapReposImp extends RoadMapRepos {
 
   set setPreferences(SharedPreferences prefs) {
     preferences = prefs;
-  }
-
-  List<ChatMessageModel> retrunMessages() {
-    return messages.isNotEmpty
-        ? [
-            ChatMessageModel(
-              content: messages.first.content,
-              isUser: messages.first.isUser,
-              senderName: messages.first.senderName,
-              senderAvatar: messages.first.senderAvatar,
-            ),
-          ]
-        : [
-            ChatMessageModel(
-              content: 'No Content',
-              isUser: true,
-              senderName: 'No sender name',
-              senderAvatar: 'assets/images/me.jpg',
-            ),
-          ];
   }
 
   Future<bool> isThreadEmpty(String threadId) async {
@@ -129,14 +105,15 @@ class RoadMapReposImp extends RoadMapRepos {
   // New method to handle API calls separately
   Future<List<ChatMessageModel>> _processApiCalls(String content) async {
     try {
-      await SharedPreferencesDB(prefs: preferences!).removeEmptyThread(threadId!);
-      
+      await SharedPreferencesDB(prefs: preferences!)
+          .removeEmptyThread(threadId!);
+
       await CustomGptApiService().post(
         endPoint: '/threads/$threadId/messages',
         data: {"role": "user", "content": content},
       );
       await runAssistant();
-      
+
       // Get and return all messages including bot response
       return await getMessages();
     } catch (e) {
@@ -217,7 +194,7 @@ class RoadMapReposImp extends RoadMapRepos {
                 content: content['text']['value'],
                 isUser: false,
                 senderName: "Steve",
-                senderAvatar: 'assets/images/steve.jpg',
+                senderAvatar: 'assets/images/steve.png',
               );
 
               if (!messages

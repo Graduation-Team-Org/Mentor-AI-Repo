@@ -1,11 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
-import 'package:road_map_mentor/core/errors/dio_erros.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typing_animation.dart';
 
 part 'add_messages_state.dart';
 
