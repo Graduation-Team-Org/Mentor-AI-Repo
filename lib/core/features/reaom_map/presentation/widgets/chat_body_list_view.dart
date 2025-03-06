@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/Road_map_app_bar.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/steve_say_hi.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typing_animation.dart';
-import 'package:road_map_mentor/core/utils/widgets/back_button.dart';
-import 'package:road_map_mentor/core/utils/widgets/text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatBodyListView extends StatefulWidget {
@@ -54,7 +53,7 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
         return ListView(
           controller: widget.scrollController,
           children: [
-            RoadMapAppBar(),
+            const RoadMapAppBar(),
             const SteveSayHi(),
             // Show all messages
             ...messages.map(
@@ -127,29 +126,6 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
           ],
         );
       },
-    );
-  }
-}
-
-class RoadMapAppBar extends StatelessWidget {
-  const RoadMapAppBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: 5,
-        vertical: MediaQuery.of(context).size.height * 0.02,
-      ),
-      child: Row(
-        children: [
-          const MyBackButton(),
-          Text(
-            'Roadmap',
-            style: title1Bold,
-          ),
-        ],
-      ),
     );
   }
 }
