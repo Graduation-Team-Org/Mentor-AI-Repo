@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/inside_printer.dart';
-import 'package:road_map_mentor/core/utils/colors.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/draw_oppener_conainer.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/new_chat_container.dart';
 import 'package:road_map_mentor/core/utils/widgets/back_button.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
@@ -18,8 +18,8 @@ class RoadMapAppBar extends StatelessWidget {
         children: [
           const MyBackButton(),
           Padding(
-            padding: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.23),
+            padding:
+                EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.23),
             child: Text(
               'Roadmap',
               style: title1Bold,
@@ -27,29 +27,12 @@ class RoadMapAppBar extends StatelessWidget {
           ),
           // const Spacer(),
           Padding(
-            padding: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.12),
-            child: Row(
+            padding:
+                EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1),
+            child: const Row(
               children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Image.asset('assets/images/PenNewSquare.png'),
-                ),
-                Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    color: AppColors.transparet,
-                    border: Border.all(
-                      color: AppColors.white,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: CustomPaint(
-                    painter: InsideVectorPainter(),
-                  ),
-                ),
+                NewChatContainer(),
+                DrawOppenerContainer(),
               ],
             ),
           )
@@ -58,4 +41,7 @@ class RoadMapAppBar extends StatelessWidget {
     );
   }
 }
+
+
+
 
