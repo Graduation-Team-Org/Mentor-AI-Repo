@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_body_list_view.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_end_drawer.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/prompt_text_field.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/send_prompt_button.dart';
 import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
@@ -17,6 +18,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
+  final TextEditingController _chatSearchcontroller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -25,8 +27,9 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       key: scaffoldKey,
       resizeToAvoidBottomInset: true,
-      endDrawer: const Drawer(
-        // child: YourDrawerContent(),
+      endDrawer: CustomEndDrawer(
+        chatSearchcontroller: _chatSearchcontroller,
+        scaffoldKey: scaffoldKey,
       ),
       body: SafeArea(
         child: Column(
@@ -42,21 +45,21 @@ class _ChatScreenState extends State<ChatScreen> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  PromptTextField(
-                    controller: _controller,
-                  ),
-                  //add messages cubit
-                  SendPromptButtom(
-                    controller: _controller,
-                    scrollController: _scrollController,
-                  ),
-                ],
+            if (!MediaQuery.of(context).viewInsets.bottom.isFinite)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    PromptTextField(
+                      controller: _controller,
+                    ),
+                    SendPromptButtom(
+                      controller: _controller,
+                      scrollController: _scrollController,
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),
