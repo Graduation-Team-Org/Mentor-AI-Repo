@@ -5,7 +5,12 @@ import 'package:road_map_mentor/core/utils/widgets/back_button.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
 class RoadMapAppBar extends StatelessWidget {
-  const RoadMapAppBar({super.key});
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  const RoadMapAppBar({
+    super.key,
+    required this.scaffoldKey,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +30,15 @@ class RoadMapAppBar extends StatelessWidget {
               style: title1Bold,
             ),
           ),
-          // const Spacer(),
           Padding(
             padding:
                 EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1),
-            child: const Row(
+            child: Row(
               children: [
-                NewChatContainer(),
-                DrawOppenerContainer(),
+                const NewChatContainer(),
+                DrawOppenerContainer(
+                  scaffoldKey: scaffoldKey,
+                ),
               ],
             ),
           )
@@ -41,7 +47,3 @@ class RoadMapAppBar extends StatelessWidget {
     );
   }
 }
-
-
-
-

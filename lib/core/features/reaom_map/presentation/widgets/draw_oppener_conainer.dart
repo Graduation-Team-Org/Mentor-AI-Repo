@@ -3,14 +3,19 @@ import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/ins
 import 'package:road_map_mentor/core/utils/colors.dart';
 
 class DrawOppenerContainer extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
   const DrawOppenerContainer({
     super.key,
+    required this.scaffoldKey,
   });
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {},
+      onPressed: () {
+        scaffoldKey.currentState?.openEndDrawer();  // Open the drawer
+      },
       icon: Container(
         width: 20,
         height: 20,

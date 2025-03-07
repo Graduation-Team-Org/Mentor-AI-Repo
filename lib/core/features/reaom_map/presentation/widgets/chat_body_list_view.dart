@@ -10,12 +10,14 @@ import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typ
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatBodyListView extends StatefulWidget {
+  final ScrollController scrollController;
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
   const ChatBodyListView({
     super.key,
     required this.scrollController,
+    required this.scaffoldKey,
   });
-
-  final ScrollController scrollController;
 
   @override
   State<ChatBodyListView> createState() => _ChatBodyListViewState();
@@ -53,7 +55,7 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
         return ListView(
           controller: widget.scrollController,
           children: [
-            const RoadMapAppBar(),
+            RoadMapAppBar(scaffoldKey: widget.scaffoldKey),
             const SteveSayHi(),
             // Show all messages
             ...messages.map(
