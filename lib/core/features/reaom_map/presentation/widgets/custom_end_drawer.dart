@@ -20,6 +20,7 @@ class CustomEndDrawer extends StatelessWidget {
         return SizedBox(
           width: keyboardVisible ? MediaQuery.of(context).size.width : 250,
           child: Drawer(
+            ///[Drawer] Content
             backgroundColor: const Color.fromARGB(255, 30, 17, 50),
             child: SafeArea(
               // Add SafeArea to handle keyboard properly

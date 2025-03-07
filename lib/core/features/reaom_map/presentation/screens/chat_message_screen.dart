@@ -24,6 +24,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDrawerOpen =
+        scaffoldKey.currentState?.isEndDrawerOpen ?? false;
+    final bool keyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+
     return Scaffold(
       key: scaffoldKey,
       resizeToAvoidBottomInset: true,
@@ -45,7 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ],
               ),
             ),
-            if (!MediaQuery.of(context).viewInsets.bottom.isFinite)
+            if (!keyboardVisible || !isDrawerOpen)
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
