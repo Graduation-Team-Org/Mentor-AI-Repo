@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_search_text_field.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_activites_column.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_drawer_header.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/hitory_column.dart';
+
 class CustomEndDrawer extends StatelessWidget {
   const CustomEndDrawer({
     super.key,
@@ -37,6 +39,7 @@ class CustomEndDrawer extends StatelessWidget {
                       .bottom, // Handle keyboard padding
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomDrawerHeader(
                       chatSearchcontroller: _chatSearchcontroller,
@@ -59,6 +62,7 @@ class CustomEndDrawer extends StatelessWidget {
                       height: 20,
                     ),
                     const CustomChatActivitiesColumn(),
+                    const HistoryColumn(),
                   ],
                 ),
               ),
@@ -69,4 +73,3 @@ class CustomEndDrawer extends StatelessWidget {
     );
   }
 }
-
