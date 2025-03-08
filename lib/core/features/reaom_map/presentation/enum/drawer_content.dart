@@ -1,0 +1,4 @@
+enum DrawerContent {
+  history,
+  preferred,
+}

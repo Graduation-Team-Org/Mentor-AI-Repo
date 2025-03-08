@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/enum/drawer_content.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_search_text_field.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_activites_column.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_drawer_header.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/hitory_column.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/preferred_messages_column.dart';
 
-class CustomEndDrawer extends StatelessWidget {
+class CustomEndDrawer extends StatefulWidget {
   const CustomEndDrawer({
     super.key,
     required TextEditingController chatSearchcontroller,
@@ -13,6 +15,19 @@ class CustomEndDrawer extends StatelessWidget {
 
   final TextEditingController _chatSearchcontroller;
   final GlobalKey<ScaffoldState> scaffoldKey;
+
+  @override
+  State<CustomEndDrawer> createState() => _CustomEndDrawerState();
+}
+
+class _CustomEndDrawerState extends State<CustomEndDrawer> {
+  DrawerContent _currentContent = DrawerContent.history;
+
+  void _switchContent(DrawerContent content) {
+    setState(() {
+      _currentContent = content;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +57,8 @@ class CustomEndDrawer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomDrawerHeader(
-                      chatSearchcontroller: _chatSearchcontroller,
-                      scaffoldKey: scaffoldKey,
+                      chatSearchcontroller: widget._chatSearchcontroller,
+                      scaffoldKey: widget.scaffoldKey,
                     ),
                     const SizedBox(
                       height: 20,
@@ -51,18 +66,25 @@ class CustomEndDrawer extends StatelessWidget {
                     SizedBox(
                       height: 35,
                       child: ChatSearchTextField(
-                        controller: _chatSearchcontroller,
+                        controller: widget._chatSearchcontroller,
                         onTap: () {
                           // Ensure drawer stays open when keyboard appears
-                          scaffoldKey.currentState?.openEndDrawer();
+                          widget.scaffoldKey.currentState?.openEndDrawer();
                         },
                       ),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    const CustomChatActivitiesColumn(),
-                    const HistoryColumn(),
+                    CustomChatActivitiesColumn(
+                      onHistoryPressed: () => _switchContent(DrawerContent.history),
+                      onPreferredPressed: () => _switchContent(DrawerContent.preferred),
+                      currentContent: _currentContent,
+                    ),
+                    if (_currentContent == DrawerContent.history)
+                      const HistoryColumn()
+                    else
+                      const PreferredMessagesColumn(),
                   ],
                 ),
               ),
@@ -73,3 +95,5 @@ class CustomEndDrawer extends StatelessWidget {
     );
   }
 }
+
+
