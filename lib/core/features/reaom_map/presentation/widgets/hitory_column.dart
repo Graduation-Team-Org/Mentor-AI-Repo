@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/history_list_view.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/history_items.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
 class HistoryColumn extends StatelessWidget {
@@ -20,7 +20,7 @@ class HistoryColumn extends StatelessWidget {
             child: ListView.builder(
               itemCount: 3,
               itemBuilder: (context, index) {
-                return const HistoryListView();
+                return const HistoryItems();
               },
             ),
           ),

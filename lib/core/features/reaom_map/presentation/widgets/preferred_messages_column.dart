@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:road_map_mentor/core/utils/colors.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/prefrred_messages_items.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
 class PreferredMessagesColumn extends StatelessWidget {
@@ -30,26 +30,4 @@ class PreferredMessagesColumn extends StatelessWidget {
   }
 }
 
-class PreferredMessageItem extends StatelessWidget {
-  const PreferredMessageItem({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Column(
-        children: [
-          IconButton(
-            onPressed: () {},
-            icon: Text(
-              'Preferred Message',
-              style: body.copyWith(
-                color: AppColors.white.withValues(alpha: 0.8),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

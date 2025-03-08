@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
-class HistoryListView extends StatelessWidget {
-  const HistoryListView({super.key});
+class PreferredMessageItem extends StatelessWidget {
+  const PreferredMessageItem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class HistoryListView extends StatelessWidget {
           IconButton(
             onPressed: () {},
             icon: Text(
-              'Chat Sessions',
+              'Preferred Message',
               style: body.copyWith(
                 color: AppColors.white.withValues(alpha: 0.8),
               ),
