@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
-import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
+import 'package:road_map_mentor/core/features/reaom_map/functions/fun.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/Road_map_app_bar.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/steve_say_hi.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typing_animation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatBodyListView extends StatefulWidget {
   final ScrollController scrollController;
@@ -27,17 +26,7 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
   @override
   void initState() {
     super.initState();
-    _initializePrefs();
-  }
-
-  Future<void> _initializePrefs() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // Get the existing RoadMapReposImp instance from the cubit
-    final reposImpl =
-        // ignore: use_build_context_synchronously
-        context.read<AllMessagesCubit>().roadMapRepos as RoadMapReposImp;
-    reposImpl.preferences = prefs; // Set the preferences
-    await reposImpl.createThread(); // Create thread using the same instance
+    Fun().initializePrefs(context: context);
   }
 
   @override
