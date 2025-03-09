@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/animated_text_widget.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/history_items.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
@@ -14,9 +15,10 @@ class HistoryColumn extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          Text(
-            'History',
-            style: title2Bold,
+          AnimatedTextWidget(
+            response: 'History',
+            widgetDuration: 20,
+            textStyle: title2Bold,
           ),
           const SizedBox(height: 8),
           Expanded(

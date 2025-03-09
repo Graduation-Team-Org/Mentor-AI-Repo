@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/animated_text_widget.dart';
+import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
 class SteveSayHi extends StatelessWidget {
   const SteveSayHi({
@@ -27,18 +28,22 @@ class SteveSayHi extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
           ),
-          child: const Padding(
-            padding: EdgeInsets.all(8.0),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
                 Center(
                   child: AnimatedTextWidget(
                     response: 'Hello, I ’m Steve 👋',
+                    textStyle: bodyBold,
+                    widgetDuration: 50,
                   ),
                 ),
                 Center(
                   child: AnimatedTextWidget(
                     response: 'Let’s find your best learning path!',
+                    textStyle: bodyBold,
+                    widgetDuration: 50,
                   ),
                 ),
               ],

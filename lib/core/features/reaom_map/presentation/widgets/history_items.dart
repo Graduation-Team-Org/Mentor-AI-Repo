@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/animated_text_widget.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
@@ -13,9 +14,10 @@ class HistoryItems extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {},
-            icon: Text(
-              'Chat Sessions',
-              style: body.copyWith(
+            icon:  AnimatedTextWidget(
+              response: 'Chat Sessions',
+              widgetDuration: 5,
+              textStyle: body.copyWith(
                 color: AppColors.white.withValues(alpha: 0.8),
               ),
             ),

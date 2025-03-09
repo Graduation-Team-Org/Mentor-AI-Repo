@@ -5,8 +5,15 @@ import 'package:road_map_mentor/core/features/reaom_map/functions/fun.dart';
 
 class AnimatedTextWidget extends StatefulWidget {
   final String response;
+  final TextStyle textStyle;
+  final int widgetDuration;
 
-  const AnimatedTextWidget({super.key, required this.response});
+  const AnimatedTextWidget({
+    super.key,
+    required this.response,
+    required this.textStyle,
+    required this.widgetDuration,
+  });
 
   @override
   GeminiAnimatedTextWidgetState createState() =>
@@ -26,14 +33,15 @@ class GeminiAnimatedTextWidgetState extends State<AnimatedTextWidget> {
   }
 
   void _startTypingAnimation() {
-    _timer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+    _timer =
+        Timer.periodic(Duration(milliseconds: widget.widgetDuration), (timer) {
       setState(() {
         // Use characters to correctly handle emojis
         if (_currentCharIndex < widget.response.characters.length) {
           _currentCharIndex++;
           _visibleText =
               widget.response.characters.take(_currentCharIndex).toString();
-              Fun().scrollToBottom(scrollController: _scrollController);
+          Fun().scrollToBottom(scrollController: _scrollController);
         } else {
           _timer.cancel(); // Stop the timer when all text is displayed
         }
@@ -57,15 +65,13 @@ class GeminiAnimatedTextWidgetState extends State<AnimatedTextWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onDoubleTap: _showAllText, // Handle double-tap to show all text
-      child: Container(
-        decoration: const BoxDecoration(color: Colors.transparent),
+      onDoubleTap: _showAllText,
+      child: SelectionArea(
         child: Text(
           _visibleText,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: widget.textStyle,
         ),
       ),
     );
   }
 }
-
