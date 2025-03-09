@@ -93,6 +93,7 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                             padding: const EdgeInsets.all(8.0),
                             child: ResponseWidget(
                               responseText: message.content,
+                              widgetDuration: 50,
                             ),
                           ),
                         ],

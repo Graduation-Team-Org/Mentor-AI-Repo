@@ -19,6 +19,7 @@ class CustomChatActivitiesColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomRowIconText(
           icon: const Icon(
@@ -29,11 +30,40 @@ class CustomChatActivitiesColumn extends StatelessWidget {
           endTxt: 'Share Chat',
         ),
         CustomRowIconText(
+          icon: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                width: 23,
+                height: 23,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AppColors.white,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+              const Positioned(
+                top: -1,
+                right: -1,
+                child: Icon(
+                  FontAwesomeIcons.pencil,
+                  color: AppColors.white,
+                  size: 18,
+                ),
+              ),
+            ],
+          ),
+          onIconPressed: () {},
+          endTxt: 'New Chat',
+        ),
+        CustomRowIconText(
           icon: Container(
             decoration: BoxDecoration(
               border: Border.all(
-                color: currentContent == DrawerContent.history 
-                    ? AppColors.perple 
+                color: currentContent == DrawerContent.history
+                    ? AppColors.perple
                     : AppColors.white,
                 width: 2,
               ),
@@ -41,8 +71,8 @@ class CustomChatActivitiesColumn extends StatelessWidget {
             ),
             child: Icon(
               Icons.notes_rounded,
-              color: currentContent == DrawerContent.history 
-                  ? AppColors.perple 
+              color: currentContent == DrawerContent.history
+                  ? AppColors.perple
                   : AppColors.white,
               size: 20,
             ),
@@ -53,8 +83,8 @@ class CustomChatActivitiesColumn extends StatelessWidget {
         CustomRowIconText(
           icon: Icon(
             FontAwesomeIcons.heart,
-            color: currentContent == DrawerContent.preferred 
-                ? AppColors.perple 
+            color: currentContent == DrawerContent.preferred
+                ? AppColors.perple
                 : AppColors.white,
           ),
           onIconPressed: onPreferredPressed,

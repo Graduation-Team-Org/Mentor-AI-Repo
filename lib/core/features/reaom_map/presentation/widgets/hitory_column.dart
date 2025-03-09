@@ -11,6 +11,9 @@ class HistoryColumn extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 15,
+          ),
           Text(
             'History',
             style: title2Bold,

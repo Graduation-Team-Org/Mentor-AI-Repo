@@ -10,10 +10,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ResponseWidget extends StatefulWidget {
   final String responseText;
+  final int widgetDuration;
 
   const ResponseWidget({
     super.key,
     required this.responseText,
+    required this.widgetDuration,
   });
 
   @override
@@ -32,7 +34,8 @@ class _ResponseWidget2State extends State<ResponseWidget> {
   }
 
   void _startTypingAnimation() {
-    _timer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+    _timer =
+        Timer.periodic(Duration(milliseconds: widget.widgetDuration), (timer) {
       setState(() {
         // Use characters to correctly handle emojis
         if (_currentCharIndex < widget.responseText.characters.length) {

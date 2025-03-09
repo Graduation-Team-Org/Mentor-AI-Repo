@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/prefrred_messages_items.dart';
-import 'package:road_map_mentor/core/utils/widgets/text.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
 
 class PreferredMessagesColumn extends StatelessWidget {
   const PreferredMessagesColumn({super.key});
@@ -11,9 +11,12 @@ class PreferredMessagesColumn extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Preferred Messages',
-            style: title2Bold,
+          const SizedBox(
+            height: 15,
+          ),
+          const ResponseWidget(
+            responseText: 'Preferred Messages',
+            widgetDuration: 20,
           ),
           const SizedBox(height: 8),
           Expanded(
@@ -29,5 +32,3 @@ class PreferredMessagesColumn extends StatelessWidget {
     );
   }
 }
-
-
