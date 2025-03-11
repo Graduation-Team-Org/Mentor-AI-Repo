@@ -43,7 +43,7 @@ class _SpScreenState extends State<SpScreen> with SingleTickerProviderStateMixin
         if (mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => SplashScreen()),
+            MaterialPageRoute(builder: (context) => StartingScreen()),
           );
         }
       });
