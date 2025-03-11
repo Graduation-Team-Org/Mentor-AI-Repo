@@ -8,10 +8,13 @@ import 'package:road_map_mentor/core/utils/app_routers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize HydratedBloc storage
+  final storage = await getTemporaryDirectory();
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory:
-        HydratedStorageDirectory((await getTemporaryDirectory()).path),
+    storageDirectory: HydratedStorageDirectory(storage.path),
   );
+  
   await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }

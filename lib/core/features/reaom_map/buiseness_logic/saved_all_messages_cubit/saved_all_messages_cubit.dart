@@ -1,58 +1,76 @@
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:meta/meta.dart';
+import 'dart:convert';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos.dart';
-import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'saved_all_messages_state.dart';
 
-class SavedAllMessagesCubit extends HydratedCubit<SavedAllMessagesState> {
-  SavedAllMessagesCubit(this.roadMapRepos) : super(SavedAllMessagesInitial());
-
+class SavedAllMessagesCubit extends Cubit<SavedAllMessagesState> {
   final RoadMapRepos roadMapRepos;
-  List<ChatMessageModel> messages = [];
+  List<SavedChatSession> savedSessions = [];
+  static const String _storageKey = 'saved_chat_sessions';
 
-  Future<void> addmessage({required String content}) async {
-    // Get and emit user message immediately
-    final newMessages = await roadMapRepos.addMessage(content);
-    messages = newMessages;
-    emit(SavedAllMessagesScussess(chatMessagesModel: List.from(messages)));
-
-    // Start listening for assistant's response
-    _listenForAssistantResponse();
+  SavedAllMessagesCubit(this.roadMapRepos) : super(SavedAllMessagesInitial()) {
+    _loadSavedSessions();
   }
 
-  Future<void> _listenForAssistantResponse() async {
+  Future<void> _loadSavedSessions() async {
     try {
-      // Poll for new messages
-      for (int i = 0; i < 10; i++) {
-        final assistantMessages =
-            await (roadMapRepos as RoadMapReposImp).getMessages();
-
-        if (assistantMessages.length > messages.length) {
-          // We have new messages from the assistant
-          messages = assistantMessages;
-          emit(SavedAllMessagesScussess(chatMessagesModel: List.from(messages)));
-          break;
-        }
-        // emit(AllMessagesLoading());
-
-        await Future.delayed(const Duration(seconds: 1));
+      final prefs = await SharedPreferences.getInstance();
+      final String? jsonString = prefs.getString(_storageKey);
+      
+      if (jsonString != null) {
+        final List<dynamic> jsonList = jsonDecode(jsonString);
+        savedSessions = jsonList
+            .map((json) => SavedChatSession.fromJson(json))
+            .toList();
+        print('Loaded ${savedSessions.length} sessions from storage');
+        emit(SavedAllMessagesSuccess(savedSessions: savedSessions));
+      } else {
+        emit(SavedAllMessagesSuccess(savedSessions: []));
       }
     } catch (e) {
-      print("Error getting assistant response: $e");
+      print('Error loading saved sessions: $e');
+      emit(SavedAllMessagesSuccess(savedSessions: []));
     }
   }
-  
-  @override
-  SavedAllMessagesState? fromJson(Map<String, dynamic> json) {
-    // TODO: implement fromJson
-    throw UnimplementedError();
+
+  Future<void> saveCurrentSession({
+    required List<ChatMessageModel> messages,
+    required String title,
+  }) async {
+    try {
+      print('Saving new session with title: $title');
+      final newSession = SavedChatSession(
+        messages: messages,
+        title: title,
+        timestamp: DateTime.now(),
+      );
+      
+      savedSessions = [...savedSessions, newSession];
+      print('Total sessions after save: ${savedSessions.length}');
+      
+      // Save to SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      final jsonString = jsonEncode(
+        savedSessions.map((s) => s.toJson()).toList()
+      );
+      await prefs.setString(_storageKey, jsonString);
+      print('Sessions saved to storage');
+      
+      emit(SavedAllMessagesSuccess(savedSessions: savedSessions));
+    } catch (e) {
+      print('Error saving session: $e');
+    }
   }
-  
-  @override
-  Map<String, dynamic>? toJson(SavedAllMessagesState state) {
-    // TODO: implement toJson
-    throw UnimplementedError();
+
+  void loadSession(String title) {
+    try {
+      final session = savedSessions.firstWhere((s) => s.title == title);
+      emit(SavedSessionLoaded(messages: session.messages));
+    } catch (e) {
+      print('Session not found: $e');
+    }
   }
 }

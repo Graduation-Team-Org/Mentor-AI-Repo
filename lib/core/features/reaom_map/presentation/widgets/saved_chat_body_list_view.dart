@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/saved_all_messages_cubit/saved_all_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/functions/fun.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/Road_map_app_bar.dart';
@@ -10,21 +8,21 @@ import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/res
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/steve_say_hi.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typing_animation.dart';
 
-class ChatBodyListView extends StatefulWidget {
+class SavedChatBodyListView extends StatefulWidget {
   final ScrollController scrollController;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const ChatBodyListView({
+  const SavedChatBodyListView({
     super.key,
     required this.scrollController,
     required this.scaffoldKey,
   });
 
   @override
-  State<ChatBodyListView> createState() => _ChatBodyListViewState();
+  State<SavedChatBodyListView> createState() => _SavedChatBodyListViewState();
 }
 
-class _ChatBodyListViewState extends State<ChatBodyListView> {
+class _SavedChatBodyListViewState extends State<SavedChatBodyListView> {
   @override
   void initState() {
     super.initState();
@@ -32,11 +30,16 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AllMessagesCubit, AllMessagesState>(
+    return BlocBuilder<SavedAllMessagesCubit, SavedAllMessagesState>(
       builder: (context, state) {
         final List<ChatMessageModel> messages =
-            state is AllMessagesScussess ? state.chatMessagesModel : [];
+            state is SavedSessionLoaded ? state.messages : [];
 
         return ListView(
           controller: widget.scrollController,
@@ -84,41 +87,17 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                                 topRight: Radius.circular(16),
                               ),
                       ),
-                      child: message.isUser
-                          ? Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ResponseWidget(
-                                    responseText: message.content,
-                                    widgetDuration: 20,
-                                  ),
-                                ),
-                              ],
-                            )
-                          : Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 30,bottom: 5,left: 12,right: 30),
-                                  child: ResponseWidget(
-                                    responseText: message.content,
-                                    widgetDuration: 20,
-                                  ),
-                                ),
-                                Positioned(
-                                  top: -5,
-                                  right: -5,
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: SvgPicture.asset(
-                                      'assets/images/Menu_Dots_2.svg',
-                                      width: 20,
-                                      height: 20,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ResponseWidget(
+                              responseText: message.content,
+                              widgetDuration: 20,
                             ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
