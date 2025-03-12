@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'starting_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:road_map_mentor/core/features/starting/presentation/screens/starting_screen.dart';
+import 'package:road_map_mentor/core/utils/app_routers.dart';
 
 class SpScreen extends StatefulWidget {
+  const SpScreen({super.key});
+
   @override
-  _SpScreenState createState() => _SpScreenState();
+  SpScreenState createState() => SpScreenState();
 }
 
-class _SpScreenState extends State<SpScreen> with SingleTickerProviderStateMixin {
+class SpScreenState extends State<SpScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _logoAnimation;
   late Animation<double> _shadowFadeAnimation;
@@ -19,7 +24,7 @@ class _SpScreenState extends State<SpScreen> with SingleTickerProviderStateMixin
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
+      duration: const Duration(seconds: 3),
     );
 
     _logoAnimation = Tween<double>(begin: 100, end: -50).animate(
@@ -27,24 +32,26 @@ class _SpScreenState extends State<SpScreen> with SingleTickerProviderStateMixin
     );
 
     _shadowFadeAnimation = Tween<double>(begin: 1, end: 0).animate(
-      CurvedAnimation(parent: _controller, curve: Interval(0.4, 0.6, curve: Curves.easeOut)),
+      CurvedAnimation(
+          parent: _controller,
+          curve: Interval(0.4, 0.6, curve: Curves.easeOut)),
     );
 
     _slideAnimation = Tween<double>(begin: 0, end: -100).animate(
-      CurvedAnimation(parent: _controller, curve: Interval(0.5, 0.8, curve: Curves.easeInOut)),
+      CurvedAnimation(
+          parent: _controller,
+          curve: Interval(0.5, 0.8, curve: Curves.easeInOut)),
     );
 
     _textFadeAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Interval(0.7, 1.0, curve: Curves.easeIn)),
+      CurvedAnimation(
+          parent: _controller, curve: Interval(0.7, 1.0, curve: Curves.easeIn)),
     );
 
     _controller.forward().then((_) {
       Future.delayed(Duration(milliseconds: 600), () {
         if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => StartingScreen()),
-          );
+          context.go(AppRouter.startingScreen);
         }
       });
     });
@@ -88,7 +95,7 @@ class _SpScreenState extends State<SpScreen> with SingleTickerProviderStateMixin
                   child: Transform.translate(
                     offset: Offset(_slideAnimation.value, 0),
                     child: Image.asset(
-                      'image/logo.png',
+                      'assets/images/SplashLogo.png',
                       width: 120,
                       height: 120,
                     ),
@@ -101,7 +108,12 @@ class _SpScreenState extends State<SpScreen> with SingleTickerProviderStateMixin
                     opacity: _textFadeAnimation,
                     child: Text(
                       'MENTOR AI',
-                      style: TextStyle(fontSize: 24,fontFamily: 'Inter', fontWeight: FontWeight.w600, color: Color(0xFFF5EFFC),),
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFFF5EFFC),
+                      ),
                     ),
                   ),
                 ),
@@ -113,4 +125,3 @@ class _SpScreenState extends State<SpScreen> with SingleTickerProviderStateMixin
     );
   }
 }
-

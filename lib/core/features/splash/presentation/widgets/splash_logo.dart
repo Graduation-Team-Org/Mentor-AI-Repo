@@ -4,7 +4,7 @@ class SplashLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      'assets/image/logo.png',
+      'assets/images/SplashLogo.png',
       width: 120,
       height: 120,
     );

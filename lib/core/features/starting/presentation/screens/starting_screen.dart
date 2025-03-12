@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'signup_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:road_map_mentor/core/features/starting/presentation/widgets/bubble_widgets.dart';
+import 'package:road_map_mentor/core/utils/app_routers.dart';
 
 class StartingScreen extends StatefulWidget {
+  const StartingScreen({super.key});
+
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  SplashScreenState createState() => SplashScreenState();
 }
 
-class _SplashScreenState extends State<StartingScreen> with SingleTickerProviderStateMixin {
+class SplashScreenState extends State<StartingScreen>
+    with SingleTickerProviderStateMixin {
   bool isHovered = false;
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -15,18 +20,16 @@ class _SplashScreenState extends State<StartingScreen> with SingleTickerProvider
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 400),
       vsync: this,
     );
 
     _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
     _animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Future.delayed(Duration(seconds: 1), () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => SignUpScreen()),
-          );
+        Future.delayed(const Duration(seconds: 1), () {
+          // ignore: use_build_context_synchronously
+          context.go(AppRouter.chatScreen);
         });
       }
     });
@@ -89,7 +92,6 @@ class _SplashScreenState extends State<StartingScreen> with SingleTickerProvider
               ),
             ),
           ),
-
           Positioned(
             top: MediaQuery.of(context).size.height * 0.30,
             left: MediaQuery.of(context).size.width * 0.41 - 100,
@@ -106,7 +108,7 @@ class _SplashScreenState extends State<StartingScreen> with SingleTickerProvider
                   Positioned(
                     bottom: 20,
                     child: Image.asset(
-                      'image/image.png',
+                      'assets/images/Ropot.png',
                       width: 300,
                       height: 300,
                     ),
@@ -123,10 +125,6 @@ class _SplashScreenState extends State<StartingScreen> with SingleTickerProvider
               onTapDown: (_) => _controller.forward(),
               onTapUp: (_) {
                 _controller.reverse();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpScreen()),
-                );
               },
               child: AnimatedBuilder(
                 animation: _animation,
@@ -159,14 +157,17 @@ class _SplashScreenState extends State<StartingScreen> with SingleTickerProvider
                             opacity: 1 - _animation.value,
                             child: Row(
                               children: [
-                                Icon(Icons.arrow_forward_ios, color: Colors.white60, size: 16),
+                                Icon(Icons.arrow_forward_ios,
+                                    color: Colors.white60, size: 16),
                                 Opacity(
                                   opacity: 0.6,
-                                  child: Icon(Icons.arrow_forward_ios, color: Colors.white60, size: 16),
+                                  child: Icon(Icons.arrow_forward_ios,
+                                      color: Colors.white60, size: 16),
                                 ),
                                 Opacity(
                                   opacity: 0.3,
-                                  child: Icon(Icons.arrow_forward_ios, color: Colors.white60, size: 16),
+                                  child: Icon(Icons.arrow_forward_ios,
+                                      color: Colors.white60, size: 16),
                                 ),
                               ],
                             ),
@@ -184,7 +185,9 @@ class _SplashScreenState extends State<StartingScreen> with SingleTickerProvider
                             ),
                             child: Center(
                               child: Icon(
-                                _animation.value == 1.0 ? Icons.check : Icons.arrow_forward_ios,
+                                _animation.value == 1.0
+                                    ? Icons.check
+                                    : Icons.arrow_forward_ios,
                                 color: Colors.white,
                                 size: 20,
                               ),

@@ -5,6 +5,8 @@ import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/saved_al
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/chat_message_screen.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/saved_all_messages_screen.dart';
+import 'package:road_map_mentor/core/features/splash/presentation/screens/splash_screen.dart';
+import 'package:road_map_mentor/core/features/starting/presentation/screens/starting_screen.dart';
 
 abstract class AppRouter {
   static final _roadMapRepos = RoadMapReposImp();
@@ -13,21 +15,31 @@ abstract class AppRouter {
     routes: [
       GoRoute(
         path: '/',
+        builder: (context, state) => const SpScreen(),
+      ),
+      GoRoute(
+        path: startingScreen,
+        builder: (context, state) => const StartingScreen(),
+      ),
+      GoRoute(
+        path: chatScreen,
         builder: (context, state) => BlocProvider(
           create: (context) => AllMessagesCubit(_roadMapRepos),
           child: const ChatScreen(),
         ),
       ),
-      GoRoute(
-        path: '$savedAllMessagesScreen/:title',  // Update path pattern
-        builder: (context, state) => BlocProvider(
-          create: (context) => SavedAllMessagesCubit(_roadMapRepos),
-          child: SavedAllMessagesScreen(
-            title: state.pathParameters['title']!,
-          ),
-        ),
-      ),
+      // GoRoute(
+      //   path: '$savedAllMessagesScreen/:title', // Update path pattern
+      //   builder: (context, state) => BlocProvider(
+      //     create: (context) => SavedAllMessagesCubit(_roadMapRepos),
+      //     child: SavedAllMessagesScreen(
+      //       title: state.pathParameters['title']!,
+      //     ),
+      //   ),
+      // ),
     ],
   );
-  static const String savedAllMessagesScreen = '/saved';  // Base path
+  static const String savedAllMessagesScreen = '/saved'; // Base path
+  static const String chatScreen = '/chatScreen'; // Base path
+  static const String startingScreen = '/startingScreen'; // Base path
 }
