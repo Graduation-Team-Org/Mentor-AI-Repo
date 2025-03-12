@@ -75,6 +75,19 @@ class _ResponseWidget2State extends State<ResponseWidget> {
             'pre': PreElementBuilder(context),
           },
           styleSheet: MarkdownStyleSheet(
+            a: const TextStyle(color: AppColors.white),
+            blockquote: const TextStyle(color: AppColors.white),
+            checkbox: const TextStyle(color: AppColors.white),
+            del: const TextStyle(color: AppColors.white),
+            em: const TextStyle(color: AppColors.white),
+            h1: const TextStyle(color: AppColors.white),
+            h2: const TextStyle(color: AppColors.white),
+            listBullet: const TextStyle(color: AppColors.white),
+            h6: const TextStyle(color: AppColors.white),
+            img: const TextStyle(color: AppColors.white),
+            h5: const TextStyle(color: AppColors.white),
+            tableHead: const TextStyle(color: AppColors.white),
+            tableBody: const TextStyle(color: AppColors.white),
             h3: TextStyle(
               foreground: Paint()
                 ..shader = ui.Gradient.linear(

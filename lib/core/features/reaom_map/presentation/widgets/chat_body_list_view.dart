@@ -48,33 +48,32 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
             const SteveSayHi(),
             // Show all messages
             ...messages.map(
-              (message) => Padding(
-                padding: message.isUser
-                    ? const EdgeInsets.only(
-                        left: 70,
-                        top: 40,
-                        right: 20,
-                      ) // User messages padding from left
-                    : const EdgeInsets.only(
-                        right: 70,
-                        top: 20,
-                        left: 20,
-                      ), // Bot messages padding from right
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: message.isUser
-                          ? MainAxisAlignment.end
-                          : MainAxisAlignment.start,
-                      children: [
-                        SenderAvatar(message: message),
-                      ],
-                    ),
-                    Container(
+              (message) => Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: message.isUser
+                        ? MainAxisAlignment.end
+                        : MainAxisAlignment.start,
+                    children: [
+                      SenderAvatar(message: message),
+                    ],
+                  ),
+                  Padding(
+                    padding: message.isUser
+                        ? const EdgeInsets.only(
+                            left: 50,
+                            right: 30,
+                          ) // User messages padding from left
+                        : const EdgeInsets.only(
+                            right: 50,
+                            left: 40,
+                          ), // Bot messages padding from right
+                    child: Container(
                       decoration: BoxDecoration(
-                        color: message.isUser
-                            ? Colors.white.withValues(alpha: 0.1)
-                            : Colors.white.withValues(alpha: 0.2),
+                        border: Border.all(
+                          color: message.isUser ? AppColors.white: AppColors.perple,
+                          width: 1.1,
+                        ),
                         borderRadius: message.isUser
                             ? const BorderRadius.only(
                                 bottomLeft: Radius.circular(16),
@@ -128,7 +127,7 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                                               print('Popover was popped!'),
                                           direction: PopoverDirection.bottom,
                                           width: 80,
-                                          height: 220,
+                                          height: 200,
                                           arrowHeight: 15,
                                           arrowWidth: 30,
                                           backgroundColor:
@@ -159,8 +158,8 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                               ],
                             ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
 

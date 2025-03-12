@@ -102,8 +102,8 @@ class SpScreenState extends State<SpScreen>
                   ),
                 ),
                 Positioned(
-                  top: screenHeight / 2 - 20,
-                  left: screenWidth / 2 - 70,
+                  top: screenHeight / 2 - 10,
+                  left: screenWidth / 2 - 40,
                   child: FadeTransition(
                     opacity: _textFadeAnimation,
                     child: Text(
