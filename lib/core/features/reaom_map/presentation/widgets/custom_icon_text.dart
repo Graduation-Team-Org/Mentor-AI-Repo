@@ -19,6 +19,7 @@ class CustomRowIconText extends StatelessWidget {
         IconButton(
           onPressed: onIconPressed,
           icon: icon,
+          iconSize: 20,
         ),
         Text(
           endTxt,

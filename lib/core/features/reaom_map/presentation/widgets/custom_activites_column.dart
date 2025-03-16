@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/enum/drawer_content.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_icon_text.dart';
@@ -30,31 +31,7 @@ class CustomChatActivitiesColumn extends StatelessWidget {
           endTxt: 'Share Chat',
         ),
         CustomRowIconText(
-          icon: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                width: 23,
-                height: 23,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AppColors.white,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-              ),
-              const Positioned(
-                top: -1,
-                right: -1,
-                child: Icon(
-                  FontAwesomeIcons.pencil,
-                  color: AppColors.white,
-                  size: 18,
-                ),
-              ),
-            ],
-          ),
+          icon: SvgPicture.asset('assets/images/Pen_New_Square.svg'),
           onIconPressed: () {},
           endTxt: 'New Chat',
         ),
@@ -81,12 +58,11 @@ class CustomChatActivitiesColumn extends StatelessWidget {
           endTxt: 'History',
         ),
         CustomRowIconText(
-          icon: Icon(
-            FontAwesomeIcons.heart,
-            color: currentContent == DrawerContent.preferred
-                ? AppColors.perple
-                : AppColors.white,
-          ),
+          icon: currentContent == DrawerContent.preferred
+              ? SvgPicture.asset('assets/images/Solid_heart.svg')
+              : SvgPicture.asset(
+                  'assets/images/Heart_Angle.svg',
+                ),
           onIconPressed: onPreferredPressed,
           endTxt: 'Preferred message',
         ),
