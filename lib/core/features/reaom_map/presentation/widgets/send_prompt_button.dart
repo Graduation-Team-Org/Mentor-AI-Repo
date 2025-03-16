@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/functions/fun.dart';
 
@@ -15,27 +16,23 @@ class SendPromptButtom extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(40),
-          color: const Color.fromARGB(217, 97, 63, 147),
-        ),
-        child: IconButton(
-          icon: const Icon(
-            Icons.send,
-            color: Colors.white,
+      child: Stack(
+        children: [
+          SvgPicture.asset('assets/images/Ellipse.svg',width: 50,height: 50,),
+          IconButton(
+            icon: SvgPicture.asset('assets/images/Plain_2.svg',width: 27,height: 27,),
+            onPressed: () {
+              if (controller.text.trim().isNotEmpty) {
+                BlocProvider.of<AllMessagesCubit>(context)
+                    .addmessage(content: controller.text);
+                controller.clear();
+                Fun().scrollToBottom(
+                  scrollController: scrollController,
+                );
+              }
+            },
           ),
-          onPressed: () {
-            if (controller.text.trim().isNotEmpty) {
-              BlocProvider.of<AllMessagesCubit>(context)
-                  .addmessage(content: controller.text);
-              controller.clear();
-              Fun().scrollToBottom(
-                scrollController: scrollController,
-              );
-            }
-          },
-        ),
+        ],
       ),
     );
   }
