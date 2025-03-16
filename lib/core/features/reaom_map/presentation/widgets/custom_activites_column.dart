@@ -31,29 +31,18 @@ class CustomChatActivitiesColumn extends StatelessWidget {
           endTxt: 'Share Chat',
         ),
         CustomRowIconText(
-          icon: SvgPicture.asset('assets/images/Pen_New_Square.svg'),
+          icon: SvgPicture.asset(
+            'assets/images/Pen_New_Square.svg',
+            height: 20,
+            width: 20,
+          ),
           onIconPressed: () {},
           endTxt: 'New Chat',
         ),
         CustomRowIconText(
-          icon: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: currentContent == DrawerContent.history
-                    ? AppColors.perple
-                    : AppColors.white,
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Icon(
-              Icons.notes_rounded,
-              color: currentContent == DrawerContent.history
-                  ? AppColors.perple
-                  : AppColors.white,
-              size: 20,
-            ),
-          ),
+          icon: currentContent == DrawerContent.history
+              ? SvgPicture.asset('assets/images/Document_Text.svg',color:  AppColors.perple,)
+              : SvgPicture.asset('assets/images/Document_Text.svg'),
           onIconPressed: onHistoryPressed,
           endTxt: 'History',
         ),
