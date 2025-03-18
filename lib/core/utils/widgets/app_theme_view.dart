@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:road_map_mentor/core/utils/widgets/custom_filter.dart';
 
 class AppViewColor extends StatelessWidget {
@@ -12,9 +13,9 @@ class AppViewColor extends StatelessWidget {
           alignment: const AlignmentDirectional(0, 1),
           child: Container(
             height: 600,
-            width: 300,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 48, 10, 75),
+            width: 600,
+            decoration: BoxDecoration(
+              color:  Color.fromARGB(255, 46, 25, 75),
             ),
           ),
         ),
@@ -24,7 +25,7 @@ class AppViewColor extends StatelessWidget {
             height: 500,
             width: 300,
             decoration: const BoxDecoration(
-              color:Color.fromARGB(255, 46, 25, 75),
+              color: Color.fromARGB(255, 46, 25, 75),
             ),
           ),
         ),

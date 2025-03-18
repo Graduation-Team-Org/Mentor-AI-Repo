@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/inside_printer.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
 
@@ -16,21 +17,7 @@ class DrawOppenerContainer extends StatelessWidget {
       onPressed: () {
         scaffoldKey.currentState?.openEndDrawer();  // Open the drawer
       },
-      icon: Container(
-        width: 20,
-        height: 20,
-        decoration: BoxDecoration(
-          color: AppColors.transparet,
-          border: Border.all(
-            color: AppColors.white,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: CustomPaint(
-          painter: InsideVectorPainter(),
-        ),
-      ),
+      icon: SvgPicture.asset('assets/images/Sidebar_Minimalistic.svg'),
     );
   }
 }

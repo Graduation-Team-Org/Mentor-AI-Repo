@@ -9,9 +9,9 @@ class PromptTextField extends StatelessWidget {
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
-          hintText: "Enter your message",
+          hintText: "Ask waht's on mind...",
           filled: true,
-          fillColor: const Color.fromARGB(217, 30, 17, 50),
+          fillColor: const Color.fromARGB(217, 30, 17, 50).withValues(alpha: 0.1),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
           ),
