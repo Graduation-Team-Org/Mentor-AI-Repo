@@ -23,9 +23,10 @@ class CustomChatActivitiesColumn extends StatelessWidget {
       // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomRowIconText(
-          icon: const Icon(
-            Icons.share_outlined,
-            color: AppColors.white,
+          icon: SvgPicture.asset(
+            'assets/images/fi_share.svg',
+            width: 20,
+            height: 20,
           ),
           onIconPressed: () {},
           endTxt: 'Share Chat',
@@ -41,7 +42,10 @@ class CustomChatActivitiesColumn extends StatelessWidget {
         ),
         CustomRowIconText(
           icon: currentContent == DrawerContent.history
-              ? SvgPicture.asset('assets/images/Document_Text.svg',color:  AppColors.perple,)
+              ? SvgPicture.asset(
+                  'assets/images/Document_Text.svg',
+                  color: AppColors.perple,
+                )
               : SvgPicture.asset('assets/images/Document_Text.svg'),
           onIconPressed: onHistoryPressed,
           endTxt: 'History',
