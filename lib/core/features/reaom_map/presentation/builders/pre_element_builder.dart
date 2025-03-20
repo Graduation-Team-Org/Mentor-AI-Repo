@@ -16,8 +16,9 @@ class PreElementBuilder extends MarkdownElementBuilder {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.white.withValues(alpha: 0.8),
+        color: AppColors.perple.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.darkPerple),
       ),
       child: Stack(
         children: [
@@ -26,18 +27,19 @@ class PreElementBuilder extends MarkdownElementBuilder {
             child: SelectableText(
               codeText,
               style: TextStyle(
-                backgroundColor:AppColors.white.withValues(alpha: 0.2),
+                backgroundColor:AppColors.perple.withValues(alpha: 0.3),
                 foreground: Paint()
                   ..shader = ui.Gradient.linear(
                     const Offset(0, 20),
                     const Offset(150, 20),
                     <Color>[
-                      Colors.red,
-                      Colors.blue,
+                      const Color.fromARGB(255, 228, 188, 45),
+                      const Color.fromARGB(255, 44, 226, 183),
                     ],
                   ),
                 fontSize: 14,
                 fontFamily: 'Courier',
+                fontWeight: FontWeight.w900,
               ),
             ),
           ),
@@ -45,7 +47,7 @@ class PreElementBuilder extends MarkdownElementBuilder {
             top: 8,
             right: 8,
             child: IconButton(
-              icon: const Icon(Icons.copy, color: Colors.black),
+              icon: const Icon(Icons.copy, color: AppColors.white),
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: codeText));
                 // Show confirmation

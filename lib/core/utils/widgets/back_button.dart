@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:road_map_mentor/core/utils/colors.dart';
+import 'package:flutter_svg/svg.dart';
 
 class MyBackButton extends StatelessWidget {
   const MyBackButton({super.key});
@@ -7,11 +7,7 @@ class MyBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: const Icon(
-        Icons.arrow_back,
-        size: 30,
-        color: AppColors.white,
-      ),
+      icon: SvgPicture.asset('assets/images/fi_arrow-left.svg'),
       onPressed: () {
         Navigator.pop(context);
       },

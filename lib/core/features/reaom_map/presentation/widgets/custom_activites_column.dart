@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/enum/drawer_content.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_icon_text.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';

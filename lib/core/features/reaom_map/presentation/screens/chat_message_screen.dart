@@ -41,31 +41,31 @@ class _ChatScreenState extends State<ChatScreen> {
       ],
       child: Scaffold(
         key: scaffoldKey,
-        resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: true,
         endDrawer: CustomEndDrawer(
           chatSearchcontroller: _chatSearchcontroller,
           scaffoldKey: scaffoldKey,
         ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
                     const AppViewColor(),
-                    ChatBodyListView(
-                      scrollController: _scrollController,
-                      scaffoldKey: scaffoldKey,
-                    ),
+                    // ChatBodyListView(
+                    //   scrollController: _scrollController,
+                    //   scaffoldKey: scaffoldKey,
+                    // ),
                     CustomEllipseCircule(
                       alignment: const AlignmentDirectional(1.1, 1.1),
                       imgPath: 'assets/images/Ellipse_1.svg',
-                      imageFilter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                      imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                     ),
                     CustomEllipseCircule(
                       alignment: const AlignmentDirectional(-1.4, 0.8),
                       imgPath: 'assets/images/Ellipse_2.svg',
-                      imageFilter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                      imageFilter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
                     ),
                     CustomEllipseCircule(
                       alignment: const AlignmentDirectional(-1.4, 1),
@@ -77,18 +77,18 @@ class _ChatScreenState extends State<ChatScreen> {
                       imgPath: 'assets/images/Ellipse_4.svg',
                       imageFilter: ImageFilter.blur(sigmaX: 300, sigmaY: 300),
                     ),
-                    ChatBodyListView(
-                      scrollController: _scrollController,
+                  ChatBodyListView(
+                    scrollController: _scrollController,
                       scaffoldKey: scaffoldKey,
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+            ),
               if (!keyboardVisible || !isDrawerOpen)
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
                       PromptTextField(
                         controller: _controller,
                       ),
@@ -98,9 +98,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ],
                   ),
+                    ),
+                  ],
                 ),
-            ],
-          ),
         ),
       ),
     );

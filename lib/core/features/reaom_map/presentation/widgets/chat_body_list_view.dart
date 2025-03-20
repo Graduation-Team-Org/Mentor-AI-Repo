@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:popover/popover.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
@@ -14,13 +13,12 @@ import 'package:road_map_mentor/core/utils/colors.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
 class ChatBodyListView extends StatefulWidget {
-  final ScrollController scrollController;
   final GlobalKey<ScaffoldState> scaffoldKey;
+  final ScrollController scrollController ;
 
   const ChatBodyListView({
     super.key,
-    required this.scrollController,
-    required this.scaffoldKey,
+    required this.scaffoldKey, required this.scrollController,
   });
 
   @override
@@ -28,10 +26,18 @@ class ChatBodyListView extends StatefulWidget {
 }
 
 class _ChatBodyListViewState extends State<ChatBodyListView> {
+  
+
   @override
   void initState() {
     super.initState();
     Fun().initializePrefs(context: context);
+  }
+
+  @override
+  void dispose() {
+    widget.scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -71,7 +77,7 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: message.isUser ? AppColors.white: AppColors.perple,
+                          color: message.isUser ? AppColors.white : AppColors.perple,
                           width: 1.1,
                         ),
                         borderRadius: message.isUser
@@ -114,11 +120,6 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                                   child: Builder(
                                     builder: (context) => IconButton(
                                       onPressed: () {
-                                        // final RenderBox button = context
-                                        //     .findRenderObject() as RenderBox;
-                                        // final Offset position =
-                                        //     button.localToGlobal(Offset.zero);
-
                                         showPopover(
                                           context: context,
                                           bodyBuilder: (context) =>
@@ -253,7 +254,7 @@ class ListItems extends StatelessWidget {
             IconButton(
               onPressed: () {},
               icon: Row(
-                children: [
+                    children: [
                   SvgPicture.asset(
                     'assets/images/Trash_Bin_Minimalistic.svg',
                     width: 15,
@@ -324,18 +325,18 @@ class SenderAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 5,
-        vertical: 5,
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(100),
-        child: Image.asset(
-          message.senderAvatar,
-          width: 30,
-          height: 30,
-        ),
-      ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 5,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.asset(
+                            message.senderAvatar,
+                            width: 30,
+                            height: 30,
+                          ),
+                        ),
     );
   }
 }
