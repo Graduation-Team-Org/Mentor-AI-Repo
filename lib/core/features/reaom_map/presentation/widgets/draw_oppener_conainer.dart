@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/inside_printer.dart';
-import 'package:road_map_mentor/core/utils/colors.dart';
 
 class DrawOppenerContainer extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;

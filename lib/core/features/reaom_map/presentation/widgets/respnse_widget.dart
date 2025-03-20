@@ -122,7 +122,7 @@ class _ResponseWidget2State extends State<ResponseWidget> {
                   const Offset(150, 20),
                   <Color>[
                     AppColors.white,
-                    const Color.fromARGB(255, 203, 203, 203),
+                    const Color.fromARGB(255, 237, 237, 237),
                   ],
                 ),
             ),
