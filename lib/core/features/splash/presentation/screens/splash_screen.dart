@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:road_map_mentor/core/features/starting/presentation/screens/starting_screen.dart';
 import 'package:road_map_mentor/core/utils/app_routers.dart';
 
 class SpScreen extends StatefulWidget {

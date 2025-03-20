@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:road_map_mentor/core/utils/widgets/custom_filter.dart';
 
 class AppViewColor extends StatelessWidget {
