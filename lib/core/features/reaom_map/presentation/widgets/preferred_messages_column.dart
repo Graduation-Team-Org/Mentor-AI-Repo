@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/animated_text_widget.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/prefrred_messages_items.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
 class PreferredMessagesColumn extends StatelessWidget {
