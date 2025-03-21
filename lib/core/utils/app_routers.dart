@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/chat_message_screen.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/preferred_messages_screen.dart';
 import 'package:road_map_mentor/core/features/splash/presentation/screens/splash_screen.dart';
 import 'package:road_map_mentor/core/features/starting/presentation/screens/starting_screen.dart';
 
@@ -18,6 +19,10 @@ abstract class AppRouter {
       GoRoute(
         path: startingScreen,
         builder: (context, state) => const StartingScreen(),
+      ),
+      GoRoute(
+        path: preferredMessagesScreen,
+        builder: (context, state) => const PreferredMessagesScreen(),
       ),
       GoRoute(
         path: chatScreen,
@@ -38,6 +43,7 @@ abstract class AppRouter {
     ],
   );
   static const String savedAllMessagesScreen = '/saved'; // Base path
+  static const String preferredMessagesScreen = '/preferredMessagesScreen'; // Base path
   static const String chatScreen = '/chatScreen'; // Base path
   static const String startingScreen = '/startingScreen'; // Base path
 }

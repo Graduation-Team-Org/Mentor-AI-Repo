@@ -2,17 +2,17 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/enum/drawer_content.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/preferred_messages_screen.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_search_text_field.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_activites_column.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_drawer_header.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/hitory_column.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/preferred_messages_column.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/saved_all_messages_cubit/saved_all_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
+import 'package:road_map_mentor/core/utils/app_routers.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
@@ -63,38 +63,7 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
                 // Add SafeArea to handle keyboard properly
                 child: Stack(
                   children: [
-                    Positioned(
-                      top: -10,
-                      left: -60,
-                      child: ImageFiltered(
-                        imageFilter: ImageFilter.blur(sigmaX: 300, sigmaY: 300),
-                        child: SvgPicture.asset('assets/images/Ellipse_4.svg'),
-                      ),
-                    ),
-                    Positioned(
-                      top: -180,
-                      right: -70,
-                      child: ImageFiltered(
-                        imageFilter: ImageFilter.blur(sigmaX: 400, sigmaY: 400),
-                        child: SvgPicture.asset('assets/images/Ellipse_4.svg'),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 40,
-                      left: -20,
-                      child: ImageFiltered(
-                        imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                        child: SvgPicture.asset('assets/images/Ellipse_1.svg'),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 100,
-                      right: -40,
-                      child: ImageFiltered(
-                        imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                        child: SvgPicture.asset('assets/images/Ellipse_2.svg'),
-                      ),
-                    ),
+                    DrawerElipseCuircles(),
                     Padding(
                       padding: EdgeInsets.only(
                         top: keyboardVisible
@@ -133,14 +102,14 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
                           CustomChatActivitiesColumn(
                             onHistoryPressed: () =>
                                 _switchContent(DrawerContent.history),
-                            onPreferredPressed: () =>
-                                _switchContent(DrawerContent.preferred),
+                            onPreferredPressed: () {
+                              _switchContent(DrawerContent.preferred);
+                              context.go(AppRouter.preferredMessagesScreen);
+                            },
                             currentContent: _currentContent,
                           ),
                           if (_currentContent == DrawerContent.history)
-                            const HistoryColumn()
-                          else
-                            const PreferredMessagesScreen(),
+                            const HistoryColumn(),
                           Padding(
                             padding: const EdgeInsets.only(top: 20, bottom: 30),
                             child: Row(
@@ -179,6 +148,50 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
           ),
         );
       },
+    );
+  }
+}
+
+class DrawerElipseCuircles extends StatelessWidget {
+  const DrawerElipseCuircles({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned(
+          top: -10,
+          left: -60,
+          child: ImageFiltered(
+            imageFilter: ImageFilter.blur(sigmaX: 300, sigmaY: 300),
+            child: SvgPicture.asset('assets/images/Ellipse_4.svg'),
+          ),
+        ),
+        Positioned(
+          top: -180,
+          right: -70,
+          child: ImageFiltered(
+            imageFilter: ImageFilter.blur(sigmaX: 400, sigmaY: 400),
+            child: SvgPicture.asset('assets/images/Ellipse_4.svg'),
+          ),
+        ),
+        Positioned(
+          bottom: 40,
+          left: -20,
+          child: ImageFiltered(
+            imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: SvgPicture.asset('assets/images/Ellipse_1.svg'),
+          ),
+        ),
+        Positioned(
+          bottom: 100,
+          right: -40,
+          child: ImageFiltered(
+            imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: SvgPicture.asset('assets/images/Ellipse_2.svg'),
+          ),
+        ),
+      ],
     );
   }
 }
