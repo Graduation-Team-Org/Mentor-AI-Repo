@@ -14,11 +14,12 @@ import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
 class ChatBodyListView extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
-  final ScrollController scrollController ;
+  final ScrollController scrollController;
 
   const ChatBodyListView({
     super.key,
-    required this.scaffoldKey, required this.scrollController,
+    required this.scaffoldKey,
+    required this.scrollController,
   });
 
   @override
@@ -26,8 +27,6 @@ class ChatBodyListView extends StatefulWidget {
 }
 
 class _ChatBodyListViewState extends State<ChatBodyListView> {
-  
-
   @override
   void initState() {
     super.initState();
@@ -77,7 +76,9 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: message.isUser ? AppColors.white : AppColors.perple,
+                          color: message.isUser
+                              ? AppColors.white
+                              : AppColors.perple,
                           width: 1.1,
                         ),
                         borderRadius: message.isUser
@@ -254,7 +255,7 @@ class ListItems extends StatelessWidget {
             IconButton(
               onPressed: () {},
               icon: Row(
-                    children: [
+                children: [
                   SvgPicture.asset(
                     'assets/images/Trash_Bin_Minimalistic.svg',
                     width: 15,
@@ -325,18 +326,18 @@ class SenderAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 5,
-                          vertical: 5,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.asset(
-                            message.senderAvatar,
-                            width: 30,
-                            height: 30,
-                          ),
-                        ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 5,
+        vertical: 5,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: Image.asset(
+          message.senderAvatar,
+          width: 30,
+          height: 30,
+        ),
+      ),
     );
   }
 }

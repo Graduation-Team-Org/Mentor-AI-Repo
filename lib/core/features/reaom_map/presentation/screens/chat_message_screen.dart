@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/saved_all_messages_cubit/saved_all_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_body_list_view.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_ellipse_cuircles.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_end_drawer.dart';
@@ -36,6 +37,9 @@ class _ChatScreenState extends State<ChatScreen> {
       providers: [
         BlocProvider<SavedAllMessagesCubit>(
           create: (context) => SavedAllMessagesCubit(RoadMapReposImp()),
+        ),
+        BlocProvider<PreferredMessagesCubit>(
+          create: (context) => PreferredMessagesCubit(),
         ),
       ],
       child: Scaffold(
@@ -82,6 +86,3 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-
-
-
