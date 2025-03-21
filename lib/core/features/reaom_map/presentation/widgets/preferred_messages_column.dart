@@ -20,15 +20,7 @@ class PreferredMessagesColumn extends StatelessWidget {
             widgetDuration: 20,
             textStyle: title2Bold,
           ),
-          const SizedBox(height: 8),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 8,
-              itemBuilder: (context, index) {
-                return const PreferredMessageItem();
-              },
-            ),
-          ),
+          
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/enum/drawer_content.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/preferred_messages_screen.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_search_text_field.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_activites_column.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_drawer_header.dart';
@@ -139,7 +140,7 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
                           if (_currentContent == DrawerContent.history)
                             const HistoryColumn()
                           else
-                            const PreferredMessagesColumn(),
+                            const PreferredMessagesScreen(),
                           Padding(
                             padding: const EdgeInsets.only(top: 20, bottom: 30),
                             child: Row(
