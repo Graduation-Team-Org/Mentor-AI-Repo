@@ -10,7 +10,7 @@ class GetAllPreferredMessagesCubit extends Cubit<GetAllPreferredMessagesState> {
   GetAllPreferredMessagesCubit() : super(GetAllPreferredMessagesInitial());
 
   List<PreferredMessagesModel>? preferredMessages;
-  fetchAllNotes() {
+  fetchAllMessages() {
     var preferredMessagesBox =
         Hive.box<PreferredMessagesModel>(kPreferredMessages);
 

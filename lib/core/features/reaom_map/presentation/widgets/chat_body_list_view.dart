@@ -86,7 +86,7 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                         ? MainAxisAlignment.end
                         : MainAxisAlignment.start,
                     children: [
-                      SenderAvatar(message: message),
+                      SenderAvatar(senderAvatar: message.senderAvatar),
                     ],
                   ),
                   Padding(
@@ -345,10 +345,10 @@ class SenderName extends StatelessWidget {
 class SenderAvatar extends StatelessWidget {
   const SenderAvatar({
     super.key,
-    required this.message,
+    required this.senderAvatar,
   });
 
-  final ChatMessageModel message;
+  final String senderAvatar;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -359,7 +359,7 @@ class SenderAvatar extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(100),
         child: Image.asset(
-          message.senderAvatar,
+          senderAvatar,
           width: 30,
           height: 30,
         ),

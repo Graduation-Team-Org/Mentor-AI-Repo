@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:popover/popover.dart';
-import 'package:intl/intl.dart';
-import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/preferred_messages_model.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_body_list_view.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
 
@@ -26,6 +28,7 @@ class PreffredMessagesView extends StatefulWidget {
 class _PreffredMessagesViewState extends State<PreffredMessagesView> {
   @override
   void initState() {
+    BlocProvider.of<GetAllPreferredMessagesCubit>(context).fetchAllMessages();
     super.initState();
   }
 
@@ -37,117 +40,116 @@ class _PreffredMessagesViewState extends State<PreffredMessagesView> {
 
   @override
   Widget build(BuildContext context) {
-    final List<ChatMessageModel> messages = [
-      ChatMessageModel(
-        content:
-            'This is the preffred messages container which contain all the liked messages',
-        isUser: false,
-        senderName: 'Steve',
-        senderAvatar: 'assets/images/steve.png',
-      ),
-    ];
-    var currentDate = DateTime.now();
-    var formattedCurrentDate = DateFormat('dd-mm-yyyy').format(currentDate);
+    final List<PreferredMessagesModel> messages =
+        BlocProvider.of<GetAllPreferredMessagesCubit>(context)
+            .preferredMessages!;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: ListView(
-        controller: widget.scrollController,
-        children: [
-          // Show all messages
-          ...messages.map(
-            (message) => Stack(
-              children: [
-                Column(
+      child: BlocBuilder<PreferredMessagesCubit, PreferredMessagesState>(
+        builder: (context, state) {
+          return ListView(
+            controller: widget.scrollController,
+            children: [
+              // Show all messages
+              ...messages.map(
+                (message) => Stack(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    Column(
                       children: [
-                        SenderAvatar(message: message),
-                        Spacer(),
-                        Text(
-                          formattedCurrentDate,
-                          style: body,
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 50, top: 5),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: AppColors.perple,
-                            width: 1.1,
-                          ),
-                          borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(16),
-                            topRight: Radius.circular(16),
-                          ),
-                        ),
-                        child: Stack(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 30, bottom: 5, left: 12, right: 30),
-                              child: ResponseWidget(
-                                responseText: message.content,
-                                widgetDuration: 0,
-                              ),
-                            ),
-                            Positioned(
-                              top: -5,
-                              right: -5,
-                              child: Builder(
-                                builder: (context) => IconButton(
-                                  onPressed: () {
-                                    showPopover(
-                                      context: context,
-                                      bodyBuilder: (context) =>
-                                          const ListItems(),
-                                      onPop: () => print('Popover was popped!'),
-                                      direction: PopoverDirection.bottom,
-                                      width: 80,
-                                      height: 200,
-                                      arrowHeight: 15,
-                                      arrowWidth: 30,
-                                      backgroundColor:
-                                          Colors.white.withOpacity(0.1),
-                                      barrierColor: Colors.black54,
-                                      transitionDuration:
-                                          const Duration(milliseconds: 150),
-                                      constraints: BoxConstraints(
-                                        maxWidth:
-                                            MediaQuery.of(context).size.width *
-                                                0.8,
-                                        maxHeight:
-                                            MediaQuery.of(context).size.height *
-                                                0.5,
-                                      ),
-                                    );
-                                  },
-                                  icon: SvgPicture.asset(
-                                    'assets/images/Menu_Dots_2.svg',
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                ),
-                              ),
+                            SenderAvatar(senderAvatar: message.msgImage),
+                            Spacer(),
+                            Text(
+                              message.likeDate,
+                              style: body,
                             ),
                           ],
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 50, top: 5),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.perple,
+                                width: 1.1,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(16),
+                                bottomRight: Radius.circular(16),
+                                topRight: Radius.circular(16),
+                              ),
+                            ),
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 30, bottom: 5, left: 12, right: 30),
+                                  child: ResponseWidget(
+                                    responseText: message.msgContent,
+                                    widgetDuration: 0,
+                                  ),
+                                ),
+                                Positioned(
+                                  top: -5,
+                                  right: -5,
+                                  child: Builder(
+                                    builder: (context) => IconButton(
+                                      onPressed: () {
+                                        showPopover(
+                                          context: context,
+                                          bodyBuilder: (context) =>
+                                              const ListItems(),
+                                          onPop: () =>
+                                              print('Popover was popped!'),
+                                          direction: PopoverDirection.bottom,
+                                          width: 80,
+                                          height: 200,
+                                          arrowHeight: 15,
+                                          arrowWidth: 30,
+                                          backgroundColor:
+                                              Colors.white.withOpacity(0.1),
+                                          barrierColor: Colors.black54,
+                                          transitionDuration:
+                                              const Duration(milliseconds: 150),
+                                          constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.8,
+                                            maxHeight: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.5,
+                                          ),
+                                        );
+                                      },
+                                      icon: SvgPicture.asset(
+                                        'assets/images/Menu_Dots_2.svg',
+                                        width: 20,
+                                        height: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    insideSmallCircle(),
+                    inBetweenSmallCircle(),
+                    outsideSmallCircle(),
                   ],
                 ),
-                insideSmallCircle(),
-                inBetweenSmallCircle(),
-                outsideSmallCircle(),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-        ],
+              ),
+              const SizedBox(height: 20),
+            ],
+          );
+        },
       ),
     );
   }
