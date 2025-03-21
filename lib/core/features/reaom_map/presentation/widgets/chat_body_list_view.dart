@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:popover/popover.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/preferred_messages_model.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/functions/fun.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/Road_map_app_bar.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
@@ -41,7 +44,30 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AllMessagesCubit, AllMessagesState>(
+    return BlocConsumer<AllMessagesCubit, AllMessagesState>(
+      listener: (context, state) {
+        String prefMsgContent = '';
+        String imgPath = 'assets/images/steve.png';
+        var currentDate = DateTime.now();
+
+        var formattedCurrentDate = DateFormat('dd-mm-yyyy').format(currentDate);
+
+        if (state is AllMessagesScussess) {
+          final List<ChatMessageModel> messages = state.chatMessagesModel;
+          for (var message in messages) {
+            if (!message.isUser) {
+              prefMsgContent = message.content;
+            }
+          }
+          PreferredMessagesModel prefrredMessage = PreferredMessagesModel(
+            msgContent: prefMsgContent,
+            msgImage: imgPath,
+            likeDate: formattedCurrentDate,
+          );
+          BlocProvider.of<PreferredMessagesCubit>(context)
+              .addPrefrredMessages(prefrredMessage);
+        }
+      },
       builder: (context, state) {
         final List<ChatMessageModel> messages =
             state is AllMessagesScussess ? state.chatMessagesModel : [];
