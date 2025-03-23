@@ -1,4 +1,4 @@
- Widget _buildServiceCard(BuildContext context, String title, String description, String imagePath) {
+Widget _buildServiceCard(BuildContext context, String title, String description, String imagePath) {
     return Container(
       margin: EdgeInsets.only(bottom: 15),
       padding: EdgeInsets.all(15),
