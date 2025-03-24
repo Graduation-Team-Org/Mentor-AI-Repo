@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 Widget _buildPasswordField(String hint, TextEditingController controller, bool isVisible, VoidCallback toggleVisibility, [String? Function(String?)? validator]) {
     return TextFormField(
       controller: controller,

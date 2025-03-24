@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
 import 'package:road_map_mentor/core/features/starting/presentation/widgets/bubble_widgets.dart';
-import 'package:road_map_mentor/core/utils/app_routers.dart';
 
 class StartingScreen extends StatefulWidget {
   const StartingScreen({super.key});

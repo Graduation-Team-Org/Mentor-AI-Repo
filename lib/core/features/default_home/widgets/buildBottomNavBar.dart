@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 Widget _buildBottomNavBar() {
     return BottomNavigationBar(
       backgroundColor: Color(0xFF2E1055),

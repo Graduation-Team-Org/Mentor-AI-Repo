@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'signup_screen.dart';
+import 'package:road_map_mentor/core/features/sign_up/screens/signup_screen.dart';
 
 class HomePage1 extends StatelessWidget {
   @override
