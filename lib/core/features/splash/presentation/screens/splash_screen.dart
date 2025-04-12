@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:road_map_mentor/core/utils/app_routers.dart';
-
+import 'package:road_map_mentor/core/features/starting/presentation/screens/starting_screen.dart';
+import 'dart:ui';
 class SpScreen extends StatefulWidget {
   const SpScreen({super.key});
 
@@ -47,14 +46,20 @@ class SpScreenState extends State<SpScreen>
           parent: _controller, curve: Interval(0.7, 1.0, curve: Curves.easeIn)),
     );
 
+
     _controller.forward().then((_) {
       Future.delayed(Duration(milliseconds: 600), () {
         if (mounted) {
-          context.go(AppRouter.startingScreen);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => StartingScreen()),
+          );
         }
       });
     });
   }
+
+
 
   @override
   void dispose() {
@@ -68,7 +73,7 @@ class SpScreenState extends State<SpScreen>
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xFF1A0130),
+      backgroundColor: Color(0xFF110A2B),
       body: Center(
         child: AnimatedBuilder(
           animation: _controller,
@@ -76,6 +81,72 @@ class SpScreenState extends State<SpScreen>
             return Stack(
               alignment: Alignment.center,
               children: [
+                Expanded(
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: 300,
+                        left: 60,
+                        child: ImageFiltered(
+                          imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                          child: Container(
+                            width: 70,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xFF352250),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: -30,
+                        right: -70,
+                        child: ImageFiltered(
+                          imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                          child: Container(
+                            width: 200,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xFF9860E4),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 100,
+                        left: 200,
+                        child: ImageFiltered(
+                          imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xFF9860E4),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 50,
+                        right: 50,
+                        child: ImageFiltered(
+                          imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                          child: Container(
+                            width: 70,
+                            height: 70,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xFF40174C)
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Positioned(
                   top: screenHeight / 2 + 80,
                   child: Opacity(
@@ -94,7 +165,7 @@ class SpScreenState extends State<SpScreen>
                   child: Transform.translate(
                     offset: Offset(_slideAnimation.value, 0),
                     child: Image.asset(
-                      'assets/images/SplashLogo.png',
+                      'image/logo.png',
                       width: 120,
                       height: 120,
                     ),
