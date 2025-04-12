@@ -1,4 +1,6 @@
-Widget _buildTextField(IconData icon, String hint, TextEditingController controller, FormFieldValidator<String> validator) {
+import 'package:flutter/material.dart';
+
+Widget buildTextField(IconData icon, String hint, TextEditingController controller, FormFieldValidator<String> validator) {
     return TextFormField(
       controller: controller,
       style: TextStyle(color: Colors.white),

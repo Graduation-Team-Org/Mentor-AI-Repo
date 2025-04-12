@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'signin_screen.dart';
+import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({super.key});
+
   @override
-  _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {

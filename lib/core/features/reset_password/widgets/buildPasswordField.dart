@@ -1,4 +1,6 @@
-Widget _buildPasswordField(String hint, TextEditingController controller, bool isObscure, VoidCallback toggleVisibility) {
+import 'package:flutter/material.dart';
+
+Widget buildPasswordField(String hint, TextEditingController controller, bool isObscure, VoidCallback toggleVisibility) {
     return TextField(
       controller: controller,
       obscureText: isObscure,

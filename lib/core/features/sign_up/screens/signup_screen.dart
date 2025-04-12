@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart';
+import 'package:road_map_mentor/core/features/terms_conditions/screens/terms_conditions_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'signin_screen.dart';
-import 'terms_conditions_screen.dart';
+
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  SignUpScreenState createState() => SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();

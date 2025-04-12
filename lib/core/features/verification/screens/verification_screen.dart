@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'verification_code_screen.dart';
+
+import 'package:road_map_mentor/core/features/verification_code/screens/verification_code_screen.dart';
 
 class VerificationScreen extends StatefulWidget {
+  const VerificationScreen({super.key});
+
   @override
-  _VerificationScreenState createState() => _VerificationScreenState();
+  State<VerificationScreen> createState() => _VerificationScreenState();
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {

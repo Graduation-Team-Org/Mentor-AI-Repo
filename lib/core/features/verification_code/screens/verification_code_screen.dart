@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'reset_password_screen.dart';
+
+import 'package:road_map_mentor/core/features/reset_password/screens/reset_password_screen.dart';
 
 class VerificationCodeScreen extends StatefulWidget {
   final String email;
   final String sentCode;
 
-  VerificationCodeScreen({required this.email, required this.sentCode});
+  const VerificationCodeScreen({super.key, required this.email, required this.sentCode});
 
   @override
-  _VerificationCodeScreenState createState() => _VerificationCodeScreenState();
+  State<VerificationCodeScreen> createState() => _VerificationCodeScreenState();
 }
 
 class _VerificationCodeScreenState extends State<VerificationCodeScreen> {

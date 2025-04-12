@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'signup_screen.dart';
-import 'verification_screen.dart';
+import 'package:road_map_mentor/core/features/home/screens/home_page.dart';
+import 'package:road_map_mentor/core/features/sign_up/screens/signup_screen.dart';
+import 'package:road_map_mentor/core/features/verification/screens/verification_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'home_page.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
