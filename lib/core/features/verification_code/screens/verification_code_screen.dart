@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'reset_password_screen.dart';
+import 'package:road_map_mentor/core/features/reset_password/screens/reset_password_screen.dart';
+import 'dart:ui';
 
 class VerificationCodeScreen extends StatefulWidget {
   final String email;
@@ -12,7 +13,11 @@ class VerificationCodeScreen extends StatefulWidget {
   _VerificationCodeScreenState createState() => _VerificationCodeScreenState();
 }
 
-class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
+class _VerificationCodeScreenState extends State<VerificationCodeScreen>  with SingleTickerProviderStateMixin {
+
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
   final List<TextEditingController> _controllers =
   List.generate(4, (index) => TextEditingController());
   bool _hasError = false;
@@ -20,11 +25,6 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
   late Timer _timer;
   bool _canResend = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _startTimer();
-  }
 
   void _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -62,131 +62,280 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      backgroundColor: Color(0xFF2E1A47),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: size.height * 0.02),
-            Image.asset("image/image.png", height: size.height * 0.12),
-            SizedBox(height: size.height * 0.02),
-            Text(
-              "Verification Code",
-              style: TextStyle(
-                fontSize: size.width * 0.07,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.email, color: Colors.white70, size: 20),
-                SizedBox(width: 8),
-                Text(
-                  "A 4-digit code has been sent to ${widget.email}",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white70),
-                ),
-              ],
-            ),
-            SizedBox(height: size.height * 0.04),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(4, (index) {
-                return Container(
-                  width: size.width * 0.15,
-                  height: size.width * 0.15,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF3E2C5B),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: _hasError ? Colors.red : Colors.transparent),
-                  ),
-                  child: TextField(
-                    controller: _controllers[index],
-                    maxLength: 1,
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                    decoration: InputDecoration(counterText: "", border: InputBorder.none),
-                    onChanged: (value) {
-                      if (value.isNotEmpty && index < 3) {
-                        FocusScope.of(context).nextFocus();
-                      }
-                    },
-                  ),
-                );
-              }),
-            ),
-            if (_hasError)
-              Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: Text(
-                  "Incorrect code, please try again.",
-                  style: TextStyle(color: Colors.red),
-                ),
-              ),
-            SizedBox(height: size.height * 0.03),
-            _canResend
-                ? GestureDetector(
-              onTap: _resendCode,
-              child: Text(
-                "Resend Code",
-                style: TextStyle(color: Colors.blueAccent, fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            )
-                : Text(
-              "Resend OTP in ${_timerSeconds}s",
-              style: TextStyle(color: Colors.white70, fontSize: 16),
-            ),
-            SizedBox(height: size.height * 0.05),
-            GestureDetector(
-              onTap: verifyCode,
-              child: Container(
-                width: double.infinity,
-                height: size.height * 0.07,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF7A4DB6), Color(0xFFDFCEF7), Color(0xFFF0E7FB)],
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    "Verify",
-                    style: TextStyle(
-                      color: Color(0xFF2E1A47),
-                      fontWeight: FontWeight.bold,
-                      fontSize: size.width * 0.05,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    )..repeat(reverse: true);
+
+    _animation = Tween<double>(begin: 0, end: -20).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
   }
 
   @override
   void dispose() {
-    _timer.cancel();
+    _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    return Scaffold(
+      backgroundColor: Color(0xFF110A2B),
+      body: Stack(
+        children: [
+          Positioned(
+            top: 300,
+            left: 60,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF352250),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: -30,
+            right: -70,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF9860E4),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 100,
+            left: 200,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF9860E4),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 50,
+            right: 50,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFF40174C)
+                ),
+              ),
+            ),
+          ),
+          AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
+
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: size.height * 0.02),
+                Center(
+                  child: AnimatedBuilder(
+                    animation: _animation,
+                    builder: (context, child) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Transform.translate(
+                            offset: Offset(0, _animation.value),
+                            child: Image.asset(
+                              "image/image.png",
+                              width: size.width * 0.15,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Positioned(
+                            left: 63.24,
+                            top: 85.30,
+                            child: Container(
+                              width: 39.52,
+                              height: 6.27,
+                              decoration: ShapeDecoration(
+                                color: const Color(0x667A4DB6), // بنفسجي شفاف
+                                shape: OvalBorder(),
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: size.height * 0.02),
+                Text(
+                  "Verification Code",
+                  style: TextStyle(
+                    color: const Color(0xFFF0E7FB),
+                    fontSize: 32,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w700,
+                    height: 1.60,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.email, color: Colors.white70, size: 20),
+                    SizedBox(width: 8),
+                    Text(
+                      "A 4-digit code has been sent to ${widget.email}",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white70 , fontFamily: 'Inter'),
+                    ),
+                  ],
+                ),
+                SizedBox(height: size.height * 0.04),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(4, (index) {
+                    return Container(
+                      width: size.width * 0.10,
+                      height: size.width * 0.10,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: _hasError ? Colors.red : Color(0xFF605B6C)),
+                      ),
+                      child: TextField(
+                        controller: _controllers[index],
+                        maxLength: 1,
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 24),
+                        decoration: InputDecoration(counterText: "", border: InputBorder.none),
+                        onChanged: (value) {
+                          if (value.isNotEmpty && index < 3) {
+                            FocusScope.of(context).nextFocus();
+                          }
+                        },
+                      ),
+                    );
+                  }),
+                ),
+                if (_hasError)
+                  Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: Text(
+                      "Incorrect code, please try again.",
+                      style: TextStyle(color: Colors.red , fontFamily: 'Inter'),
+                    ),
+                  ),
+                SizedBox(height: size.height * 0.03),
+                Column(
+                  children: [
+                    _canResend
+                        ? SizedBox.shrink()
+                        : RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                          fontFamily: 'Inter',
+                        ),
+                        children: [
+                          TextSpan(text: 'Resend OTP in '),
+                          TextSpan(
+                            text: '00:${_timerSeconds.toString().padLeft(2, '0')} s',
+                            style: TextStyle(
+                              color: Color(0xFFB388F2),
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'Inter',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    _canResend
+                        ? GestureDetector(
+                      onTap: _resendCode,
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                            fontFamily: 'Inter',
+                          ),
+                          children: [
+                            TextSpan(text: "Didn't received a code? "),
+                            TextSpan(
+                              text: 'Resend',
+                              style: TextStyle(
+                                color: Color(0xFFB388F2),
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'Inter',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                        : SizedBox.shrink(),
+                  ],
+                ),
+                SizedBox(height: size.height * 0.05),
+                GestureDetector(
+                  onTap: verifyCode,
+                  child: Container(
+                    width: double.infinity,
+                    height: size.height * 0.07,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF7A4DB6), Color(0xFFDFCEF7), Color(0xFFF0E7FB)],
+                      ),
+                    ),
+                    child: Center(child: Text("Verify", style: TextStyle(
+                      color: const Color(0xFF352250),
+                      fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w600,
+                    ),)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
