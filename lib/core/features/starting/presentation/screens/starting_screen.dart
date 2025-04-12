@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:road_map_mentor/core/features/sign_up/screens/signup_screen.dart';
 import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
-import 'package:road_map_mentor/core/features/starting/presentation/widgets/bubble_widgets.dart';
-
+import 'dart:ui';
 class StartingScreen extends StatefulWidget {
-  const StartingScreen({super.key});
-
   @override
-  SplashScreenState createState() => SplashScreenState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class SplashScreenState extends State<StartingScreen>
-    with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<StartingScreen> with SingleTickerProviderStateMixin {
   bool isHovered = false;
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -19,14 +16,14 @@ class SplashScreenState extends State<StartingScreen>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 400),
+      duration: Duration(milliseconds: 400),
       vsync: this,
     );
 
     _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
     _animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Future.delayed(const Duration(seconds: 1), () {
+        Future.delayed(Duration(seconds: 1), () {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => HomePage1()),
@@ -45,42 +42,92 @@ class SplashScreenState extends State<StartingScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2E0052),
+      backgroundColor: Color(0xFF110A2B),
       body: Stack(
         children: [
+          Positioned(
+            top: 300,
+            left: 60,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF352250),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: -30,
+            right: -70,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF9860E4),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 100,
+            left: 200,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF9860E4),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 50,
+            right: 50,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF40174C),
+                ),
+              ),
+            ),
+          ),
           Positioned(
             top: MediaQuery.of(context).size.height * 0.1,
             left: 0,
             right: 0,
-            child: SizedBox(
-              width: 369.22,
+            child: Align(
+              alignment: Alignment.center,
               child: Text.rich(
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Meet the',
+                      text: 'Meet the\n',
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: MediaQuery.of(context).size.width * 0.08,
                         fontFamily: 'Inter',
-                        fontWeight: FontWeight.w200,
+                        fontWeight: FontWeight.w100,
                         height: 1.07,
-                      ),
-                    ),
-                    TextSpan(
-                      text: ' ',
-                      style: TextStyle(
-                        color: Color(0xFFF5EFFC),
-                        fontSize: 64,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w400,
-                        height: 1,
                       ),
                     ),
                     TextSpan(
                       text: 'Mentor AI!',
                       style: TextStyle(
-                        color: Color(0xFFB87EFF),
+                        color: Color(0xFF9860E4),
                         fontSize: MediaQuery.of(context).size.width * 0.09,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w900,
@@ -89,7 +136,7 @@ class SplashScreenState extends State<StartingScreen>
                     ),
                   ],
                 ),
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.start,
               ),
             ),
           ),
@@ -109,7 +156,7 @@ class SplashScreenState extends State<StartingScreen>
                   Positioned(
                     bottom: 20,
                     child: Image.asset(
-                      'assets/images/Ropot.png',
+                      'image/image.png',
                       width: 300,
                       height: 300,
                     ),
@@ -126,6 +173,10 @@ class SplashScreenState extends State<StartingScreen>
               onTapDown: (_) => _controller.forward(),
               onTapUp: (_) {
                 _controller.reverse();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUpScreen()),
+                );
               },
               child: AnimatedBuilder(
                 animation: _animation,
@@ -136,14 +187,14 @@ class SplashScreenState extends State<StartingScreen>
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(color: Colors.white60, width: 2),
-                      color: Colors.transparent,
+                      color: _animation.value == 1.0 ? Color(0xFF9860E4) : Colors.transparent,
                     ),
                     child: Stack(
                       children: [
                         Align(
                           alignment: Alignment.center,
                           child: Text(
-                            _animation.value > 0.5 ? "Gooo!" : "Get Started",
+                            _animation.value > 0.5 ? "Gooooooo!" : "Get Started",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -152,23 +203,20 @@ class SplashScreenState extends State<StartingScreen>
                           ),
                         ),
                         Positioned(
-                          right: (_animation.value * 20),
+                          right: (_animation.value * 10),
                           top: 20,
                           child: Opacity(
                             opacity: 1 - _animation.value,
                             child: Row(
                               children: [
-                                Icon(Icons.arrow_forward_ios,
-                                    color: Colors.white60, size: 16),
+                                Icon(Icons.arrow_forward_ios, color: Colors.white60, size: 16),
                                 Opacity(
                                   opacity: 0.6,
-                                  child: Icon(Icons.arrow_forward_ios,
-                                      color: Colors.white60, size: 16),
+                                  child: Icon(Icons.arrow_forward_ios, color: Colors.white60, size: 16),
                                 ),
                                 Opacity(
                                   opacity: 0.3,
-                                  child: Icon(Icons.arrow_forward_ios,
-                                      color: Colors.white60, size: 16),
+                                  child: Icon(Icons.arrow_forward_ios, color: Colors.white60, size: 16),
                                 ),
                               ],
                             ),
@@ -181,19 +229,19 @@ class SplashScreenState extends State<StartingScreen>
                             width: 44,
                             height: 44,
                             decoration: BoxDecoration(
-                              color: Color(0xFFB87EFF),
+                              color: _animation.value == 1.0 ? Colors.white : Color(0xFF9860E4),
                               shape: BoxShape.circle,
                             ),
                             child: Center(
                               child: Icon(
-                                _animation.value == 1.0
-                                    ? Icons.check
-                                    : Icons.arrow_forward_ios,
-                                color: Colors.white,
+                                _animation.value == 1.0 ? Icons.check : Icons.arrow_forward_ios,
+                                color: _animation.value == 1.0 ? Color(0xFF9860E4) : Colors.white,
                                 size: 20,
                               ),
                             ),
+
                           ),
+
                         ),
                       ],
                     ),
@@ -207,3 +255,37 @@ class SplashScreenState extends State<StartingScreen>
     );
   }
 }
+
+Widget smallBubble(double size) {
+  return Container(
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: Colors.white10,
+    ),
+  );
+}
+
+Widget bubbleWithText(double size) {
+  return Container(
+    width: 140,
+    height: 55,
+    decoration: BoxDecoration(
+      color: Colors.white10,
+      borderRadius: BorderRadius.circular(25),
+    ),
+    child: Center(
+      child: Text(
+        "Need our help now?",
+        style: TextStyle(
+          fontSize: 14,
+
+          color: Colors.white70,
+        ),
+      ),
+    ),
+  );
+}
+
+
