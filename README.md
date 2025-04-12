@@ -1,51 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Contribution Guidelines</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-      background-color: #f9f9f9;
-      color: #333;
-    }
-    h1 {
-      font-size: 28px;
-      color: #2c3e50;
-      margin-bottom: 10px;
-    }
-    h2 {
-      font-size: 22px;
-      color: #34495e;
-      margin-top: 25px;
-    }
-    h3 {
-      font-size: 18px;
-      color: #555;
-      margin-top: 20px;
-    }
-    p, li {
-      font-size: 16px;
-    }
-    code {
-      background-color: #eee;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 15px;
-    }
-    pre {
-      background-color: #eee;
-      padding: 10px;
-      border-radius: 4px;
-      overflow-x: auto;
-    }
-  </style>
-</head>
-<body>
 
   <h1>Contribution Guidelines</h1>
 
@@ -109,5 +61,3 @@ git push origin feature/login-screen</code></pre>
 
   <p><strong>Happy coding!</strong></p>
 
-</body>
-</html>
