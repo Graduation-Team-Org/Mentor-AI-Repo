@@ -19,7 +19,7 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: startingScreen,
-        builder: (context, state) => const StartingScreen(),
+        builder: (context, state) =>  StartingScreen(),
       ),
       GoRoute(
         path: preferredMessagesScreen,
