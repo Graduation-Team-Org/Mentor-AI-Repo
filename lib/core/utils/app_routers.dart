@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
+import 'package:road_map_mentor/core/features/home/screens/home_page.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
@@ -18,6 +20,10 @@ abstract class AppRouter {
         builder: (context, state) => const SpScreen(),
       ),
       GoRoute(
+        path: home1,
+        builder: (context, state) => const HomePage1(),
+      ),
+      GoRoute(
         path: startingScreen,
         builder: (context, state) =>  StartingScreen(),
       ),
@@ -32,7 +38,7 @@ abstract class AppRouter {
         path: chatScreen,
         builder: (context, state) => BlocProvider(
           create: (context) => AllMessagesCubit(_roadMapRepos),
-          child: const ChatScreen(),
+          child: const RoadMapChatScreen(),
         ),
       ),
       // GoRoute(
@@ -51,4 +57,5 @@ abstract class AppRouter {
       '/preferredMessagesScreen'; // Base path
   static const String chatScreen = '/chatScreen'; // Base path
   static const String startingScreen = '/startingScreen'; // Base path
+  static const String home1 = '/home1'; // Base path
 }

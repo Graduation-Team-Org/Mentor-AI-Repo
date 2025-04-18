@@ -955,7 +955,7 @@ class _InterviewScreenState extends State<InterviewScreen>
                           color:
                           _isRecording
                               ?  Color(0xFF9747FF)
-                              :  Color(0xFF9747FF)!.withAlpha(128,),
+                              :  Color(0xFF9747FF).withAlpha(128,),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -1051,7 +1051,7 @@ class _InterviewScreenState extends State<InterviewScreen>
                             BoxShadow(
                               color: (_isRecording
                                   ? Color(0xFFFF669B)
-                                  : Color(0xFF9747FF)!),
+                                  : Color(0xFF9747FF)),
                               spreadRadius: 2,
                               blurRadius: 8,
                               offset: const Offset(0, 4),

@@ -10,18 +10,18 @@ import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/sen
 import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
 import 'dart:ui'; // Import this for ImageFilter
 
-class ChatScreen extends StatefulWidget {
+class RoadMapChatScreen extends StatefulWidget {
   final String? threadId;
-  const ChatScreen({
+  const RoadMapChatScreen({
     super.key,
     this.threadId,
   });
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<RoadMapChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<RoadMapChatScreen> {
   final TextEditingController _controller = TextEditingController();
   final TextEditingController _chatSearchcontroller = TextEditingController();
   final ScrollController _scrollController = ScrollController();

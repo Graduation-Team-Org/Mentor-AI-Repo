@@ -8,8 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class CvAnalysisPage extends StatefulWidget {
+  const CvAnalysisPage({super.key});
+
   @override
-  _CvAnalysisPageState createState() => _CvAnalysisPageState();
+  State<CvAnalysisPage> createState() => _CvAnalysisPageState();
 }
 
 class _CvAnalysisPageState extends State<CvAnalysisPage> {

@@ -7,8 +7,10 @@ import 'dart:ui';
 
 
 class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
+
   @override
-  _SignInScreenState createState() => _SignInScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderStateMixin {
@@ -22,7 +24,7 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
   bool _isPasswordVisible = false;
   bool _rememberMe = false;
 
-  void _launchURL(String url) async {
+  void launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -370,10 +372,10 @@ class GlassmorphicIcon extends StatelessWidget {
   final String url;
 
   const GlassmorphicIcon({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.url,
-  }) : super(key: key);
+  });
 
   _launchURL(String url) async {
     final Uri uri = Uri.parse(url);

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'dart:html' as html;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:hive/hive.dart';
+import 'package:share_plus/share_plus.dart';
 
 class BuildCvPage extends StatefulWidget {
   @override
@@ -916,19 +916,17 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
 
     final pdfBytes = await pdf.save();
 
-    if (kIsWeb) {
-      final blob = html.Blob([pdfBytes], 'application/pdf');
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      final anchor = html.AnchorElement(href: url)
-        ..setAttribute("download", "cv.pdf")
-        ..click();
-      html.Url.revokeObjectUrl(url);
-    } else {
-      final output = await getTemporaryDirectory();
-      final file = File("${output.path}/cv.pdf");
-      await file.writeAsBytes(pdfBytes);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("PDF saved to ${file.path}")));
-    }
+    // Replace the web-specific code with mobile-specific code
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File("${directory.path}/cv.pdf");
+    await file.writeAsBytes(pdfBytes);
+    
+    // Share the PDF file
+    await Share.shareXFiles([XFile(file.path)], text: 'My Resume');
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("PDF saved and ready to share"))
+    );
   }
 
 

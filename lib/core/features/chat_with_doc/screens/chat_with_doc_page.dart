@@ -11,7 +11,7 @@ class ChatWithDocPage extends StatefulWidget {
   const ChatWithDocPage({super.key});
 
   @override
-  _ChatWithDocPageState createState() => _ChatWithDocPageState();
+  State<ChatWithDocPage> createState() => _ChatWithDocPageState();
 }
 
 class _ChatWithDocPageState extends State<ChatWithDocPage> {

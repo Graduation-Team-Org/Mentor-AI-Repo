@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart';
 import 'package:road_map_mentor/core/features/terms_conditions/screens/terms_conditions_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart';
-import 'package:road_map_mentor/core/features/terms_conditions/screens/terms_conditions_screen.dart';
 import 'dart:ui';
 
 class SignUpScreen extends StatefulWidget {
@@ -382,7 +380,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
 
 
 
-  Widget _buildSocialButton(String imagePath, String url, double size) {
+  Widget buildSocialButton(String imagePath, String url, double size) {
     return GestureDetector(
       onTap: () => _launchURL(url),
       child: Image.asset(imagePath, width: size, height: size, fit: BoxFit.cover),
