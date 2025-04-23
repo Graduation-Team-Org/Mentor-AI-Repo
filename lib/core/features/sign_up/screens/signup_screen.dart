@@ -158,7 +158,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                               Transform.translate(
                                 offset: Offset(0, _animation.value),
                                 child: Image.asset(
-                                  "image/image.png",
+                                  "assets/images/image.png",
                                   width: size.width * 0.15,
                                 ),
                               ),
@@ -267,17 +267,17 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         GlassmorphicIcon(
-                          imageUrl: 'image/facebook.png',
+                          imageUrl: 'assets/images/facebook.png',
                           url: 'https://www.facebook.com',
                         ),
                         SizedBox(width: size.width * 0.02),
                         GlassmorphicIcon(
-                          imageUrl: 'image/apple.png',
+                          imageUrl: 'assets/images/apple.png',
                           url: 'https://www.apple.com',
                         ),
                         SizedBox(width: size.width * 0.02),
                         GlassmorphicIcon(
-                          imageUrl: 'image/gmail.png',
+                          imageUrl: 'assets/images/gmail.png',
                           url: 'https://www.gmail.com',
                         ),
                       ],

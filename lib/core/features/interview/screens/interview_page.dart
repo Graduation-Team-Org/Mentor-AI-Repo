@@ -475,7 +475,7 @@ class _FieldSelectionPageState extends State<FieldSelectionPage> {
               SizedBox(height: 40),
               CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage("image/home4.png"),
+                backgroundImage: AssetImage("assets/images/home4.png"),
               ),
               // Back button and avatar
               const SizedBox(height: 16),
@@ -925,7 +925,7 @@ class _InterviewScreenState extends State<InterviewScreen>
                   ),
                   child: ClipOval(
                     child: Image.asset(
-                      'image/home4.png',
+                      'assets/images/home4.png',
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return const Icon(

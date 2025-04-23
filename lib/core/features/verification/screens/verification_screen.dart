@@ -142,8 +142,6 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
               ),
             ),
           ),
-
-          // شاشة المحتوى مع الـ AppBar
           Column(
             children: [
               AppBar(
@@ -176,7 +174,7 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
                                   Transform.translate(
                                     offset: Offset(0, _animation.value),
                                     child: Image.asset(
-                                      "image/image.png",
+                                      "assets/images/image.png",
                                       width: size.width * 0.15,
                                     ),
                                   ),

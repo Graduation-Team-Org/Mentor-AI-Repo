@@ -153,7 +153,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
                             Transform.translate(
                               offset: Offset(0, _animation.value),
                               child: Image.asset(
-                                "image/image.png",
+                                "assets/images/image.png",
                                 width: size.width * 0.15,
                               ),
                             ),

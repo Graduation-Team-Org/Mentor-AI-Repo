@@ -354,7 +354,7 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
         final edu = '${_getData("degreeName")} at ${_getData(
             "universityName")} (${_getData(
             "educationCountry")}) - GPA: ${_getData("gpa")}';
-        _saveData('education', edu); // حفظ التعليم كنص منسق
+        _saveData('education', edu);
         _tabController.animateTo(_tabController.index + 1);
       },
     ),

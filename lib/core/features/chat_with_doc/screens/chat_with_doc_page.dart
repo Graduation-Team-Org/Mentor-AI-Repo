@@ -81,7 +81,6 @@ class _ChatWithDocPageState extends State<ChatWithDocPage> {
       //   context,
       //   MaterialPageRoute(builder: (_) => const ProcessingScreen()),
       // );
-      // تعليق الانتقال للصفحة التالية بناءً على طلبك
     }
   }
 
@@ -175,7 +174,7 @@ class _ChatWithDocPageState extends State<ChatWithDocPage> {
               SizedBox(height: 40),
               CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage("image/home2.png"),
+                backgroundImage: AssetImage("assets/images/home2.png"),
               ),
               const SizedBox(height: 16),
               Padding(
@@ -244,14 +243,12 @@ class _ChatWithDocPageState extends State<ChatWithDocPage> {
                         height: 90,
                         child: Row(
                           children: [
-                            // أيقونة الملف
                             const Icon(Icons.insert_drive_file, color: Colors.white, size: 30),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  // اسم الملف
                                   Text(
                                     file['name'],
                                     style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
@@ -430,7 +427,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
               SizedBox(height: 100),
               CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage("image/home2.png"),
+                backgroundImage: AssetImage("assets/images/home2.png"),
               ),
             ],
           ),
@@ -630,7 +627,7 @@ class _ChatWithDocumentScreenState extends State<ChatWithDocumentScreen>
               padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 5.0),
               child: CircleAvatar(
                 radius: 15,
-                backgroundImage: AssetImage('image/home2.png'),
+                backgroundImage: AssetImage('assets/images/home2.png'),
               ),
             ),
           Expanded(
@@ -669,7 +666,7 @@ class _ChatWithDocumentScreenState extends State<ChatWithDocumentScreen>
               padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 5.0),
               child: CircleAvatar(
                 radius: 15,
-                backgroundImage: AssetImage('image/user.png'),
+                backgroundImage: AssetImage('assets/images/user.png'),
               ),
             ),
         ],
@@ -794,7 +791,7 @@ class _ChatWithDocumentScreenState extends State<ChatWithDocumentScreen>
                             children: [
                               CircleAvatar(
                                 radius: 50,
-                                backgroundImage: AssetImage('image/home2.png'),
+                                backgroundImage: AssetImage('assets/images/home2.png'),
                               ),
                               SizedBox(height: 10),
                               Text(
@@ -899,7 +896,7 @@ class _ChatWithDocumentScreenState extends State<ChatWithDocumentScreen>
                             Row(
                               children: [
                                 CircleAvatar(
-                                  backgroundImage: AssetImage('image/home2.png'),
+                                  backgroundImage: AssetImage('assets/images/home2.png'),
                                 ),
                                 SizedBox(width: 10),
                                 Text("Serena", style: TextStyle(color: Colors.white, fontSize: 18)),
@@ -966,7 +963,7 @@ class _ChatWithDocumentScreenState extends State<ChatWithDocumentScreen>
                         children: [
                           CircleAvatar(
                             radius: 15,
-                            backgroundImage: AssetImage("image/user.png"),
+                            backgroundImage: AssetImage("assets/images/user.png"),
                           ),
                           SizedBox(width: 10),
                           Text('User', style: TextStyle(color: Colors.white70)),
