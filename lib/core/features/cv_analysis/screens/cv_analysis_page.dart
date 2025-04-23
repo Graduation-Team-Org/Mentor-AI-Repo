@@ -8,8 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class CvAnalysisPage extends StatefulWidget {
+  const CvAnalysisPage({super.key});
+
   @override
-  _CvAnalysisPageState createState() => _CvAnalysisPageState();
+  State<CvAnalysisPage> createState() => _CvAnalysisPageState();
 }
 
 class _CvAnalysisPageState extends State<CvAnalysisPage> {
@@ -127,7 +129,7 @@ class _CvAnalysisPageState extends State<CvAnalysisPage> {
               SizedBox(height: 60),
               CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage("image/home3.png"),
+                backgroundImage: AssetImage("assets/images/home3.png"),
               ),
               SizedBox(height: 40),
               Padding(
@@ -366,7 +368,7 @@ class _ChatScreenState extends State<ChatScreen>
               padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 5.0),
               child: CircleAvatar(
                 radius: 15,
-                backgroundImage: AssetImage('image/home3.png'),
+                backgroundImage: AssetImage('assets/images/home3.png'),
               ),
             ),
           Expanded(
@@ -405,7 +407,7 @@ class _ChatScreenState extends State<ChatScreen>
               padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 5.0),
               child: CircleAvatar(
                 radius: 15,
-                backgroundImage: AssetImage('image/user.png'),
+                backgroundImage: AssetImage('assets/images/user.png'),
               ),
             ),
         ],
@@ -529,7 +531,7 @@ class _ChatScreenState extends State<ChatScreen>
                             children: [
                               CircleAvatar(
                                 radius: 50,
-                                backgroundImage: AssetImage('image/home3.png'),
+                                backgroundImage: AssetImage('assets/images/home3.png'),
                               ),
                               SizedBox(height: 10),
                               Text(
@@ -634,7 +636,7 @@ class _ChatScreenState extends State<ChatScreen>
                             Row(
                               children: [
                                 CircleAvatar(
-                                  backgroundImage: AssetImage('image/home3.png'),
+                                  backgroundImage: AssetImage('assets/images/home3.png'),
                                 ),
                                 SizedBox(width: 10),
                                 Text("Marcus", style: TextStyle(color: Colors.white, fontSize: 18)),
@@ -701,7 +703,7 @@ class _ChatScreenState extends State<ChatScreen>
                         children: [
                           CircleAvatar(
                             radius: 15,
-                            backgroundImage: AssetImage("image/user.png"),
+                            backgroundImage: AssetImage("assets/images/user.png"),
                           ),
                           SizedBox(width: 10),
                           Text('User', style: TextStyle(color: Colors.white70)),

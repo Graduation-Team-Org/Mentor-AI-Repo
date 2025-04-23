@@ -3,8 +3,10 @@ import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart
 import 'dart:ui';
 
 class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({super.key});
+
   @override
-  _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTickerProviderStateMixin {
@@ -151,7 +153,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
                             Transform.translate(
                               offset: Offset(0, _animation.value),
                               child: Image.asset(
-                                "image/image.png",
+                                "assets/images/image.png",
                                 width: size.width * 0.15,
                               ),
                             ),

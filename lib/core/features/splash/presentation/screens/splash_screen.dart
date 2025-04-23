@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:road_map_mentor/core/features/starting/presentation/screens/starting_screen.dart';
 import 'dart:ui';
+
+import 'package:road_map_mentor/core/utils/app_routers.dart';
+
 class SpScreen extends StatefulWidget {
   const SpScreen({super.key});
 
@@ -46,20 +50,14 @@ class SpScreenState extends State<SpScreen>
           parent: _controller, curve: Interval(0.7, 1.0, curve: Curves.easeIn)),
     );
 
-
     _controller.forward().then((_) {
       Future.delayed(Duration(milliseconds: 600), () {
         if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => StartingScreen()),
-          );
+          context.go(AppRouter.startingScreen);
         }
       });
     });
   }
-
-
 
   @override
   void dispose() {
@@ -103,7 +101,8 @@ class SpScreenState extends State<SpScreen>
                         top: -30,
                         right: -70,
                         child: ImageFiltered(
-                          imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                          imageFilter:
+                              ImageFilter.blur(sigmaX: 100, sigmaY: 100),
                           child: Container(
                             width: 200,
                             height: 200,
@@ -118,7 +117,8 @@ class SpScreenState extends State<SpScreen>
                         top: 100,
                         left: 200,
                         child: ImageFiltered(
-                          imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                          imageFilter:
+                              ImageFilter.blur(sigmaX: 100, sigmaY: 100),
                           child: Container(
                             width: 100,
                             height: 100,
@@ -139,8 +139,7 @@ class SpScreenState extends State<SpScreen>
                             height: 70,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Color(0xFF40174C)
-                            ),
+                                color: Color(0xFF40174C)),
                           ),
                         ),
                       ),
@@ -165,7 +164,7 @@ class SpScreenState extends State<SpScreen>
                   child: Transform.translate(
                     offset: Offset(_slideAnimation.value, 0),
                     child: Image.asset(
-                      'image/logo.png',
+                      'assets/images/logo.png',
                       width: 120,
                       height: 120,
                     ),

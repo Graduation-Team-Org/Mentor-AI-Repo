@@ -475,7 +475,7 @@ class _FieldSelectionPageState extends State<FieldSelectionPage> {
               SizedBox(height: 40),
               CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage("image/home4.png"),
+                backgroundImage: AssetImage("assets/images/home4.png"),
               ),
               // Back button and avatar
               const SizedBox(height: 16),
@@ -925,7 +925,7 @@ class _InterviewScreenState extends State<InterviewScreen>
                   ),
                   child: ClipOval(
                     child: Image.asset(
-                      'image/home4.png',
+                      'assets/images/home4.png',
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return const Icon(
@@ -955,7 +955,7 @@ class _InterviewScreenState extends State<InterviewScreen>
                           color:
                           _isRecording
                               ?  Color(0xFF9747FF)
-                              :  Color(0xFF9747FF)!.withAlpha(128,),
+                              :  Color(0xFF9747FF).withAlpha(128,),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -1051,7 +1051,7 @@ class _InterviewScreenState extends State<InterviewScreen>
                             BoxShadow(
                               color: (_isRecording
                                   ? Color(0xFFFF669B)
-                                  : Color(0xFF9747FF)!),
+                                  : Color(0xFF9747FF)),
                               spreadRadius: 2,
                               blurRadius: 8,
                               offset: const Offset(0, 4),

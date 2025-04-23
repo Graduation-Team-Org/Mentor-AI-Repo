@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart';
 import 'package:road_map_mentor/core/features/terms_conditions/screens/terms_conditions_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui';
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderStateMixin {
@@ -156,7 +158,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                               Transform.translate(
                                 offset: Offset(0, _animation.value),
                                 child: Image.asset(
-                                  "image/image.png",
+                                  "assets/images/image.png",
                                   width: size.width * 0.15,
                                 ),
                               ),
@@ -265,17 +267,17 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         GlassmorphicIcon(
-                          imageUrl: 'image/facebook.png',
+                          imageUrl: 'assets/images/facebook.png',
                           url: 'https://www.facebook.com',
                         ),
                         SizedBox(width: size.width * 0.02),
                         GlassmorphicIcon(
-                          imageUrl: 'image/apple.png',
+                          imageUrl: 'assets/images/apple.png',
                           url: 'https://www.apple.com',
                         ),
                         SizedBox(width: size.width * 0.02),
                         GlassmorphicIcon(
-                          imageUrl: 'image/gmail.png',
+                          imageUrl: 'assets/images/gmail.png',
                           url: 'https://www.gmail.com',
                         ),
                       ],
@@ -378,7 +380,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
 
 
 
-  Widget _buildSocialButton(String imagePath, String url, double size) {
+  Widget buildSocialButton(String imagePath, String url, double size) {
     return GestureDetector(
       onTap: () => _launchURL(url),
       child: Image.asset(imagePath, width: size, height: size, fit: BoxFit.cover),

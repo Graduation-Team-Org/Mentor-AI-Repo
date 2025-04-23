@@ -133,7 +133,7 @@ class _HomePage1State extends State<HomePage1> with SingleTickerProviderStateMix
                 child: FadeTransition(
                   opacity: _controller,
                   child: Image.asset(
-                    'image/image.png',
+                    'assets/images/image.png',
                     width: 40,
                     height: 40,
                   ),
@@ -162,11 +162,11 @@ class _HomePage1State extends State<HomePage1> with SingleTickerProviderStateMix
     return ListView(
       padding: EdgeInsets.symmetric(horizontal: 20),
       children: [
-        _buildServiceCard(context, "Roadmap", "Talk to Steve to find out which roadmap to follow for your desired track.", "image/home1.png", "image/Roadmap.png"),
-        _buildServiceCard(context, "Chat With Document", "Talk to Serena to discuss your document in detail and get valuable insights.", "image/home2.png", "image/Chat.png"),
-        _buildServiceCard(context, "CV Analysis", "Talk to Marcus to review your CV and find ways to make it stronger.", "image/home3.png", "image/CV.png"),
-        _buildServiceCard(context, "Interview", "Talk to David to prepare for your next big interview with confidence and expert guidance.", "image/home4.png", "image/Interview.png"),
-        _buildServiceCard(context, "Build CV", "Helping you create a CV tailored for the job market by guiding you on what to include", null, "image/BuildCV.png"),
+        _buildServiceCard(context, "Roadmap", "Talk to Steve to find out which roadmap to follow for your desired track.", "assets/images/home1.png", "assets/images/Roadmap.png"),
+        _buildServiceCard(context, "Chat With Document", "Talk to Serena to discuss your document in detail and get valuable insights.", "assets/images/home2.png", "assets/images/Chat.png"),
+        _buildServiceCard(context, "CV Analysis", "Talk to Marcus to review your CV and find ways to make it stronger.", "assets/images/home3.png", "assets/images/CV.png"),
+        _buildServiceCard(context, "Interview", "Talk to David to prepare for your next big interview with confidence and expert guidance.", "assets/images/home4.png", "assets/images/Interview.png"),
+        _buildServiceCard(context, "Build CV", "Helping you create a CV tailored for the job market by guiding you on what to include", null, "assets/images/BuildCV.png"),
       ],
     );
   }

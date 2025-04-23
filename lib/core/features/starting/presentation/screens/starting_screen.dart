@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:road_map_mentor/core/features/sign_up/screens/signup_screen.dart';
 import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
 import 'dart:ui';
+
+import 'package:road_map_mentor/core/utils/app_routers.dart';
 class StartingScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -24,10 +27,7 @@ class _SplashScreenState extends State<StartingScreen> with SingleTickerProvider
     _animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(Duration(seconds: 1), () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage1()),
-          );
+          context.go(AppRouter.home1);
         });
       }
     });
@@ -156,7 +156,7 @@ class _SplashScreenState extends State<StartingScreen> with SingleTickerProvider
                   Positioned(
                     bottom: 20,
                     child: Image.asset(
-                      'image/image.png',
+                      'assets/images/image.png',
                       width: 300,
                       height: 300,
                     ),

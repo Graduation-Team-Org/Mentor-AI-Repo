@@ -5,8 +5,10 @@ import 'package:road_map_mentor/core/features/verification_code/screens/verifica
 import 'dart:ui';
 
 class VerificationScreen extends StatefulWidget {
+  const VerificationScreen({super.key});
+
   @override
-  _VerificationScreenState createState() => _VerificationScreenState();
+  State<VerificationScreen> createState() => _VerificationScreenState();
 }
 
 class _VerificationScreenState extends State<VerificationScreen>  with SingleTickerProviderStateMixin {
@@ -140,8 +142,6 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
               ),
             ),
           ),
-
-          // شاشة المحتوى مع الـ AppBar
           Column(
             children: [
               AppBar(
@@ -174,7 +174,7 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
                                   Transform.translate(
                                     offset: Offset(0, _animation.value),
                                     child: Image.asset(
-                                      "image/image.png",
+                                      "assets/images/image.png",
                                       width: size.width * 0.15,
                                     ),
                                   ),

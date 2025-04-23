@@ -7,10 +7,10 @@ class VerificationCodeScreen extends StatefulWidget {
   final String email;
   final String sentCode;
 
-  VerificationCodeScreen({required this.email, required this.sentCode});
+  const VerificationCodeScreen({super.key, required this.email, required this.sentCode});
 
   @override
-  _VerificationCodeScreenState createState() => _VerificationCodeScreenState();
+  State<VerificationCodeScreen> createState() => _VerificationCodeScreenState();
 }
 
 class _VerificationCodeScreenState extends State<VerificationCodeScreen>  with SingleTickerProviderStateMixin {
@@ -176,7 +176,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen>  with S
                           Transform.translate(
                             offset: Offset(0, _animation.value),
                             child: Image.asset(
-                              "image/image.png",
+                              "assets/images/image.png",
                               width: size.width * 0.15,
                             ),
                           ),
@@ -188,7 +188,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen>  with S
                               width: 39.52,
                               height: 6.27,
                               decoration: ShapeDecoration(
-                                color: const Color(0x667A4DB6), // بنفسجي شفاف
+                                color: const Color(0x667A4DB6),
                                 shape: OvalBorder(),
                               ),
                             ),

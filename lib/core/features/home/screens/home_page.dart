@@ -3,9 +3,10 @@ import 'package:road_map_mentor/core/features/build_cv/screens/build_cv_page.dar
 import 'package:road_map_mentor/core/features/chat_with_doc/screens/chat_with_doc_page.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/screens/cv_analysis_page.dart';
 import 'package:road_map_mentor/core/features/interview/screens/interview_page.dart';
-import 'package:road_map_mentor/core/features/roadmap/screens/roadmap_page.dart';
 import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
 import 'dart:ui';
+
+import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/chat_message_screen.dart';
 
 class HomePage extends StatefulWidget {
   final String? username;
@@ -187,7 +188,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 25,
-                backgroundImage: AssetImage("image/user.png"),
+                backgroundImage: AssetImage("assets/images/user.png"),
               ),
               const SizedBox(width: 10),
               Column(
@@ -210,11 +211,11 @@ class HomeScreen extends StatelessWidget {
     return ListView(
       padding: EdgeInsets.symmetric(horizontal: 20),
       children: [
-        _buildServiceCard(context, "Roadmap", "Talk to Steve to find out which roadmap to follow for your desired track.", "image/home1.png", "image/Roadmap.png"),
-        _buildServiceCard(context, "Chat With Document", "Talk to Serena to discuss your document in detail and get valuable insights.", "image/home2.png", "image/Chat.png"),
-        _buildServiceCard(context, "CV Analysis", "Talk to Marcus to review your CV and find ways to make it stronger.", "image/home3.png", "image/CV.png"),
-        _buildServiceCard(context, "Interview", "Talk to David to prepare for your next big interview with confidence and expert guidance.", "image/home4.png", "image/Interview.png"),
-        _buildServiceCard(context, "Build CV", "Helping you create a CV tailored for the job market by guiding you on what to include", null, "image/BuildCV.png"),
+        _buildServiceCard(context, "Roadmap", "Talk to Steve to find out which roadmap to follow for your desired track.", "assets/images/home1.png", "assets/images/Roadmap.png"),
+        _buildServiceCard(context, "Chat With Document", "Talk to Serena to discuss your document in detail and get valuable insights.", "assets/images/home2.png", "assets/images/Chat.png"),
+        _buildServiceCard(context, "CV Analysis", "Talk to Marcus to review your CV and find ways to make it stronger.", "assets/images/home3.png", "assets/images/CV.png"),
+        _buildServiceCard(context, "Interview", "Talk to David to prepare for your next big interview with confidence and expert guidance.", "assets/images/home4.png", "assets/images/Interview.png"),
+        _buildServiceCard(context, "Build CV", "Helping you create a CV tailored for the job market by guiding you on what to include", null, "assets/images/BuildCV.png"),
       ],
     );
   }
@@ -275,7 +276,7 @@ class HomeScreen extends StatelessWidget {
     Widget page;
     switch (service) {
       case "Roadmap":
-        page = RoadmapPage();
+        page = RoadMapChatScreen();
         break;
       case "Chat With Document":
         page = ChatWithDocPage();
@@ -650,7 +651,7 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                                 ),
                                 child: CircleAvatar(
                                   radius: 30,
-                                  backgroundImage: AssetImage('image/user.png'),
+                                  backgroundImage: AssetImage('assets/images/user.png'),
                                   backgroundColor: Colors.transparent,
                                 ),
                               )
@@ -1190,7 +1191,7 @@ class _RateServicesState extends State<RateServices> {
                                 ),
                                 child: CircleAvatar(
                                   radius: 30,
-                                  backgroundImage: AssetImage('image/user.png'),
+                                  backgroundImage: AssetImage('assets/images/user.png'),
                                   backgroundColor: Colors.transparent,
                                 ),
                               )
@@ -1502,7 +1503,7 @@ class _FeedbackState extends State<Feedback> {
                           ),
                           child: CircleAvatar(
                             radius: 30,
-                            backgroundImage: AssetImage('image/user.png'),
+                            backgroundImage: AssetImage('assets/images/user.png'),
                             backgroundColor: Colors.transparent,
                           ),
                         )
@@ -1785,7 +1786,7 @@ class _WriteFeedbackScreenState extends State<WriteFeedbackScreen> {
                         ),
                         child: CircleAvatar(
                           radius: 30,
-                          backgroundImage: AssetImage('image/user.png'),
+                          backgroundImage: AssetImage('assets/images/user.png'),
                           backgroundColor: Colors.transparent,
                         ),
                       )
@@ -2063,7 +2064,7 @@ class _PersonalDataState extends State<PersonalData>  {
                           ),
                           child: CircleAvatar(
                             radius: 30,
-                            backgroundImage: AssetImage('image/user.png'),
+                            backgroundImage: AssetImage('assets/images/user.png'),
                             backgroundColor: Colors.transparent,
                           ),
                         )
