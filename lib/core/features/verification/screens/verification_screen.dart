@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'dart:math';
 import 'package:road_map_mentor/core/features/verification_code/screens/verification_code_screen.dart';
 
@@ -223,9 +224,13 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
                             hintStyle: TextStyle(color: Color(0xCCF5EFFC),fontSize: 14, fontFamily: 'Inter'),
                             prefixIcon: Padding(
                               padding: const EdgeInsets.only(left: 12.0),
-                              child: Icon(Icons.email, color: const Color(0xFFF5EFFC)),
+                              child: SvgPicture.asset(
+                                'assets/images/Letter.svg',
+                                color: const Color(0xFFF5EFFC),
+                                height: 24,
+                                width: 24,
+                              ),
                             ),
-
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(

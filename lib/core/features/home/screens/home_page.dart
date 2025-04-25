@@ -5,7 +5,7 @@ import 'package:road_map_mentor/core/features/cv_analysis/screens/cv_analysis_pa
 import 'package:road_map_mentor/core/features/interview/screens/interview_page.dart';
 import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
 import 'dart:ui';
-
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/chat_message_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,11 +27,23 @@ class _HomePageState extends State<HomePage> {
     ProfileScreen(),
   ];
 
-  final List<IconData> _fabIcons = [
-    Icons.home,
-    Icons.info_outline,
-    Icons.star,
-    Icons.person,
+  final List<Map<String, String>> _fabIcons = [
+    {
+      'selected': 'assets/images/star1.svg',
+      'unselected': 'assets/images/home.svg',
+    },
+    {
+      'selected': 'assets/images/home_icon1.svg',
+      'unselected': 'assets/images/info_outline.svg',
+    },
+    {
+      'selected': 'assets/images/out_line1.svg',
+      'unselected': 'assets/images/star.svg',
+    },
+    {
+      'selected': 'assets/images/d_home11.svg',
+      'unselected': 'assets/images/d_home.svg',
+    },
   ];
 
   void _onItemTapped(int index) {
@@ -64,30 +76,34 @@ class _HomePageState extends State<HomePage> {
               type: BottomNavigationBarType.fixed,
               items: List.generate(
                 _pages.length,
-                    (index) => BottomNavigationBarItem(
-                  icon: Icon(
-                    _fabIcons[index],
-                    color: _selectedIndex == index
-                        ? Colors.white
-                        : Colors.purple.shade200,
-                  ),
-                  label: '',
-                ),
+                    (index) {
+                  final isSelected = _selectedIndex == index;
+                  return BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      _fabIcons[index][isSelected ? 'selected' : 'unselected']!,
+                      width: 24,
+                      height: 24,
+                    ),
+                    label: '',
+                  );
+                },
               ),
             ),
           ),
           Positioned(
             left: MediaQuery.of(context).size.width / _pages.length * _selectedIndex +
-                MediaQuery.of(context).size.width / (_pages.length * 2) - 30,
+                MediaQuery.of(context).size.width / (_pages.length * 2) -
+                30,
             top: -20,
             child: FloatingActionButton(
               onPressed: () => _onItemTapped(_selectedIndex),
               backgroundColor: Colors.white,
-              shape: CircleBorder(),
-              child: Icon(
-                _fabIcons[_selectedIndex],
-                color: Color(0xFF6A1B9A),
-                size: 30,
+              shape: const CircleBorder(),
+              child: SvgPicture.asset(
+                _fabIcons[_selectedIndex]['selected']!,
+                width: 30,
+                height: 30,
+                color: const Color(0xFF6A1B9A),
               ),
             ),
           ),
@@ -682,7 +698,12 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                       _buildProfileButton(
                         context,
                         'Rate our services',
-                        Icons.star,
+                        SvgPicture.asset(
+                          'assets/images/Component.svg',
+                          width: 24,
+                          height: 24,
+                          color: Colors.yellow.shade500,
+                        ),
                         Colors.yellow.shade500,
                         RateServices(),
                       ),
@@ -690,7 +711,12 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                       _buildProfileButton(
                         context,
                         'Feedback',
-                        Icons.chat_bubble_outline,
+                        SvgPicture.asset(
+                          'assets/images/Chat_Round_Check.svg',
+                          width: 24,
+                          height: 24,
+                          color: Colors.green.shade300,
+                        ),
                         Colors.green.shade300,
                         Feedback(),
                       ),
@@ -698,7 +724,12 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                       _buildProfileButton(
                         context,
                         'Personal data',
-                        Icons.person_outline,
+                        SvgPicture.asset(
+                          'assets/images/Database.svg',
+                          width: 24,
+                          height: 24,
+                          color: Colors.blue.shade300,
+                        ),
                         Colors.blue.shade300,
                         PersonalData(),
                       ),
@@ -918,7 +949,7 @@ class _ProfileScreenState extends State<ProfileScreen>  {
   }
 
   Widget _buildProfileButton(BuildContext context, String text,
-      IconData iconData, Color iconColor, Widget page) {
+      Widget icon, Color iconColor, Widget page) {
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => page));
@@ -942,7 +973,7 @@ class _ProfileScreenState extends State<ProfileScreen>  {
               ),
             ),
             SizedBox(width: 8),
-            Icon(iconData, color: iconColor),
+            icon,
           ],
         ),
       ),
@@ -1571,11 +1602,21 @@ class _FeedbackState extends State<Feedback> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         IconButton(
-                                          icon: Icon(Icons.edit, color: Colors.white30),
+                                          icon: SvgPicture.asset(
+                                            'assets/images/Pen_2.svg',
+                                            width: 24,
+                                            height: 24,
+                                            color: Colors.white30,
+                                          ),
                                           onPressed: () => _editFeedback(index),
                                         ),
                                         IconButton(
-                                          icon: Icon(Icons.delete, color: Colors.white30),
+                                          icon: SvgPicture.asset(
+                                            'assets/images/Trash_Bin_Minimalistic.svg',
+                                            width: 24,
+                                            height: 24,
+                                            color: Colors.white30,
+                                          ),
                                           onPressed: () => _deleteFeedback(index),
                                         ),
                                       ],
@@ -1622,11 +1663,6 @@ class _FeedbackState extends State<Feedback> {
     );
   }
 }
-
-
-
-
-
 
 
 class WriteFeedbackScreen extends StatefulWidget {
@@ -2103,8 +2139,17 @@ class _PersonalDataState extends State<PersonalData>  {
                         enabled: _isEditing,
                         obscureText: _obscurePassword,
                         suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                          icon: _obscurePassword
+                              ? SvgPicture.asset(
+                            'image/eye-off.svg',
+                            width: 24,
+                            height: 24,
+                            color: Colors.white70,
+                          )
+                              : SvgPicture.asset(
+                            'image/eye.svg',
+                            width: 24,
+                            height: 24,
                             color: Colors.white70,
                           ),
                           onPressed: () {

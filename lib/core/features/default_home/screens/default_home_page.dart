@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:road_map_mentor/core/features/sign_up/screens/signup_screen.dart';
 
 class HomePage1 extends StatefulWidget {
@@ -51,7 +52,10 @@ class _HomePage1State extends State<HomePage1> with SingleTickerProviderStateMix
     super.dispose();
   }
 
-  Widget _buildNavIcon({required IconData icon, required int index}) {
+  Widget _buildNavIcon({
+    required String iconPath,
+    required String selectedIconPath,
+    required int index, }) {
     final bool isSelected = _currentIndex == index;
 
     return Container(
@@ -62,9 +66,10 @@ class _HomePage1State extends State<HomePage1> with SingleTickerProviderStateMix
         color: Colors.white,
       )
           : null,
-      child: Icon(
-        icon,
-        color: isSelected ? Color(0xFF3C0845) : Color(0xFF3C0845),
+      child: SvgPicture.asset(
+        isSelected ? selectedIconPath : iconPath,
+        height: 24,
+        width: 24,
       ),
     );
   }
@@ -383,15 +388,27 @@ class _HomePage1State extends State<HomePage1> with SingleTickerProviderStateMix
         },
         items: [
           BottomNavigationBarItem(
-            icon: _buildNavIcon(icon: Icons.home, index: 0),
+            icon: _buildNavIcon(
+              iconPath: 'assets/images/home.svg',
+              selectedIconPath: 'assets/images/star1.svg',
+              index: 0,
+            ),
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: _buildNavIcon(icon: Icons.info_outline, index: 1),
+            icon: _buildNavIcon(
+              iconPath: 'assets/images/info_outline.svg',
+              selectedIconPath: 'assets/images/home_icon1.svg',
+              index: 1,
+            ),
             label: "Info",
           ),
           BottomNavigationBarItem(
-            icon: _buildNavIcon(icon: Icons.star, index: 2),
+            icon: _buildNavIcon(
+              iconPath: 'assets/images/star.svg',
+              selectedIconPath: 'assets/images/out_line1.svg',
+              index: 2,
+            ),
             label: "Star",
           ),
         ],
