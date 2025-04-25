@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart';
 import 'dart:ui';
 
@@ -275,10 +276,22 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
             fontFamily: 'Inter'),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 12.0),
-          child: Icon(Icons.lock, color: const Color(0xFFF5EFFC)),
+          child: SvgPicture.asset(
+            'assets/images/Lock_Keyhole_Minimalistic.svg',
+            color: const Color(0xFFF5EFFC),
+            height: 24,
+            width: 24,
+          ),
         ),
         suffixIcon: IconButton(
-          icon: Icon(isObscure ? Icons.visibility : Icons.visibility_off, color: Colors.white),
+          icon: SvgPicture.asset(
+            isObscure
+                ? 'assets/images/eye.svg'
+                : 'assets/images/eye-off.svg',
+            color: Colors.white,
+            height: 24,
+            width: 24,
+          ),
           onPressed: toggleVisibility,
         ),
 

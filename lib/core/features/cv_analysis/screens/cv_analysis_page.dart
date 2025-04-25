@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'dart:convert';
+import 'package:flutter_svg/svg.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
@@ -153,7 +154,12 @@ class _CvAnalysisPageState extends State<CvAnalysisPage> {
                             ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.file_present, color: Colors.white70, size: 40),
+                            SvgPicture.asset(
+                              'assets/images/icon_upload.svg',
+                              width: 40,
+                              height: 40,
+                              color: Colors.white70,
+                            ),
                             SizedBox(height: 10),
                             Text(
                               "Upload your CV here to process\nand analyze it",
@@ -509,11 +515,21 @@ class _ChatScreenState extends State<ChatScreen>
                           Row(
                             children: [
                               IconButton(
-                                icon: Icon(Icons.edit_calendar_rounded, color: Colors.white),
+                                icon: SvgPicture.asset(
+                                  'assets/images/Pen_New_Square_cv.svg',
+                                  width: 24,
+                                  height: 24,
+                                  color: Colors.white,
+                                ),
                                 onPressed: _startNewChat,
                               ),
                               IconButton(
-                                icon: Icon(Icons.view_sidebar_outlined, color: Colors.white),
+                                icon: SvgPicture.asset(
+                                  'assets/images/Sidebar_Minimalistic.svg',
+                                  width: 24,
+                                  height: 24,
+                                  color: Colors.white,
+                                ),
                                 onPressed: _toggleSidebar,
                               ),
                             ],
@@ -588,9 +604,11 @@ class _ChatScreenState extends State<ChatScreen>
                           FloatingActionButton(
                             backgroundColor: Color(0xFF9860E4),
                             shape: CircleBorder(),
-                            child: Transform.rotate(
-                              angle: -50 * 3.14159 / 180,
-                              child: const Icon(Icons.send, color: Colors.white),
+                            child: SvgPicture.asset(
+                              'assets/images/lucid_send.svg',
+                              width: 24,
+                              height: 24,
+                              color: Colors.white,
                             ),
                             onPressed: () {
                               _sendMessage(_controllerText.text);
@@ -648,7 +666,15 @@ class _ChatScreenState extends State<ChatScreen>
                               decoration: InputDecoration(
                                 hintText: "Search",
                                 hintStyle: TextStyle(color: Colors.white70),
-                                prefixIcon: Icon(Icons.search, color: Colors.white70),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                                  child: SvgPicture.asset(
+                                    'assets/images/fi_search.svg',
+                                    width: 20,
+                                    height: 20,
+                                    color: Colors.white70,
+                                  ),
+                                ),
                                 filled: true,
                                 fillColor: Colors.white10,
                                 border: OutlineInputBorder(
@@ -661,22 +687,45 @@ class _ChatScreenState extends State<ChatScreen>
                             ),
                             SizedBox(height: 20),
                             ListTile(
-                              leading: Icon(Icons.share, color: Colors.white),
-                              title: Text("Share Chat", style: TextStyle(color: Colors.white)),
+                              leading: SvgPicture.asset(
+                                'assets/images/fi_share-2.svg',
+                                width: 24,
+                                height: 24,
+                                color: Colors.white,
+                              ),
+                              title: Text(
+                                "Share Chat",
+                                style: TextStyle(color: Colors.white),
+                              ),
                               onTap: _shareChat,
                             ),
                             ListTile(
-                              leading: Icon(Icons.chat, color: Colors.white),
+                              leading: SvgPicture.asset(
+                                'assets/images/Pen_New_Square_cv.svg',
+                                width: 24,
+                                height: 24,
+                                color: Colors.white,
+                              ),
                               title: Text("New Chat", style: TextStyle(color: Colors.white)),
                               onTap: _startNewChat,
                             ),
                             ListTile(
-                              leading: Icon(Icons.history, color: Colors.white),
+                              leading: SvgPicture.asset(
+                                'assets/images/Document_Text.svg',
+                                width: 24,
+                                height: 24,
+                                color: Colors.white,
+                              ),
                               title: Text("History", style: TextStyle(color: Colors.white)),
                               onTap: _showHistory,
                             ),
                             ListTile(
-                              leading: Icon(Icons.favorite, color: Colors.white),
+                              leading: SvgPicture.asset(
+                                'assets/images/Heart_Angle.svg',
+                                width: 24,
+                                height: 24,
+                                color: Colors.white,
+                              ),
                               title: Text("Preferred message", style: TextStyle(color: Colors.white)),
                               onTap: () {},
                             ),
