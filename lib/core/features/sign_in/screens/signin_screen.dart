@@ -199,6 +199,9 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
                                                 setState(() => _rememberMe = value!);
                                               },
                                               activeColor: Colors.purpleAccent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(6),
+                                              ),
                                             ),
                                             Text("Remember me",  style: TextStyle(color: Colors.white , fontFamily: 'Inter')),
                                           ],
@@ -250,18 +253,22 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         GlassmorphicIcon(
-                                          imageUrl: 'assets/images/facebook.png',
+                                          imageUrl: 'image/facebook.png',
                                           url: 'https://www.facebook.com',
+                                          glassColor: Colors.blue,
                                         ),
                                         SizedBox(width: size.width * 0.02),
                                         GlassmorphicIcon(
-                                          imageUrl: 'assets/images/apple.png',
+                                          imageUrl: 'image/apple.png',
                                           url: 'https://www.apple.com',
+                                          glassColor: Colors.black,
+                                          iconColor: Colors.white,
                                         ),
                                         SizedBox(width: size.width * 0.02),
                                         GlassmorphicIcon(
-                                          imageUrl: 'assets/images/gmail.png',
+                                          imageUrl: 'image/gmail.png',
                                           url: 'https://www.gmail.com',
+                                          glassColor: Colors.red,
                                         ),
                                       ],
                                     ),
@@ -381,12 +388,18 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
 class GlassmorphicIcon extends StatelessWidget {
   final String imageUrl;
   final String url;
+  final Color? glassColor;
+  final Color? iconColor;
+
 
   const GlassmorphicIcon({
-    super.key,
+    Key? key,
     required this.imageUrl,
     required this.url,
-  });
+    this.glassColor,
+    this.iconColor,
+
+  }) : super(key: key);
 
   _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
@@ -406,11 +419,11 @@ class GlassmorphicIcon extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
-            width: 60,
-            height: 60,
+            width: 55,
+            height: 55,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
+              color: (glassColor ?? Colors.white).withOpacity(0.2),
+              borderRadius: BorderRadius.circular(15),
               border: Border.all(
                 color: Colors.white.withOpacity(0.2),
                 width: 1,
@@ -428,6 +441,7 @@ class GlassmorphicIcon extends StatelessWidget {
               child: Image.asset(
                 imageUrl,
                 fit: BoxFit.contain,
+                color: iconColor,
               ),
             ),
           ),
