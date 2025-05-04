@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart';
 import 'package:road_map_mentor/core/features/terms_conditions/screens/terms_conditions_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -190,7 +191,11 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                       height: 1.60,
                     ),),
                     SizedBox(height: size.height * 0.03),
-                    _buildTextField(Icons.person, "UserName", _usernameController, (value) {
+                    _buildTextField(SvgPicture.asset(
+                      'assets/images/User.svg',
+                      width: 24,
+                      height: 24,
+                      color: Colors.grey,), "UserName", _usernameController, (value) {
                       if (value == null || value.isEmpty) return "Username is required";
                       if (!RegExp(r'^[a-zA-Z0-9@._-]+$').hasMatch(value)) return "Invalid username format";
                       return null;
@@ -198,7 +203,11 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
 
                     SizedBox(height: size.height * 0.02),
 
-                    _buildTextField(Icons.email, "Email", _emailController, (value) {
+                    _buildTextField(SvgPicture.asset(
+                      'assets/images/Letter.svg',
+                      width: 24,
+                      height: 24,
+                      color: Colors.grey,), "Email", _emailController, (value) {
                       if (value == null || value.isEmpty) return "Email is required";
                       if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
                         return "Invalid email format";
@@ -267,18 +276,22 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         GlassmorphicIcon(
-                          imageUrl: 'assets/images/facebook.png',
+                          imageUrl: 'image/facebook.png',
                           url: 'https://www.facebook.com',
+                          glassColor: Colors.blue,
                         ),
                         SizedBox(width: size.width * 0.02),
                         GlassmorphicIcon(
-                          imageUrl: 'assets/images/apple.png',
+                          imageUrl: 'image/apple.png',
                           url: 'https://www.apple.com',
+                          glassColor: Colors.black,
+                          iconColor: Colors.white,
                         ),
                         SizedBox(width: size.width * 0.02),
                         GlassmorphicIcon(
-                          imageUrl: 'assets/images/gmail.png',
+                          imageUrl: 'image/gmail.png',
                           url: 'https://www.gmail.com',
+                          glassColor: Colors.red,
                         ),
                       ],
                     ),
@@ -313,7 +326,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
 
 
   Widget _buildTextField(
-      IconData icon,
+      Widget iconWidget,
       String hint,
       TextEditingController controller,
       String? Function(String?) validator,
@@ -328,7 +341,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
             fontFamily: 'Inter'),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 12.0),
-          child: Icon(icon, color: const Color(0xFFF5EFFC)),
+          child: iconWidget,
         ),
 
         border: OutlineInputBorder(
@@ -357,14 +370,26 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Color(0xCCF5EFFC),fontSize: 14,
-          fontFamily: 'Inter'),
+        hintStyle: TextStyle(color: Color(0xCCF5EFFC),fontSize: 14, fontFamily: 'Inter'),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 12.0),
-          child: Icon(Icons.lock, color: const Color(0xFFF5EFFC)),
+          child: SvgPicture.asset(
+            'assets/images/Lock_Keyhole_Minimalistic.svg',
+            width: 24,
+            height: 24,
+            color: Colors.grey,
+          ),
         ),
         suffixIcon: IconButton(
-          icon: Icon(isVisible ? Icons.visibility : Icons.visibility_off, color: Colors.white),
+          icon: SvgPicture.asset(
+            isVisible
+                ? 'assets/images/eye.svg'
+                : 'assets/images/eye-off.svg',
+            width: 24,
+            height: 24,
+            color: Colors.grey,
+
+          ),
           onPressed: toggleVisibility,
         ),
         border: OutlineInputBorder(
@@ -392,11 +417,17 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
 class GlassmorphicIcon extends StatelessWidget {
   final String imageUrl;
   final String url;
+  final Color? glassColor;
+  final Color? iconColor;
+
 
   const GlassmorphicIcon({
     Key? key,
     required this.imageUrl,
     required this.url,
+    this.glassColor,
+    this.iconColor,
+
   }) : super(key: key);
 
   _launchURL(String url) async {
@@ -417,11 +448,11 @@ class GlassmorphicIcon extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
-            width: 60,
-            height: 60,
+            width: 55,
+            height: 55,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
+              color: (glassColor ?? Colors.white).withOpacity(0.2),
+              borderRadius: BorderRadius.circular(15),
               border: Border.all(
                 color: Colors.white.withOpacity(0.2),
                 width: 1,
@@ -439,6 +470,7 @@ class GlassmorphicIcon extends StatelessWidget {
               child: Image.asset(
                 imageUrl,
                 fit: BoxFit.contain,
+                color: iconColor,
               ),
             ),
           ),
