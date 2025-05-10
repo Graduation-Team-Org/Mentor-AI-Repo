@@ -1,0 +1,505 @@
+Launching lib\main.dart on sdk gphone64 x86 64 in debug mode...
+Running Gradle task 'assembleDebug'...
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...
+I/flutter ( 6067): [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(94)] Using the Impeller rendering backend (OpenGLES).
+I/Choreographer( 6067): Skipped 211 frames!  The application may be doing too much work on its main thread.
+Debug service listening on ws://127.0.0.1:53705/ws0ccuIHCyQ=/ws
+Syncing files to device sdk gphone64 x86 64...
+D/HostConnection( 6067): HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_native_sync_v4 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_1 
+W/OpenGLRenderer( 6067): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/OpenGLRenderer( 6067): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+D/EGL_emulation( 6067): eglCreateContext: 0x7d6803695610: maj 3 min 1 rcv 4
+D/EGL_emulation( 6067): eglMakeCurrent: 0x7d6803695610: ver 3 1 (tinfo 0x7d6a319ac180) (first time)
+I/Gralloc4( 6067): mapper 4.x is not supported
+W/Gralloc4( 6067): allocator 4.x is not supported
+D/HostConnection( 6067): HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_native_sync_v4 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_1 
+D/HostConnection( 6067): HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_native_sync_v4 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_1 
+D/EGL_emulation( 6067): eglMakeCurrent: 0x7d6803672450: ver 3 1 (tinfo 0x7d6a319ac200) (first time)
+E/OpenGLRenderer( 6067): Unable to match the desired swap behavior.
+E/libEGL  ( 6067): called unimplemented OpenGL ES API
+I/Choreographer( 6067): Skipped 122 frames!  The application may be doing too much work on its main thread.
+I/road_map_mentor( 6067): Compiler allocated 4355KB to compile void android.view.ViewRootImpl.performTraversals()
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown while applying parent data.:
+Incorrect use of ParentDataWidget.
+
+The ParentDataWidget Expanded(flex: 1) wants to apply ParentData of type FlexParentData to a RenderObject, which has been set up to accept ParentData of incompatible type StackParentData.
+
+Usually, this means that the Expanded widget has the wrong ancestor RenderObjectWidget. Typically, Expanded widgets are placed directly inside Flex widgets.
+The offending Expanded is currently placed inside a Stack widget.
+
+The ownership chain for the RenderObject that received the incompatible parent data was:
+  Stack ← Expanded ← Stack ← AnimatedBuilder ← Center ← KeyedSubtree-[GlobalKey#05dbf] ← _BodyBuilder ← MediaQuery ← LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+When the exception was thrown, this was the stack: 
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6793:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6810:6)
+#2      RenderObjectElement.attachRenderObject (package:flutter/src/widgets/framework.dart:6856:7)
+#3      RenderObjectElement.mount (package:flutter/src/widgets/framework.dart:6714:5)
+#4      MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7185:11)
+...     Normal element mounting (7 frames)
+#11     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4555:16)
+#12     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7178:36)
+#13     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7194:32)
+...     Normal element mounting (36 frames)
+#49     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4555:16)
+#50     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7178:36)
+#51     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7194:32)
+...     Normal element mounting (346 frames)
+#397    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4555:16)
+#398    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7178:36)
+#399    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7194:32)
+...     Normal element mounting (543 frames)
+#942    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4555:16)
+#943    Element.updateChild (package:flutter/src/widgets/framework.dart:4020:18)
+#944    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#945    _RawViewElement.mount (package:flutter/src/widgets/view.dart:505:5)
+...     Normal element mounting (15 frames)
+#960    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4555:16)
+#961    Element.updateChild (package:flutter/src/widgets/framework.dart:4020:18)
+#962    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1687:16)
+#963    RootElement.mount (package:flutter/src/widgets/binding.dart:1656:5)
+#964    RootWidget.attach.<anonymous closure> (package:flutter/src/widgets/binding.dart:1609:18)
+#965    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3056:19)
+#966    RootWidget.attach (package:flutter/src/widgets/binding.dart:1608:13)
+#967    WidgetsBinding.attachToBuildOwner (package:flutter/src/widgets/binding.dart:1346:27)
+#968    WidgetsBinding.attachRootWidget (package:flutter/src/widgets/binding.dart:1331:5)
+#969    WidgetsBinding.scheduleAttachRootWidget.<anonymous closure> (package:flutter/src/widgets/binding.dart:1317:7)
+#973    _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:194:12)
+(elided 3 frames from class _Timer and dart:async-patch)
+====================================================================================================
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown while applying parent data.:
+Incorrect use of ParentDataWidget.
+
+The ParentDataWidget Expanded(flex: 1) wants to apply ParentData of type FlexParentData to a RenderObject, which has been set up to accept ParentData of incompatible type StackParentData.
+
+Usually, this means that the Expanded widget has the wrong ancestor RenderObjectWidget. Typically, Expanded widgets are placed directly inside Flex widgets.
+The offending Expanded is currently placed inside a Stack widget.
+
+The ownership chain for the RenderObject that received the incompatible parent data was:
+  Stack ← Expanded ← Stack ← AnimatedBuilder ← Center ← KeyedSubtree-[GlobalKey#05dbf] ← _BodyBuilder ← MediaQuery ← LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+When the exception was thrown, this was the stack: 
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6793:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6810:6)
+#2      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:6106:15)
+#3      ParentDataElement._applyParentData (package:flutter/src/widgets/framework.dart:6113:7)
+#4      ParentDataElement.notifyClients (package:flutter/src/widgets/framework.dart:6157:5)
+#5      ProxyElement.updated (package:flutter/src/widgets/framework.dart:6069:5)
+#6      ProxyElement.update (package:flutter/src/widgets/framework.dart:6058:5)
+#7      Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#8      Element.updateChildren (package:flutter/src/widgets/framework.dart:4156:11)
+#9      MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7211:17)
+#10     Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#11     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5756:16)
+#12     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5892:11)
+#13     Element.rebuild (package:flutter/src/widgets/framework.dart:5445:7)
+#14     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2704:15)
+#15     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2762:11)
+#16     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3066:18)
+#17     WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1229:21)
+#18     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:482:5)
+#19     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1442:15)
+#20     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1355:9)
+#21     SchedulerBinding.scheduleWarmUpFrame.<anonymous closure> (package:flutter/src/scheduler/binding.dart:1064:9)
+#22     PlatformDispatcher.scheduleWarmUpFrame.<anonymous closure> (dart:ui/platform_dispatcher.dart:873:16)
+#26     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:194:12)
+(elided 3 frames from class _Timer and dart:async-patch)
+====================================================================================================
+E/libEGL  ( 6067): called unimplemented OpenGL ES API
+I/Choreographer( 6067): Skipped 148 frames!  The application may be doing too much work on its main thread.
+D/ProfileInstaller( 6067): Installing profile for com.example.road_map_mentor
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown while applying parent data.:
+Incorrect use of ParentDataWidget.
+
+The ParentDataWidget Expanded(flex: 1) wants to apply ParentData of type FlexParentData to a RenderObject, which has been set up to accept ParentData of incompatible type StackParentData.
+
+Usually, this means that the Expanded widget has the wrong ancestor RenderObjectWidget. Typically, Expanded widgets are placed directly inside Flex widgets.
+The offending Expanded is currently placed inside a Stack widget.
+
+The ownership chain for the RenderObject that received the incompatible parent data was:
+  Stack ← Expanded ← Stack ← AnimatedBuilder ← Center ← KeyedSubtree-[GlobalKey#05dbf] ← _BodyBuilder ← MediaQuery ← LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+When the exception was thrown, this was the stack: 
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6793:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6810:6)
+#2      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:6106:15)
+#3      ParentDataElement._applyParentData (package:flutter/src/widgets/framework.dart:6113:7)
+#4      ParentDataElement.notifyClients (package:flutter/src/widgets/framework.dart:6157:5)
+#5      ProxyElement.updated (package:flutter/src/widgets/framework.dart:6069:5)
+#6      ProxyElement.update (package:flutter/src/widgets/framework.dart:6058:5)
+#7      Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#8      Element.updateChildren (package:flutter/src/widgets/framework.dart:4156:11)
+#9      MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7211:17)
+#10     Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#11     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5756:16)
+#12     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5892:11)
+#13     Element.rebuild (package:flutter/src/widgets/framework.dart:5445:7)
+#14     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2704:15)
+#15     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2762:11)
+#16     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3066:18)
+#17     WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1229:21)
+#18     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:482:5)
+#19     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1442:15)
+#20     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1355:9)
+#21     SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1208:5)
+#22     _invoke (dart:ui/hooks.dart:316:13)
+#23     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:428:5)
+#24     _drawFrame (dart:ui/hooks.dart:288:31)
+====================================================================================================
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown while applying parent data.:
+Incorrect use of ParentDataWidget.
+
+The ParentDataWidget Expanded(flex: 1) wants to apply ParentData of type FlexParentData to a RenderObject, which has been set up to accept ParentData of incompatible type StackParentData.
+
+Usually, this means that the Expanded widget has the wrong ancestor RenderObjectWidget. Typically, Expanded widgets are placed directly inside Flex widgets.
+The offending Expanded is currently placed inside a Stack widget.
+
+The ownership chain for the RenderObject that received the incompatible parent data was:
+  Stack ← Expanded ← Stack ← AnimatedBuilder ← Center ← KeyedSubtree-[GlobalKey#05dbf] ← _BodyBuilder ← MediaQuery ← LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+When the exception was thrown, this was the stack: 
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6793:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6810:6)
+#2      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:6106:15)
+#3      ParentDataElement._applyParentData (package:flutter/src/widgets/framework.dart:6113:7)
+#4      ParentDataElement.notifyClients (package:flutter/src/widgets/framework.dart:6157:5)
+#5      ProxyElement.updated (package:flutter/src/widgets/framework.dart:6069:5)
+#6      ProxyElement.update (package:flutter/src/widgets/framework.dart:6058:5)
+#7      Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#8      Element.updateChildren (package:flutter/src/widgets/framework.dart:4156:11)
+#9      MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7211:17)
+#10     Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#11     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5756:16)
+#12     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5892:11)
+#13     Element.rebuild (package:flutter/src/widgets/framework.dart:5445:7)
+#14     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2704:15)
+#15     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2762:11)
+#16     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3066:18)
+#17     WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1229:21)
+#18     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:482:5)
+#19     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1442:15)
+#20     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1355:9)
+#21     SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1208:5)
+#22     _invoke (dart:ui/hooks.dart:316:13)
+#23     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:428:5)
+#24     _drawFrame (dart:ui/hooks.dart:288:31)
+====================================================================================================
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown while applying parent data.:
+Incorrect use of ParentDataWidget.
+
+The ParentDataWidget Expanded(flex: 1) wants to apply ParentData of type FlexParentData to a RenderObject, which has been set up to accept ParentData of incompatible type StackParentData.
+
+Usually, this means that the Expanded widget has the wrong ancestor RenderObjectWidget. Typically, Expanded widgets are placed directly inside Flex widgets.
+The offending Expanded is currently placed inside a Stack widget.
+
+The ownership chain for the RenderObject that received the incompatible parent data was:
+  Stack ← Expanded ← Stack ← AnimatedBuilder ← Center ← KeyedSubtree-[GlobalKey#05dbf] ← _BodyBuilder ← MediaQuery ← LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+When the exception was thrown, this was the stack: 
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6793:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6810:6)
+#2      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:6106:15)
+#3      ParentDataElement._applyParentData (package:flutter/src/widgets/framework.dart:6113:7)
+#4      ParentDataElement.notifyClients (package:flutter/src/widgets/framework.dart:6157:5)
+#5      ProxyElement.updated (package:flutter/src/widgets/framework.dart:6069:5)
+#6      ProxyElement.update (package:flutter/src/widgets/framework.dart:6058:5)
+#7      Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#8      Element.updateChildren (package:flutter/src/widgets/framework.dart:4156:11)
+#9      MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7211:17)
+#10     Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#11     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5756:16)
+#12     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5892:11)
+#13     Element.rebuild (package:flutter/src/widgets/framework.dart:5445:7)
+#14     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2704:15)
+#15     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2762:11)
+#16     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3066:18)
+#17     WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1229:21)
+#18     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:482:5)
+#19     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1442:15)
+#20     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1355:9)
+#21     SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1208:5)
+#22     _invoke (dart:ui/hooks.dart:316:13)
+#23     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:428:5)
+#24     _drawFrame (dart:ui/hooks.dart:288:31)
+====================================================================================================
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown while applying parent data.:
+Incorrect use of ParentDataWidget.
+
+The ParentDataWidget Expanded(flex: 1) wants to apply ParentData of type FlexParentData to a RenderObject, which has been set up to accept ParentData of incompatible type StackParentData.
+
+Usually, this means that the Expanded widget has the wrong ancestor RenderObjectWidget. Typically, Expanded widgets are placed directly inside Flex widgets.
+The offending Expanded is currently placed inside a Stack widget.
+
+The ownership chain for the RenderObject that received the incompatible parent data was:
+  Stack ← Expanded ← Stack ← AnimatedBuilder ← Center ← KeyedSubtree-[GlobalKey#05dbf] ← _BodyBuilder ← MediaQuery ← LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+When the exception was thrown, this was the stack: 
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6793:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6810:6)
+#2      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:6106:15)
+#3      ParentDataElement._applyParentData (package:flutter/src/widgets/framework.dart:6113:7)
+#4      ParentDataElement.notifyClients (package:flutter/src/widgets/framework.dart:6157:5)
+#5      ProxyElement.updated (package:flutter/src/widgets/framework.dart:6069:5)
+#6      ProxyElement.update (package:flutter/src/widgets/framework.dart:6058:5)
+#7      Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#8      Element.updateChildren (package:flutter/src/widgets/framework.dart:4156:11)
+#9      MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7211:17)
+#10     Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#11     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5756:16)
+#12     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5892:11)
+#13     Element.rebuild (package:flutter/src/widgets/framework.dart:5445:7)
+#14     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2704:15)
+#15     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2762:11)
+#16     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3066:18)
+#17     WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1229:21)
+#18     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:482:5)
+#19     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1442:15)
+#20     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1355:9)
+#21     SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1208:5)
+#22     _invoke (dart:ui/hooks.dart:316:13)
+#23     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:428:5)
+#24     _drawFrame (dart:ui/hooks.dart:288:31)
+====================================================================================================
+E/libEGL  ( 6067): called unimplemented OpenGL ES API
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown while applying parent data.:
+Incorrect use of ParentDataWidget.
+
+The ParentDataWidget Expanded(flex: 1) wants to apply ParentData of type FlexParentData to a RenderObject, which has been set up to accept ParentData of incompatible type StackParentData.
+
+Usually, this means that the Expanded widget has the wrong ancestor RenderObjectWidget. Typically, Expanded widgets are placed directly inside Flex widgets.
+The offending Expanded is currently placed inside a Stack widget.
+
+The ownership chain for the RenderObject that received the incompatible parent data was:
+  Stack ← Expanded ← Stack ← AnimatedBuilder ← Center ← KeyedSubtree-[GlobalKey#05dbf] ← _BodyBuilder ← MediaQuery ← LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+When the exception was thrown, this was the stack: 
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6793:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6810:6)
+#2      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:6106:15)
+#3      ParentDataElement._applyParentData (package:flutter/src/widgets/framework.dart:6113:7)
+#4      ParentDataElement.notifyClients (package:flutter/src/widgets/framework.dart:6157:5)
+#5      ProxyElement.updated (package:flutter/src/widgets/framework.dart:6069:5)
+#6      ProxyElement.update (package:flutter/src/widgets/framework.dart:6058:5)
+#7      Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#8      Element.updateChildren (package:flutter/src/widgets/framework.dart:4156:11)
+#9      MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7211:17)
+#10     Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#11     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5756:16)
+#12     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5892:11)
+#13     Element.rebuild (package:flutter/src/widgets/framework.dart:5445:7)
+#14     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2704:15)
+#15     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2762:11)
+#16     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3066:18)
+#17     WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1229:21)
+#18     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:482:5)
+#19     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1442:15)
+#20     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1355:9)
+#21     SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1208:5)
+#22     _invoke (dart:ui/hooks.dart:316:13)
+#23     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:428:5)
+#24     _drawFrame (dart:ui/hooks.dart:288:31)
+====================================================================================================
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown while applying parent data.:
+Incorrect use of ParentDataWidget.
+
+The ParentDataWidget Expanded(flex: 1) wants to apply ParentData of type FlexParentData to a RenderObject, which has been set up to accept ParentData of incompatible type StackParentData.
+
+Usually, this means that the Expanded widget has the wrong ancestor RenderObjectWidget. Typically, Expanded widgets are placed directly inside Flex widgets.
+The offending Expanded is currently placed inside a Stack widget.
+
+The ownership chain for the RenderObject that received the incompatible parent data was:
+  Stack ← Expanded ← Stack ← AnimatedBuilder ← Center ← KeyedSubtree-[GlobalKey#05dbf] ← _BodyBuilder ← MediaQuery ← LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+When the exception was thrown, this was the stack: 
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6793:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6810:6)
+#2      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:6106:15)
+#3      ParentDataElement._applyParentData (package:flutter/src/widgets/framework.dart:6113:7)
+#4      ParentDataElement.notifyClients (package:flutter/src/widgets/framework.dart:6157:5)
+#5      ProxyElement.updated (package:flutter/src/widgets/framework.dart:6069:5)
+#6      ProxyElement.update (package:flutter/src/widgets/framework.dart:6058:5)
+#7      Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#8      Element.updateChildren (package:flutter/src/widgets/framework.dart:4156:11)
+#9      MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7211:17)
+#10     Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#11     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5756:16)
+#12     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5892:11)
+#13     Element.rebuild (package:flutter/src/widgets/framework.dart:5445:7)
+#14     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2704:15)
+#15     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2762:11)
+#16     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3066:18)
+#17     WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1229:21)
+#18     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:482:5)
+#19     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1442:15)
+#20     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1355:9)
+#21     SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1208:5)
+#22     _invoke (dart:ui/hooks.dart:316:13)
+#23     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:428:5)
+#24     _drawFrame (dart:ui/hooks.dart:288:31)
+====================================================================================================
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown while applying parent data.:
+Incorrect use of ParentDataWidget.
+
+The ParentDataWidget Expanded(flex: 1) wants to apply ParentData of type FlexParentData to a RenderObject, which has been set up to accept ParentData of incompatible type StackParentData.
+
+Usually, this means that the Expanded widget has the wrong ancestor RenderObjectWidget. Typically, Expanded widgets are placed directly inside Flex widgets.
+The offending Expanded is currently placed inside a Stack widget.
+
+The ownership chain for the RenderObject that received the incompatible parent data was:
+  Stack ← Expanded ← Stack ← AnimatedBuilder ← Center ← KeyedSubtree-[GlobalKey#05dbf] ← _BodyBuilder ← MediaQuery ← LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+When the exception was thrown, this was the stack: 
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6793:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6810:6)
+#2      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:6106:15)
+#3      ParentDataElement._applyParentData (package:flutter/src/widgets/framework.dart:6113:7)
+#4      ParentDataElement.notifyClients (package:flutter/src/widgets/framework.dart:6157:5)
+#5      ProxyElement.updated (package:flutter/src/widgets/framework.dart:6069:5)
+#6      ProxyElement.update (package:flutter/src/widgets/framework.dart:6058:5)
+#7      Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#8      Element.updateChildren (package:flutter/src/widgets/framework.dart:4156:11)
+#9      MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7211:17)
+#10     Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#11     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5756:16)
+#12     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5892:11)
+#13     Element.rebuild (package:flutter/src/widgets/framework.dart:5445:7)
+#14     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2704:15)
+#15     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2762:11)
+#16     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3066:18)
+#17     WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1229:21)
+#18     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:482:5)
+#19     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1442:15)
+#20     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1355:9)
+#21     SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1208:5)
+#22     _invoke (dart:ui/hooks.dart:316:13)
+#23     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:428:5)
+#24     _drawFrame (dart:ui/hooks.dart:288:31)
+====================================================================================================
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown while applying parent data.:
+Incorrect use of ParentDataWidget.
+
+The ParentDataWidget Expanded(flex: 1) wants to apply ParentData of type FlexParentData to a RenderObject, which has been set up to accept ParentData of incompatible type StackParentData.
+
+Usually, this means that the Expanded widget has the wrong ancestor RenderObjectWidget. Typically, Expanded widgets are placed directly inside Flex widgets.
+The offending Expanded is currently placed inside a Stack widget.
+
+The ownership chain for the RenderObject that received the incompatible parent data was:
+  Stack ← Expanded ← Stack ← AnimatedBuilder ← Center ← KeyedSubtree-[GlobalKey#05dbf] ← _BodyBuilder ← MediaQuery ← LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+When the exception was thrown, this was the stack: 
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6793:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6810:6)
+#2      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:6106:15)
+#3      ParentDataElement._applyParentData (package:flutter/src/widgets/framework.dart:6113:7)
+#4      ParentDataElement.notifyClients (package:flutter/src/widgets/framework.dart:6157:5)
+#5      ProxyElement.updated (package:flutter/src/widgets/framework.dart:6069:5)
+#6      ProxyElement.update (package:flutter/src/widgets/framework.dart:6058:5)
+#7      Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#8      Element.updateChildren (package:flutter/src/widgets/framework.dart:4156:11)
+#9      MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7211:17)
+#10     Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#11     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5756:16)
+#12     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5892:11)
+#13     Element.rebuild (package:flutter/src/widgets/framework.dart:5445:7)
+#14     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2704:15)
+#15     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2762:11)
+#16     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3066:18)
+#17     WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1229:21)
+#18     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:482:5)
+#19     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1442:15)
+#20     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1355:9)
+#21     SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1208:5)
+#22     _invoke (dart:ui/hooks.dart:316:13)
+#23     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:428:5)
+#24     _drawFrame (dart:ui/hooks.dart:288:31)
+====================================================================================================
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown while applying parent data.:
+Incorrect use of ParentDataWidget.
+
+The ParentDataWidget Expanded(flex: 1) wants to apply ParentData of type FlexParentData to a RenderObject, which has been set up to accept ParentData of incompatible type StackParentData.
+
+Usually, this means that the Expanded widget has the wrong ancestor RenderObjectWidget. Typically, Expanded widgets are placed directly inside Flex widgets.
+The offending Expanded is currently placed inside a Stack widget.
+
+The ownership chain for the RenderObject that received the incompatible parent data was:
+  Stack ← Expanded ← Stack ← AnimatedBuilder ← Center ← KeyedSubtree-[GlobalKey#05dbf] ← _BodyBuilder ← MediaQuery ← LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+When the exception was thrown, this was the stack: 
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6793:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6810:6)
+#2      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:6106:15)
+#3      ParentDataElement._applyParentData (package:flutter/src/widgets/framework.dart:6113:7)
+#4      ParentDataElement.notifyClients (package:flutter/src/widgets/framework.dart:6157:5)
+#5      ProxyElement.updated (package:flutter/src/widgets/framework.dart:6069:5)
+#6      ProxyElement.update (package:flutter/src/widgets/framework.dart:6058:5)
+#7      Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#8      Element.updateChildren (package:flutter/src/widgets/framework.dart:4156:11)
+#9      MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7211:17)
+#10     Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#11     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5756:16)
+#12     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5892:11)
+#13     Element.rebuild (package:flutter/src/widgets/framework.dart:5445:7)
+#14     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2704:15)
+#15     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2762:11)
+#16     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3066:18)
+#17     WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1229:21)
+#18     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:482:5)
+#19     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1442:15)
+#20     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1355:9)
+#21     SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1208:5)
+#22     _invoke (dart:ui/hooks.dart:316:13)
+#23     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:428:5)
+#24     _drawFrame (dart:ui/hooks.dart:288:31)
+====================================================================================================
+D/EGL_emulation( 6067): app_time_stats: avg=126.34ms min=13.70ms max=385.07ms count=9
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown while applying parent data.:
+Incorrect use of ParentDataWidget.
+
+The ParentDataWidget Expanded(flex: 1) wants to apply ParentData of type FlexParentData to a RenderObject, which has been set up to accept ParentData of incompatible type StackParentData.
+
+Usually, this means that the Expanded widget has the wrong ancestor RenderObjectWidget. Typically, Expanded widgets are placed directly inside Flex widgets.
+The offending Expanded is currently placed inside a Stack widget.
+
+The ownership chain for the RenderObject that received the incompatible parent data was:
+  Stack ← Expanded ← Stack ← AnimatedBuilder ← Center ← KeyedSubtree-[GlobalKey#05dbf] ← _BodyBuilder ← MediaQuery ← LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+When the exception was thrown, this was the stack: 
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6793:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6810:6)
+#2      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:6106:15)
+#3      ParentDataElement._applyParentData (package:flutter/src/widgets/framework.dart:6113:7)
+#4      ParentDataElement.notifyClients (package:flutter/src/widgets/framework.dart:6157:5)
+#5      ProxyElement.updated (package:flutter/src/widgets/framework.dart:6069:5)
+#6      ProxyElement.update (package:flutter/src/widgets/framework.dart:6058:5)
+#7      Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#8      Element.updateChildren (package:flutter/src/widgets/framework.dart:4156:11)
+#9      MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7211:17)
+#10     Element.updateChild (package:flutter/src/widgets/framework.dart:3998:15)
+#11     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5756:16)
+#12     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5892:11)
+#13     Element.rebuild (package:flutter/src/widgets/framework.dart:5445:7)
+#14     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2704:15)
+#15     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2762:11)
+#16     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3066:18)
+#17     WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1229:21)
+#18     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:482:5)
+#19     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1442:15)
+#20     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1355:9)
+#21     SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1208:5)
+#22     _invoke (dart:ui/hooks.dart:316:13)
+#23     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:428:5)
+#24     _drawFrame (dart:ui/hooks.dart:288:31)
+====================================================================================================

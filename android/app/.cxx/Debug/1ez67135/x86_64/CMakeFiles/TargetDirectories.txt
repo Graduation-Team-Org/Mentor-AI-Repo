@@ -1,0 +1,2 @@
+D:/GraduationProject/RoadMapService/road_map_mentor/android/app/.cxx/Debug/1ez67135/x86_64/CMakeFiles/edit_cache.dir
+D:/GraduationProject/RoadMapService/road_map_mentor/android/app/.cxx/Debug/1ez67135/x86_64/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,2 @@
+D:/Mentor-AI-Repo-main/android/app/.cxx/RelWithDebInfo/68276i1s/x86/CMakeFiles/edit_cache.dir
+D:/Mentor-AI-Repo-main/android/app/.cxx/RelWithDebInfo/68276i1s/x86/CMakeFiles/rebuild_cache.dir
