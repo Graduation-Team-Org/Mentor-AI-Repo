@@ -1,0 +1,117 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:road_map_mentor/core/utils/colors.dart';
+import 'package:road_map_mentor/core/utils/widgets/text.dart';
+
+class ListItems extends StatefulWidget {
+  const ListItems({super.key});
+
+  @override
+  State<ListItems> createState() => _ListItemsState();
+}
+
+class _ListItemsState extends State<ListItems> {
+  bool isLiked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: AppColors.darkPerple.withValues(alpha: 0.7), // Dark background
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 2),
+        child: ListView(
+          padding: const EdgeInsets.all(2),
+          children: [
+            IconButton(
+              onPressed: () {},
+              icon: Row(
+                children: [
+                  const Icon(
+                    Icons.copy,
+                    color: Colors.white,
+                    size: 12,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Copy',
+                    style: body.copyWith(fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  isLiked = !isLiked;
+                });
+              },
+              icon: Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/Heart_Angle.svg',
+                    width: 15,
+                    height: 15,
+                    colorFilter: ColorFilter.mode(
+                      isLiked ? AppColors.perple : Colors.white,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    isLiked ? 'Liked' : 'Like',
+                    style: body.copyWith(
+                      fontSize: 12,
+                      color: isLiked ? AppColors.perple : Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/Share.svg',
+                    width: 15,
+                    height: 15,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Share',
+                    style: body.copyWith(fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/Trash_Bin_Minimalistic.svg',
+                    width: 15,
+                    height: 15,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Delete',
+                    style: body.copyWith(fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

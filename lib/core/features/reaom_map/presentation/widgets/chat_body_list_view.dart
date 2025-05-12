@@ -9,6 +9,7 @@ import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/pre
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/functions/fun.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/Road_map_app_bar.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/preferred_messages_view.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/steve_say_hi.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typing_animation.dart';
@@ -209,100 +210,6 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
   }
 }
 
-class ListItems extends StatelessWidget {
-  const ListItems({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.darkPerple.withValues(alpha: 0.7), // Dark background
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 2),
-        child: ListView(
-          padding: const EdgeInsets.all(2),
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: Row(
-                children: [
-                  const Icon(
-                    Icons.copy,
-                    color: Colors.white,
-                    size: 12,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Copy',
-                    style: body.copyWith(fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Row(
-                children: [
-                  SvgPicture.asset(
-                    'assets/images/Heart_Angle.svg',
-                    width: 15,
-                    height: 15,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Like',
-                    style: body.copyWith(fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Row(
-                children: [
-                  SvgPicture.asset(
-                    'assets/images/Share.svg',
-                    width: 15,
-                    height: 15,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Share',
-                    style: body.copyWith(fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Row(
-                children: [
-                  SvgPicture.asset(
-                    'assets/images/Trash_Bin_Minimalistic.svg',
-                    width: 15,
-                    height: 15,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Delete',
-                    style: body.copyWith(fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class SecondRoute extends StatelessWidget {
   const SecondRoute({super.key});
