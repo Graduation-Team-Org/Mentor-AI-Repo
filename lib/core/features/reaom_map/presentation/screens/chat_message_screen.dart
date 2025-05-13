@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_body_list_view.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_end_drawer.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/prompt_text_field.dart';
@@ -41,6 +42,10 @@ class _ChatScreenState extends State<RoadMapChatScreen> {
         ),
         BlocProvider<GetAllPreferredMessagesCubit>(
           create: (context) => GetAllPreferredMessagesCubit(),
+        ),
+        // Add this provider for PreferredMessagesCubit
+        BlocProvider<PreferredMessagesCubit>(
+          create: (context) => PreferredMessagesCubit(),
         ),
       ],
       child: Scaffold(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
@@ -46,6 +48,19 @@ class _ListItemsState extends State<ListItems> {
                 setState(() {
                   isLiked = !isLiked;
                 });
+                
+                // Use a safer way to access the cubit
+                if (isLiked) {
+                  try {
+                    // Use context.read instead of BlocProvider.of
+                    final cubit = context.read<PreferredMessagesCubit>();
+                    // You can add additional logic here if needed
+                    print("Successfully accessed PreferredMessagesCubit");
+                  } catch (e) {
+                    print('Error accessing PreferredMessagesCubit: $e');
+                    // The UI state will still update even if the cubit access fails
+                  }
+                }
               },
               icon: Row(
                 children: [

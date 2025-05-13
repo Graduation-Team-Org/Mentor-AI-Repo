@@ -45,8 +45,20 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
 
   @override
   Widget build(BuildContext context) {
+    // Try to get the PreferredMessagesCubit safely
+    PreferredMessagesCubit? preferredMessagesCubit;
+    try {
+      preferredMessagesCubit = context.read<PreferredMessagesCubit>();
+    } catch (e) {
+      print('PreferredMessagesCubit not available in this context: $e');
+      // We'll handle this case below
+    }
+    
     return BlocConsumer<AllMessagesCubit, AllMessagesState>(
       listener: (context, state) {
+        // Only try to use the cubit if it's available
+        if (preferredMessagesCubit == null) return;
+        
         String prefMsgContent = '';
         String imgPath = 'assets/images/steve.png';
         var currentDate = DateTime.now();
@@ -65,8 +77,8 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
             msgImage: imgPath,
             likeDate: formattedCurrentDate,
           );
-          BlocProvider.of<PreferredMessagesCubit>(context)
-              .addPrefrredMessages(prefrredMessage);
+          // Use the captured cubit only if available
+          preferredMessagesCubit.addPrefrredMessages(prefrredMessage);
         }
       },
       builder: (context, state) {
@@ -146,12 +158,17 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                                   top: -5,
                                   right: -5,
                                   child: Builder(
-                                    builder: (context) => IconButton(
+                                    builder: (builderContext) => IconButton(
                                       onPressed: () {
                                         showPopover(
-                                          context: context,
-                                          bodyBuilder: (context) =>
-                                              const ListItems(),
+                                          context: builderContext,
+                                          bodyBuilder: (popoverContext) => 
+                                              preferredMessagesCubit != null
+                                                ? BlocProvider.value(
+                                                    value: preferredMessagesCubit,
+                                                    child: const ListItems(),
+                                                  )
+                                                : const ListItems(), // Fallback without the cubit
                                           onPop: () =>
                                               print('Popover was popped!'),
                                           direction: PopoverDirection.bottom,
