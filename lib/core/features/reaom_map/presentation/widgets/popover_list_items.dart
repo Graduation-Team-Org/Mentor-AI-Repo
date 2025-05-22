@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/preferred_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
 class ListItems extends StatefulWidget {
-  const ListItems({super.key});
+  final String messageContent;
+  final String senderAvatar;
+
+  const ListItems({
+    super.key,
+    required this.messageContent,
+    required this.senderAvatar,
+  });
 
   @override
   State<ListItems> createState() => _ListItemsState();
@@ -14,6 +24,35 @@ class ListItems extends StatefulWidget {
 
 class _ListItemsState extends State<ListItems> {
   bool isLiked = false;
+  int? messageIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    // Check if this message is already in preferred messages
+    _checkIfMessageIsLiked();
+  }
+
+  void _checkIfMessageIsLiked() {
+    try {
+      final getAllPreferredMessagesCubit =
+          context.read<GetAllPreferredMessagesCubit>();
+      final preferredMessages =
+          getAllPreferredMessagesCubit.preferredMessages ?? [];
+
+      for (int i = 0; i < preferredMessages.length; i++) {
+        if (preferredMessages[i].msgContent == widget.messageContent) {
+          setState(() {
+            isLiked = true;
+            messageIndex = i;
+          });
+          break;
+        }
+      }
+    } catch (e) {
+      print('Error checking if message is liked: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,24 +87,49 @@ class _ListItemsState extends State<ListItems> {
                 setState(() {
                   isLiked = !isLiked;
                 });
-                
-                // Use a safer way to access the cubit
-                if (isLiked) {
-                  try {
-                    // Use context.read instead of BlocProvider.of
-                    final cubit = context.read<PreferredMessagesCubit>();
-                    // You can add additional logic here if needed
-                    print("Successfully accessed PreferredMessagesCubit");
-                  } catch (e) {
-                    print('Error accessing PreferredMessagesCubit: $e');
-                    // The UI state will still update even if the cubit access fails
+
+                try {
+                  final preferredMessagesCubit =
+                      context.read<PreferredMessagesCubit>();
+                  final getAllPreferredMessagesCubit =
+                      context.read<GetAllPreferredMessagesCubit>();
+
+                  if (isLiked) {
+                    // Add to preferred messages
+                    final preferredMessage = PreferredMessagesModel(
+                      msgContent: widget.messageContent,
+                      msgImage: widget.senderAvatar,
+                      likeDate: DateFormat('dd-MM-yyyy').format(DateTime.now()),
+                    );
+
+                    preferredMessagesCubit
+                        .addPrefrredMessages(preferredMessage);
+                    // Refresh the list after adding
+                    getAllPreferredMessagesCubit.fetchAllMessages();
+
+                    print("Message added to preferred messages");
+                  } else if (messageIndex != null) {
+                    // Remove from preferred messages
+                    preferredMessagesCubit
+                        .removePreferredMessage(messageIndex!);
+                    // Refresh the list after removing
+                    getAllPreferredMessagesCubit.fetchAllMessages();
+
+                    print("Message removed from preferred messages");
                   }
+
+                  // Close the popover after action
+                  Navigator.of(context).pop();
+                } catch (e) {
+                  print('Error with preferred messages operation: $e');
                 }
               },
               icon: Row(
                 children: [
                   SvgPicture.asset(
-                    isLiked ? 'assets/images/solid_heart_angle.svg' :'assets/images/Heart_Angle.svg',
+                    isLiked
+                        ? 'assets/images/solid_heart_angle.svg'
+                        : 'assets/images/Heart_Angle.svg',
                     width: 15,
                     height: 15,
                   ),
@@ -76,7 +140,7 @@ class _ListItemsState extends State<ListItems> {
                     isLiked ? 'Liked' : 'Like',
                     style: body.copyWith(
                       fontSize: 12,
-                      color: Colors.white,
+                      color: isLiked ? AppColors.perple : Colors.white,
                     ),
                   ),
                 ],

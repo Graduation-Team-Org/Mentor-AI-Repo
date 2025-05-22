@@ -93,16 +93,28 @@ class _PreffredMessagesViewState extends State<PreffredMessagesView> {
                                     widgetDuration: 0,
                                   ),
                                 ),
+                                // In the build method, update the popover section:
                                 Positioned(
                                   top: -5,
                                   right: -5,
                                   child: Builder(
-                                    builder: (context) => IconButton(
+                                    builder: (builderContext) => IconButton(
                                       onPressed: () {
+                                        final preferredMessagesCubit = context.read<PreferredMessagesCubit>();
+                                        final getAllPreferredMessagesCubit = context.read<GetAllPreferredMessagesCubit>();
+                                        
                                         showPopover(
-                                          context: context,
-                                          bodyBuilder: (context) =>
-                                              const ListItems(),
+                                          context: builderContext,
+                                          bodyBuilder: (popoverContext) => MultiBlocProvider(
+                                            providers: [
+                                              BlocProvider.value(value: preferredMessagesCubit),
+                                              BlocProvider.value(value: getAllPreferredMessagesCubit),
+                                            ],
+                                            child: ListItems(
+                                              messageContent: message.msgContent,
+                                              senderAvatar: message.msgImage,
+                                            ),
+                                          ),
                                           onPop: () =>
                                               print('Popover was popped!'),
                                           direction: PopoverDirection.bottom,

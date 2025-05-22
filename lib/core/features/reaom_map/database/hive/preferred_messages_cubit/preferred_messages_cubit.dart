@@ -8,12 +8,52 @@ part 'preferred_messages_state.dart';
 
 class PreferredMessagesCubit extends Cubit<PreferredMessagesState> {
   PreferredMessagesCubit() : super(PreferredMessagesInitial());
+  
+  // List to keep track of preferred messages
+  List<PreferredMessagesModel> preferredMessages = [];
 
-  addPrefrredMessages(PreferredMessagesModel prefrredMessage) async {
+  // Add a message to preferred messages
+  Future<void> addPrefrredMessages(PreferredMessagesModel prefrredMessage) async {
     try {
       var preferredMessagesBox =
           Hive.box<PreferredMessagesModel>(kPreferredMessages);
       await preferredMessagesBox.add(prefrredMessage);
+      
+      // Update our local list
+      preferredMessages = preferredMessagesBox.values.toList();
+      
+      emit(PreferredMessagesSuccsess());
+    } catch (e) {
+      emit(
+        PreferredMessagesFailure(errorMessage: e.toString()),
+      );
+    }
+  }
+  
+  // Remove a message from preferred messages by index
+  Future<void> removePreferredMessage(int index) async {
+    try {
+      var preferredMessagesBox =
+          Hive.box<PreferredMessagesModel>(kPreferredMessages);
+      await preferredMessagesBox.deleteAt(index);
+      
+      // Update our local list
+      preferredMessages = preferredMessagesBox.values.toList();
+      
+      emit(PreferredMessagesSuccsess());
+    } catch (e) {
+      emit(
+        PreferredMessagesFailure(errorMessage: e.toString()),
+      );
+    }
+  }
+  
+  // Get all preferred messages
+  void getAllPreferredMessages() {
+    try {
+      var preferredMessagesBox =
+          Hive.box<PreferredMessagesModel>(kPreferredMessages);
+      preferredMessages = preferredMessagesBox.values.toList();
       emit(PreferredMessagesSuccsess());
     } catch (e) {
       emit(

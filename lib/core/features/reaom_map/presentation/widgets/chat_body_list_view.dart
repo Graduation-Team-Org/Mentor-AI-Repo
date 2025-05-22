@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 import 'package:popover/popover.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
-import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/preferred_messages_model.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/functions/fun.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/Road_map_app_bar.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/popover_list_items.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/preferred_messages_view.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/steve_say_hi.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typing_animation.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
-import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
 class ChatBodyListView extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -48,39 +45,19 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
   Widget build(BuildContext context) {
     // Try to get the PreferredMessagesCubit safely
     PreferredMessagesCubit? preferredMessagesCubit;
+    GetAllPreferredMessagesCubit? getAllPreferredMessagesCubit;
+    
     try {
       preferredMessagesCubit = context.read<PreferredMessagesCubit>();
+      getAllPreferredMessagesCubit = context.read<GetAllPreferredMessagesCubit>();
     } catch (e) {
-      print('PreferredMessagesCubit not available in this context: $e');
-      // We'll handle this case below
+      print('Cubit not available in this context: $e');
     }
     
     return BlocConsumer<AllMessagesCubit, AllMessagesState>(
       listener: (context, state) {
-        // Only try to use the cubit if it's available
-        if (preferredMessagesCubit == null) return;
-        
-        String prefMsgContent = '';
-        String imgPath = 'assets/images/steve.png';
-        var currentDate = DateTime.now();
-
-        var formattedCurrentDate = DateFormat('dd-mm-yyyy').format(currentDate);
-
-        if (state is AllMessagesScussess) {
-          final List<ChatMessageModel> messages = state.chatMessagesModel;
-          for (var message in messages) {
-            if (!message.isUser) {
-              prefMsgContent = message.content;
-            }
-          }
-          PreferredMessagesModel prefrredMessage = PreferredMessagesModel(
-            msgContent: prefMsgContent,
-            msgImage: imgPath,
-            likeDate: formattedCurrentDate,
-          );
-          // Use the captured cubit only if available
-          preferredMessagesCubit.addPrefrredMessages(prefrredMessage);
-        }
+        // Remove the auto-adding of messages here
+        // We'll only add messages when the user clicks the like button
       },
       builder: (context, state) {
         final List<ChatMessageModel> messages =
@@ -155,6 +132,7 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                                     widgetDuration: 20,
                                   ),
                                 ),
+                                // In the message mapping section, update the popover:
                                 Positioned(
                                   top: -5,
                                   right: -5,
@@ -163,13 +141,25 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                                       onPressed: () {
                                         showPopover(
                                           context: builderContext,
-                                          bodyBuilder: (popoverContext) => 
-                                              preferredMessagesCubit != null
-                                                ? BlocProvider.value(
-                                                    value: preferredMessagesCubit,
-                                                    child: const ListItems(),
-                                                  )
-                                                : const ListItems(), // Fallback without the cubit
+                                          bodyBuilder: (popoverContext) {
+                                            if (preferredMessagesCubit != null && getAllPreferredMessagesCubit != null) {
+                                              return MultiBlocProvider(
+                                                providers: [
+                                                  BlocProvider.value(value: preferredMessagesCubit),
+                                                  BlocProvider.value(value: getAllPreferredMessagesCubit),
+                                                ],
+                                                child: ListItems(
+                                                  messageContent: message.content,
+                                                  senderAvatar: message.senderAvatar,
+                                                ),
+                                              );
+                                            } else {
+                                              return ListItems(
+                                                messageContent: message.content,
+                                                senderAvatar: message.senderAvatar,
+                                              );
+                                            }
+                                          },
                                           onPop: () =>
                                               print('Popover was popped!'),
                                           direction: PopoverDirection.bottom,
