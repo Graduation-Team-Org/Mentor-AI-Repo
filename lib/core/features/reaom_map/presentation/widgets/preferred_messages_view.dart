@@ -29,6 +29,7 @@ class PreffredMessagesView extends StatefulWidget {
 class _PreffredMessagesViewState extends State<PreffredMessagesView> {
   @override
   void initState() {
+    // Fetch messages when the screen initializes
     BlocProvider.of<GetAllPreferredMessagesCubit>(context).fetchAllMessages();
     super.initState();
   }
@@ -41,14 +42,15 @@ class _PreffredMessagesViewState extends State<PreffredMessagesView> {
 
   @override
   Widget build(BuildContext context) {
-    final List<PreferredMessagesModel> messages =
-        BlocProvider.of<GetAllPreferredMessagesCubit>(context)
-            .preferredMessages!;
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: BlocBuilder<PreferredMessagesCubit, PreferredMessagesState>(
+      // Use BlocBuilder with GetAllPreferredMessagesCubit to rebuild when messages change
+      child: BlocBuilder<GetAllPreferredMessagesCubit, GetAllPreferredMessagesState>(
         builder: (context, state) {
+          final List<PreferredMessagesModel> messages =
+              BlocProvider.of<GetAllPreferredMessagesCubit>(context)
+                  .preferredMessages ?? [];
+
           return ListView(
             controller: widget.scrollController,
             children: [

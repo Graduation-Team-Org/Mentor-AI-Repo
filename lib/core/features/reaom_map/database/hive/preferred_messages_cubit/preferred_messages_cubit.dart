@@ -7,7 +7,10 @@ import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/pre
 part 'preferred_messages_state.dart';
 
 class PreferredMessagesCubit extends Cubit<PreferredMessagesState> {
-  PreferredMessagesCubit() : super(PreferredMessagesInitial());
+  PreferredMessagesCubit() : super(PreferredMessagesInitial()) {
+    // Load saved messages when cubit is created
+    getAllPreferredMessages();
+  }
   
   // List to keep track of preferred messages
   List<PreferredMessagesModel> preferredMessages = [];
@@ -17,6 +20,8 @@ class PreferredMessagesCubit extends Cubit<PreferredMessagesState> {
     try {
       var preferredMessagesBox =
           Hive.box<PreferredMessagesModel>(kPreferredMessages);
+      
+      // Add the message to the Hive box
       await preferredMessagesBox.add(prefrredMessage);
       
       // Update our local list
@@ -35,6 +40,8 @@ class PreferredMessagesCubit extends Cubit<PreferredMessagesState> {
     try {
       var preferredMessagesBox =
           Hive.box<PreferredMessagesModel>(kPreferredMessages);
+      
+      // Delete the message from the Hive box
       await preferredMessagesBox.deleteAt(index);
       
       // Update our local list
@@ -53,7 +60,10 @@ class PreferredMessagesCubit extends Cubit<PreferredMessagesState> {
     try {
       var preferredMessagesBox =
           Hive.box<PreferredMessagesModel>(kPreferredMessages);
+      
+      // Load all messages from the Hive box
       preferredMessages = preferredMessagesBox.values.toList();
+      
       emit(PreferredMessagesSuccsess());
     } catch (e) {
       emit(

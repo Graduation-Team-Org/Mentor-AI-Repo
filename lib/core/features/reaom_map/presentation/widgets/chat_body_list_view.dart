@@ -168,7 +168,7 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                                           arrowHeight: 15,
                                           arrowWidth: 30,
                                           backgroundColor:
-                                              Colors.white.withOpacity(0.1),
+                                              Colors.white.withValues(alpha: 0.1),
                                           barrierColor: Colors.black54,
                                           transitionDuration:
                                               const Duration(milliseconds: 150),

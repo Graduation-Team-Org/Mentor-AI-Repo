@@ -83,7 +83,7 @@ class _ListItemsState extends State<ListItems> {
               ),
             ),
             IconButton(
-              onPressed: () {
+              onPressed: () async {
                 setState(() {
                   isLiked = !isLiked;
                 });
@@ -102,16 +102,20 @@ class _ListItemsState extends State<ListItems> {
                       likeDate: DateFormat('dd-MM-yyyy').format(DateTime.now()),
                     );
 
-                    preferredMessagesCubit
+                    // Use await to ensure the operation completes
+                    await preferredMessagesCubit
                         .addPrefrredMessages(preferredMessage);
+                    
                     // Refresh the list after adding
                     getAllPreferredMessagesCubit.fetchAllMessages();
 
                     print("Message added to preferred messages");
                   } else if (messageIndex != null) {
                     // Remove from preferred messages
-                    preferredMessagesCubit
+                    // Use await to ensure the operation completes
+                    await preferredMessagesCubit
                         .removePreferredMessage(messageIndex!);
+                    
                     // Refresh the list after removing
                     getAllPreferredMessagesCubit.fetchAllMessages();
 
@@ -140,7 +144,7 @@ class _ListItemsState extends State<ListItems> {
                     isLiked ? 'Liked' : 'Like',
                     style: body.copyWith(
                       fontSize: 12,
-                      color: isLiked ? AppColors.perple : Colors.white,
+                      color: AppColors.white,
                     ),
                   ),
                 ],
