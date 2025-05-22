@@ -7,6 +7,7 @@ import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/pre
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
+import 'package:flutter/services.dart'; // Add this import for clipboard functionality
 
 class ListItems extends StatefulWidget {
   final String messageContent;
@@ -64,7 +65,23 @@ class _ListItemsState extends State<ListItems> {
           padding: const EdgeInsets.all(2),
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                // Copy the message content to clipboard
+                await Clipboard.setData(ClipboardData(text: widget.messageContent));
+                
+                // Show a snackbar or toast to indicate successful copy
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Message copied to clipboard'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
+                
+                // Close the popover after copying
+                Navigator.of(context).pop();
+              },
               icon: Row(
                 children: [
                   const Icon(
