@@ -6,6 +6,7 @@ import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_pr
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/preferred_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_body_list_view.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/popover_list_items.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
 
 import 'package:road_map_mentor/core/utils/colors.dart';
@@ -212,97 +213,3 @@ Positioned inBetweenSmallCircle() {
   );
 }
 
-class ListItems extends StatelessWidget {
-  const ListItems({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.darkPerple.withValues(alpha: 0.7), // Dark background
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 2),
-        child: ListView(
-          padding: const EdgeInsets.all(2),
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: Row(
-                children: [
-                  const Icon(
-                    Icons.copy,
-                    color: Colors.white,
-                    size: 12,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Copy',
-                    style: body.copyWith(fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Row(
-                children: [
-                  SvgPicture.asset(
-                    'assets/images/Heart_Angle.svg',
-                    width: 15,
-                    height: 15,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Like',
-                    style: body.copyWith(fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Row(
-                children: [
-                  SvgPicture.asset(
-                    'assets/images/Share.svg',
-                    width: 15,
-                    height: 15,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Share',
-                    style: body.copyWith(fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Row(
-                children: [
-                  SvgPicture.asset(
-                    'assets/images/Trash_Bin_Minimalistic.svg',
-                    width: 15,
-                    height: 15,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Delete',
-                    style: body.copyWith(fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

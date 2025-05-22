@@ -65,13 +65,9 @@ class _ListItemsState extends State<ListItems> {
               icon: Row(
                 children: [
                   SvgPicture.asset(
-                    'assets/images/Heart_Angle.svg',
+                    isLiked ? 'assets/images/solid_heart_angle.svg' :'assets/images/Heart_Angle.svg',
                     width: 15,
                     height: 15,
-                    colorFilter: ColorFilter.mode(
-                      isLiked ? AppColors.perple : Colors.white,
-                      BlendMode.srcIn,
-                    ),
                   ),
                   const SizedBox(
                     width: 5,
@@ -80,7 +76,7 @@ class _ListItemsState extends State<ListItems> {
                     isLiked ? 'Liked' : 'Like',
                     style: body.copyWith(
                       fontSize: 12,
-                      color: isLiked ? AppColors.perple : Colors.white,
+                      color: Colors.white,
                     ),
                   ),
                 ],
