@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_ellipse_cuircles.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/custom_ellipse_cuircles.dart';
 
 class ChatEllipseCuircles extends StatelessWidget {
   const ChatEllipseCuircles({super.key});

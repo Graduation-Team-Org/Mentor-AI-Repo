@@ -10,9 +10,11 @@ import 'package:road_map_mentor/core/features/reaom_map/functions/fun.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/Road_map_app_bar.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/popover_list_items.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/steve_say_hi.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/steve_say_hi.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typing_animation.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
+
+import 'sender_avatar.dart';
 
 class ChatBodyListView extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -46,14 +48,15 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
     // Try to get the PreferredMessagesCubit safely
     PreferredMessagesCubit? preferredMessagesCubit;
     GetAllPreferredMessagesCubit? getAllPreferredMessagesCubit;
-    
+
     try {
       preferredMessagesCubit = context.read<PreferredMessagesCubit>();
-      getAllPreferredMessagesCubit = context.read<GetAllPreferredMessagesCubit>();
+      getAllPreferredMessagesCubit =
+          context.read<GetAllPreferredMessagesCubit>();
     } catch (e) {
       print('Cubit not available in this context: $e');
     }
-    
+
     return BlocConsumer<AllMessagesCubit, AllMessagesState>(
       listener: (context, state) {
         // Remove the auto-adding of messages here
@@ -142,21 +145,31 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                                         showPopover(
                                           context: builderContext,
                                           bodyBuilder: (popoverContext) {
-                                            if (preferredMessagesCubit != null && getAllPreferredMessagesCubit != null) {
+                                            if (preferredMessagesCubit !=
+                                                    null &&
+                                                getAllPreferredMessagesCubit !=
+                                                    null) {
                                               return MultiBlocProvider(
                                                 providers: [
-                                                  BlocProvider.value(value: preferredMessagesCubit),
-                                                  BlocProvider.value(value: getAllPreferredMessagesCubit),
+                                                  BlocProvider.value(
+                                                      value:
+                                                          preferredMessagesCubit),
+                                                  BlocProvider.value(
+                                                      value:
+                                                          getAllPreferredMessagesCubit),
                                                 ],
                                                 child: ListItems(
-                                                  messageContent: message.content,
-                                                  senderAvatar: message.senderAvatar,
+                                                  messageContent:
+                                                      message.content,
+                                                  senderAvatar:
+                                                      message.senderAvatar,
                                                 ),
                                               );
                                             } else {
                                               return ListItems(
                                                 messageContent: message.content,
-                                                senderAvatar: message.senderAvatar,
+                                                senderAvatar:
+                                                    message.senderAvatar,
                                               );
                                             }
                                           },
@@ -167,8 +180,8 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
                                           height: 200,
                                           arrowHeight: 15,
                                           arrowWidth: 30,
-                                          backgroundColor:
-                                              Colors.white.withValues(alpha: 0.1),
+                                          backgroundColor: Colors.white
+                                              .withValues(alpha: 0.1),
                                           barrierColor: Colors.black54,
                                           transitionDuration:
                                               const Duration(milliseconds: 150),
@@ -218,7 +231,6 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
   }
 }
 
-
 class SecondRoute extends StatelessWidget {
   const SecondRoute({super.key});
 
@@ -252,32 +264,6 @@ class SenderName extends StatelessWidget {
       style: const TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.bold,
-      ),
-    );
-  }
-}
-
-class SenderAvatar extends StatelessWidget {
-  const SenderAvatar({
-    super.key,
-    required this.senderAvatar,
-  });
-
-  final String senderAvatar;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 5,
-        vertical: 5,
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(100),
-        child: Image.asset(
-          senderAvatar,
-          width: 30,
-          height: 30,
-        ),
       ),
     );
   }

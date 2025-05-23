@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_body_list_view.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_end_drawer.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/chat_body_list_view.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/custom_elipse_circule.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/custom_end_drawer.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/prompt_text_field.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/send_prompt_button.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/send_prompt_button.dart';
 import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
 import 'dart:ui'; // Import this for ImageFilter
 
@@ -112,26 +112,3 @@ class _ChatScreenState extends State<RoadMapChatScreen> {
   }
 }
 
-class CustomEllipseCircule extends StatelessWidget {
-  const CustomEllipseCircule({
-    super.key,
-    required this.alignment,
-    required this.imgPath,
-    required this.imageFilter,
-  });
-  final AlignmentGeometry alignment;
-  final String imgPath;
-  final ImageFilter imageFilter;
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: alignment,
-      child: ImageFiltered(
-        imageFilter: imageFilter,
-        child: SvgPicture.asset(
-          imgPath,
-        ),
-      ),
-    );
-  }
-}

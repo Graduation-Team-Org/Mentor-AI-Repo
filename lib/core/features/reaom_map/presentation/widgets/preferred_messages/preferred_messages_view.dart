@@ -5,12 +5,13 @@ import 'package:popover/popover.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/preferred_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_body_list_view.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/popover_list_items.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
 
 import 'package:road_map_mentor/core/utils/colors.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
+
+import '../chat/sender_avatar.dart';
 
 class PreffredMessagesView extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
