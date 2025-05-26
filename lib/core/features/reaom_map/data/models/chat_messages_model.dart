@@ -29,33 +29,3 @@ class ChatMessageModel {
     );
   }
 }
-
-class SavedChatSession {
-  final List<ChatMessageModel> messages;
-  final String title;
-  final DateTime timestamp;
-
-  SavedChatSession({
-    required this.messages,
-    required this.title,
-    required this.timestamp,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'messages': messages.map((m) => m.toJson()).toList(),
-      'title': title,
-      'timestamp': timestamp.toIso8601String(),
-    };
-  }
-
-  factory SavedChatSession.fromJson(Map<String, dynamic> json) {
-    return SavedChatSession(
-      messages: (json['messages'] as List)
-          .map((m) => ChatMessageModel.fromJson(m as Map<String, dynamic>))
-          .toList(),
-      title: json['title'] as String,
-      timestamp: DateTime.parse(json['timestamp'] as String),
-    );
-  }
-}

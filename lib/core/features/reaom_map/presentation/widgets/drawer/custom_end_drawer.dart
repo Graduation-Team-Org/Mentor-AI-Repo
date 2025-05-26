@@ -10,7 +10,6 @@ import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/dra
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/custom_drawer_header.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/hitory_column.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/saved_all_messages_cubit/saved_all_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
 import 'package:road_map_mentor/core/utils/app_routers.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
@@ -49,9 +48,6 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
           width: keyboardVisible ? MediaQuery.of(context).size.width : 250,
           child: MultiBlocProvider(
             providers: [
-              BlocProvider<SavedAllMessagesCubit>(
-                create: (context) => SavedAllMessagesCubit(RoadMapReposImp()),
-              ),
               BlocProvider<AllMessagesCubit>(
                 create: (context) => AllMessagesCubit(RoadMapReposImp()),
               ),
