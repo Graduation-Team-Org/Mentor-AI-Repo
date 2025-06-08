@@ -6,7 +6,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/constants/hive_constants.dart';
-import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/preferred_messages_model.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/preferred/preferred_messages_model.dart';
 import 'package:road_map_mentor/core/utils/app_routers.dart';
 
 void main() async {
