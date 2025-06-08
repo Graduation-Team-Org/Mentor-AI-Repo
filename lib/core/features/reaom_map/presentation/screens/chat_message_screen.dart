@@ -7,7 +7,7 @@ import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/chat_body_list_view.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/custom_elipse_circule.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/custom_end_drawer.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/prompt_text_field.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/prompt_text_field.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/send_prompt_button.dart';
 import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
 import 'dart:ui'; // Import this for ImageFilter
