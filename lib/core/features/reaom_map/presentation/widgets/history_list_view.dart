@@ -18,7 +18,7 @@ class HistoryListView extends StatelessWidget {
             ),
           ),
           subtitle: Text(
-            'Hitory subtitle $index',
+            'Hitory subtitle $index+1',
             style: TextStyle(color: AppColors.white.withOpacity(0.6)),
           ),
           onTap: () {},
