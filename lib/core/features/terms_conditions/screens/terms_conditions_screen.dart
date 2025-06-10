@@ -100,10 +100,10 @@ class TermsConditionsScreen extends StatelessWidget {
                   SizedBox(height: 10),
                   Text(
                     "1. By using this app, you agree to follow our rules and policies.\n"
-                        "2. Your personal data will be handled securely and will not be shared without your consent.\n"
-                        "3. The app is not responsible for any misuse of information provided by users.\n"
-                        "4. You must be at least 18 years old to use this app.\n"
-                        "5. We reserve the right to modify these terms at any time.",
+                    "2. Your personal data will be handled securely and will not be shared without your consent.\n"
+                    "3. The app is not responsible for any misuse of information provided by users.\n"
+                    "4. You must be at least 18 years old to use this app.\n"
+                    "5. We reserve the right to modify these terms at any time.",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.white70,
