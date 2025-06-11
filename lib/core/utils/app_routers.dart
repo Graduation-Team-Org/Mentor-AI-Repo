@@ -6,6 +6,7 @@ import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repo
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/chat_message_screen.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/chat_sesssions.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/preferred_messages_screen.dart';
 import 'package:road_map_mentor/core/features/splash/presentation/screens/splash_screen.dart';
 import 'package:road_map_mentor/core/features/starting/presentation/screens/starting_screen.dart';
@@ -64,6 +65,10 @@ abstract class AppRouter {
         builder: (context, state) => const HistoryScreen(),
       ),
       GoRoute(
+        path: chatSessions,
+        builder: (context, state) => const ChatSessionsScreen(),
+      ),
+      GoRoute(
         path: scoreScreen,
         builder: (context, state) {
           final params = state.extra as Map<String, dynamic>;
@@ -95,6 +100,7 @@ abstract class AppRouter {
   static const String savedAllMessagesScreen = '/saved'; // Base path
   static const String preferredMessagesScreen =
       '/preferredMessagesScreen'; // Base path
+  static const String chatSessions= '/chatSessions';
   static const String chatScreen = '/chatScreen'; // Base path
   static const String startingScreen = '/startingScreen'; // Base path
   static const String home1 = '/home1'; // Base path

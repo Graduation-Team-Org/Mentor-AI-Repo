@@ -8,7 +8,7 @@ import 'package:road_map_mentor/core/features/reaom_map/presentation/enum/drawer
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/chat_search_text_field.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/custom_activites_column.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/custom_drawer_header.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/hitory_column.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/history/hitory_column.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
 import 'package:road_map_mentor/core/utils/app_routers.dart';

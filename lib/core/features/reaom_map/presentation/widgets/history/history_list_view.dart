@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:road_map_mentor/core/utils/app_routers.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
@@ -12,16 +14,18 @@ class HistoryListView extends StatelessWidget {
       itemBuilder: (context, index) {
         return ListTile(
           title: Text(
-            'Histoy $index',
+            'Histoy ${index+1}',
             style: body.copyWith(
               color: AppColors.white.withValues(alpha: 0.8),
             ),
           ),
           subtitle: Text(
-            'Hitory subtitle $index+1',
+            'Hitory subtitle ${index+1}',
             style: TextStyle(color: AppColors.white.withOpacity(0.6)),
           ),
-          onTap: () {},
+          onTap: () {
+            context.go(AppRouter.chatSessions);
+          },
         );
       },
     );

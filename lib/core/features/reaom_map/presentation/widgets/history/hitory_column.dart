@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/animated_text_widget.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/history_list_view.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/history/history_list_view.dart';
 
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
