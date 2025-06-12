@@ -171,14 +171,14 @@ class SpScreenState extends State<SpScreen>
                   ),
                 ),
                 Positioned(
-                  top: screenHeight / 2 - 10,
-                  left: screenWidth / 2 - 40,
+                  top: screenHeight / 2 - 23,
+                  left: screenWidth / 2 - 70,
                   child: FadeTransition(
                     opacity: _textFadeAnimation,
                     child: Text(
                       'MENTOR AI',
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 30,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w600,
                         color: Color(0xFFF5EFFC),
