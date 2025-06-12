@@ -68,10 +68,7 @@ class _SplashScreenState extends State<StartingScreen> with TickerProviderStateM
     _animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(Duration(seconds: 1), () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage1()),
-          );
+          context.go(AppRouter.home1);
         });
       }
     });
@@ -207,7 +204,7 @@ class _SplashScreenState extends State<StartingScreen> with TickerProviderStateM
                       left: 0,
                       right: 0,
                       child: Image.asset(
-                        'image/image.png',
+                        'assets/images/image.png',
                         width: 300,
                         height: 300,
                       ),
