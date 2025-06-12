@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/constants/hive_constants.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/history/chat_session_model.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/preferred/preferred_messages_model.dart';
 import 'package:road_map_mentor/core/utils/app_routers.dart';
-import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/preferred_messages_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,11 +14,13 @@ void main() async {
   // Initialize Hive
   await Hive.initFlutter();
   
-  // Register the adapter for your model
+  // Register the adapters for your models
   Hive.registerAdapter(PreferredMessagesModelAdapter());
+  Hive.registerAdapter(ChatSessionModelAdapter());
   
-  // Open the box
+  // Open the boxes
   await Hive.openBox<PreferredMessagesModel>(kPreferredMessages);
+  await Hive.openBox<ChatSessionModel>(kChatSessions);
   
   await dotenv.load(fileName: ".env");
   runApp(const MyApp());

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_ellipse_cuircles.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/preferred_messages_view.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/chat_ellipse_cuircles.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/preferred_messages/preferred_messages_view.dart';
 import 'package:road_map_mentor/core/utils/app_routers.dart';
 import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
 import 'package:road_map_mentor/core/utils/widgets/back_button.dart';

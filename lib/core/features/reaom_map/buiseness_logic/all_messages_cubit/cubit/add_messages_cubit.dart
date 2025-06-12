@@ -47,27 +47,7 @@ class AllMessagesCubit extends Cubit<AllMessagesState> {
     }
   }
 
-  // List<ChatMessageModel> retrunMessages() {
-  //   print('======================MM======================');
-  //   print(roadMapRepos.retrunMessages());
-  //   print('======================MM======================');
-  //   return roadMapRepos.retrunMessages();
-  // }
 
-  // Future<void> getmessages() async {
-  //   try {
-  //     final messages = await roadMapRepos.getMessages();
-  //     emit(GetMessagesScussess(chatMessagesModel: messages));
-  //     print('===============GetMessages=============>{$messages.}');
-  //   } catch (e) {
-  //     if (e is DioException) {
-  //       ServerFailure.fromDioException(e);
-  //     }
-  //     emit(AllMessagesFailure(errorMessage: e.toString()));
-  //   }
-  // }
 
-  // AllMessagesFailure(errorMessage: ServerFailure.fromDioException());
-
-  // AllMessagesScussess(chatMessagesModel: const []);
+  
 }

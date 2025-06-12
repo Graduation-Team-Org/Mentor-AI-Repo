@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/saved_all_messages_cubit/saved_all_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat_body_list_view.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/custom_end_drawer.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/prompt_text_field.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/send_prompt_button.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/chat_body_list_view.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/custom_elipse_circule.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/keep_alive_widget.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/custom_end_drawer.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/prompt_text_field.dart';
+import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/send_prompt_button.dart';
 import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
 import 'dart:ui'; // Import this for ImageFilter
 
@@ -35,28 +38,31 @@ class _ChatScreenState extends State<RoadMapChatScreen> {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider<SavedAllMessagesCubit>(
-          create: (context) => SavedAllMessagesCubit(RoadMapReposImp()),
+        BlocProvider<AllMessagesCubit>(
+          create: (context) => AllMessagesCubit(RoadMapReposImp()),
+        ),
+        BlocProvider<GetAllPreferredMessagesCubit>(
+          create: (context) => GetAllPreferredMessagesCubit(),
+        ),
+        // Add this provider for PreferredMessagesCubit
+        BlocProvider<PreferredMessagesCubit>(
+          create: (context) => PreferredMessagesCubit(),
         ),
       ],
       child: Scaffold(
         key: scaffoldKey,
-      resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: true,
         endDrawer: CustomEndDrawer(
           chatSearchcontroller: _chatSearchcontroller,
           scaffoldKey: scaffoldKey,
         ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: Stack(
+                  children: [
                     const AppViewColor(),
-                    ChatBodyListView(
-                      scrollController: _scrollController,
-                      scaffoldKey: scaffoldKey,
-                    ),
                     CustomEllipseCircule(
                       alignment: const AlignmentDirectional(1.1, 1.1),
                       imgPath: 'assets/images/Ellipse_1.svg',
@@ -77,18 +83,20 @@ class _ChatScreenState extends State<RoadMapChatScreen> {
                       imgPath: 'assets/images/Ellipse_4.svg',
                       imageFilter: ImageFilter.blur(sigmaX: 300, sigmaY: 300),
                     ),
-                  ChatBodyListView(
-                    scrollController: _scrollController,
-                      scaffoldKey: scaffoldKey,
-                  ),
-                ],
+                    KeepWidgetAlive(
+                      aliveGivenWidget: ChatBodyListView(
+                        scrollController: _scrollController,
+                        scaffoldKey: scaffoldKey,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
               if (!keyboardVisible || !isDrawerOpen)
                 Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
                       PromptTextField(
                         controller: _controller,
                       ),
@@ -98,35 +106,11 @@ class _ChatScreenState extends State<RoadMapChatScreen> {
                       ),
                     ],
                   ),
-                    ),
-                  ],
                 ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-class CustomEllipseCircule extends StatelessWidget {
-  const CustomEllipseCircule({
-    super.key,
-    required this.alignment,
-    required this.imgPath,
-    required this.imageFilter,
-  });
-  final AlignmentGeometry alignment;
-  final String imgPath;
-  final ImageFilter imageFilter;
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: alignment,
-      child: ImageFiltered(
-        imageFilter: imageFilter,
-        child: SvgPicture.asset(
-          imgPath,
-        ),
-      ),
-    );
-  }
-}
-

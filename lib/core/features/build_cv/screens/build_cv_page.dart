@@ -7,11 +7,12 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:hive/hive.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:html' as html;
 
 class BuildCvPage extends StatefulWidget {
+  const BuildCvPage({super.key});
+
   @override
-  _BuildCVPageState createState() => _BuildCVPageState();
+  State<BuildCvPage> createState() => _BuildCVPageState();
 }
 
 class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStateMixin {
@@ -691,7 +692,8 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
 
                 // Contact Info
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,  // Center the row content
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,  // Center the row content
                   children: [
                     Icon(Icons.email_outlined, color: Colors.grey.shade600, size: 16),
                     SizedBox(width: 4),
@@ -756,7 +758,6 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
                       ),
                     ],
                   ],
-                  crossAxisAlignment: CrossAxisAlignment.start,
                 ),
                 SizedBox(height: 16),
 
@@ -1336,7 +1337,7 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
 
     final smallTextStyle = const pw.TextStyle(fontSize: 10, color: PdfColors.grey600);
 
-    final sectionTitle = (String title) => pw.Padding(
+    sectionTitle(String title) => pw.Padding(
       padding: const pw.EdgeInsets.only(top: 12, bottom: 6),
       child: pw.Text(title, style: sectionTitleStyle),
     );
@@ -1433,19 +1434,24 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
     final pdfBytes = await pdf.save();
 
     if (kIsWeb) {
-      final blob = html.Blob([pdfBytes], 'application/pdf');
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      final anchor = html.AnchorElement(href: url)
-        ..setAttribute("download", "cv.pdf")
-        ..click();
-      html.Url.revokeObjectUrl(url);
+      // Web implementation would go here, but we're removing it for mobile compatibility
+      // You'll need to add a proper web implementation using a plugin like 'universal_html'
+      // if you want to support web platform in the future
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Web platform is not supported in this version")),
+      );
     } else {
       final output = await getTemporaryDirectory();
       final file = File("${output.path}/cv.pdf");
       await file.writeAsBytes(pdfBytes);
+      
+      // Show a success message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("PDF saved to ${file.path}")),
       );
+      
+      // Offer to share the PDF file
+      await Share.shareXFiles([XFile(file.path)], text: 'My CV');
     }
   }
 
@@ -1523,5 +1529,4 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
 
 
 }
-
 
