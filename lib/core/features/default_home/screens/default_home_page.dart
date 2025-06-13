@@ -25,7 +25,7 @@ class _HomePage1State extends State<HomePage1> with SingleTickerProviderStateMix
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: Duration(seconds: 2),
     );
 
 
@@ -289,7 +289,7 @@ class _HomePage1State extends State<HomePage1> with SingleTickerProviderStateMix
                     child: IconButton(
                       icon: Icon(Icons.close, color: Colors.white, size: 15),
                       onPressed: () => Navigator.pop(context),
-                      padding: EdgeInsets.all(4),
+                        padding: EdgeInsets.zero,
                       constraints: BoxConstraints(),
                     ),
                   ),
