@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
 
 part 'chat_session_model.g.dart';
 
@@ -11,13 +12,30 @@ class ChatSessionModel extends HiveObject {
   final String sessionTitle;
 
   @HiveField(2)
-  final String messageContent;
-
+  final List<Map<String, dynamic>> messagesJson;
+  
+  @HiveField(3)
+  final DateTime createdAt;
+  
+  // Transient field - not stored in Hive
+  List<ChatMessageModel>? _messages;
+  
   ChatSessionModel({
     required this.sessionId,
     required this.sessionTitle,
-    required this.messageContent,
-  });
+    required List<ChatMessageModel> messages,
+    DateTime? createdAt,
+  }) : 
+    messagesJson = messages.map((msg) => msg.toJson()).toList(),
+    createdAt = createdAt ?? DateTime.now() {
+    _messages = messages;
+  }
+  
+  // Getter for messages that converts from JSON when needed
+  List<ChatMessageModel> get messages {
+    _messages ??= messagesJson.map((json) => ChatMessageModel.fromJson(json)).toList();
+    return _messages!;
+  }
 }
 
-// flutter packages pub run build_runner build --build-filter="lib/core/features/reaom_map/database/hive/models/chat_session_model.dart" --delete-conflicting-outputs
+// flutter packages pub run build_runner build --build-filter="lib/core/features/reaom_map/database/hive/models/history/chat_session_model.dart" --delete-conflicting-outputs

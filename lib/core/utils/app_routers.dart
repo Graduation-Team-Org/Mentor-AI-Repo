@@ -64,9 +64,12 @@ abstract class AppRouter {
         path: historyScreen,
         builder: (context, state) => const HistoryScreen(),
       ),
+      // Update the chatSessions route in AppRouter
       GoRoute(
         path: chatSessions,
-        builder: (context, state) => const ChatSessionsScreen(),
+        builder: (context, state) {
+          return ChatSessionsScreen(extra: state.extra as Map<String, dynamic>?);
+        },
       ),
       GoRoute(
         path: scoreScreen,
