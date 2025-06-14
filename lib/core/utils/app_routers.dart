@@ -15,6 +15,9 @@ import 'package:road_map_mentor/core/features/interview/screens/field_selection_
 import 'package:road_map_mentor/core/features/interview/screens/history_screen.dart';
 import 'package:road_map_mentor/core/features/interview/screens/score_screen.dart';
 import 'package:road_map_mentor/core/features/interview/screens/interview_screen.dart';
+import 'package:road_map_mentor/core/features/chat_with_doc/screens/chatscreen.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/screens/cv_analysis_page.dart';
+import 'package:road_map_mentor/core/features/build_cv/screens/build_cv_page.dart';
 
 abstract class AppRouter {
   static final _roadMapRepos = RoadMapReposImp();
@@ -51,6 +54,21 @@ abstract class AppRouter {
           child: const RoadMapChatScreen(),
         ),
       ),
+      // Chat with Doc Routes
+      GoRoute(
+        path: chatWithDocPage,
+        builder: (context, state) => const ChatWithDocPage(),
+      ),
+      // CV Analysis Route
+      GoRoute(
+        path: cvAnalysisPage,
+        builder: (context, state) => const CvAnalysisPage(),
+      ),
+      // Build CV Route
+      GoRoute(
+        path: buildCvPage,
+        builder: (context, state) => const BuildCvPage(),
+      ),
       // Interview Feature Routes
       GoRoute(
         path: interviewPage,
@@ -64,11 +82,11 @@ abstract class AppRouter {
         path: historyScreen,
         builder: (context, state) => const HistoryScreen(),
       ),
-      // Update the chatSessions route in AppRouter
       GoRoute(
         path: chatSessions,
         builder: (context, state) {
-          return ChatSessionsScreen(extra: state.extra as Map<String, dynamic>?);
+          return ChatSessionsScreen(
+              extra: state.extra as Map<String, dynamic>?);
         },
       ),
       GoRoute(
@@ -89,24 +107,18 @@ abstract class AppRouter {
           );
         },
       ),
-      // GoRoute(
-      //   path: '$savedAllMessagesScreen/:title', // Update path pattern
-      //   builder: (context, state) => BlocProvider(
-      //     create: (context) => SavedAllMessagesCubit(_roadMapRepos),
-      //     child: SavedAllMessagesScreen(
-      //       title: state.pathParameters['title']!,
-      //     ),
-      //   ),
-      // ),
     ],
   );
   static const String savedAllMessagesScreen = '/saved'; // Base path
   static const String preferredMessagesScreen =
       '/preferredMessagesScreen'; // Base path
-  static const String chatSessions= '/chatSessions';
+  static const String chatSessions = '/chatSessions';
   static const String chatScreen = '/chatScreen'; // Base path
   static const String startingScreen = '/startingScreen'; // Base path
   static const String home1 = '/home1'; // Base path
+  static const String chatWithDocPage = '/chat-with-doc'; // Chat with Doc route
+  static const String cvAnalysisPage = '/cv-analysis';
+  static const String buildCvPage = '/build-cv';
 
   // Interview Feature Routes
   static const String interviewPage = '/interview';
