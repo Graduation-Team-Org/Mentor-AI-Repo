@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:road_map_mentor/core/features/build_cv/screens/build_cv_page.dart';
 import 'package:road_map_mentor/core/features/chat_with_doc/screens/chat_with_doc_page.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/screens/cv_analysis_page.dart';
@@ -23,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     HomeScreen(),
     AboutScreen(),
-    ReviewsScreen(reviews: []),
+    ReviewsScreen(),
     ProfileScreen(),
   ];
 
@@ -400,9 +402,6 @@ class AboutScreen extends StatelessWidget {
 }
 
 class ReviewsScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> reviews;
-
-  ReviewsScreen({required this.reviews});
 
   @override
   Widget build(BuildContext context) {
@@ -470,40 +469,193 @@ class ReviewsScreen extends StatelessWidget {
               ),
             ),
           ),
-          Column(
-            children: [
-              const SizedBox(height: 40),
-              Text(
-                "Reviews",
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.all(20),
-                  itemCount: reviews.length,
-                  itemBuilder: (context, index) {
-                    final review = reviews[index];
-                    return Card(
-                      color: Color(0xFF4C1D95),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      child: ListTile(
-                        title: Text(review["name"], style: TextStyle(color: Colors.white)),
-                        subtitle: Text(review["review"], style: TextStyle(color: Colors.white70)),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: List.generate(5, (i) {
-                            return Icon(
-                              i < review["rating"] ? Icons.star : Icons.star_border,
-                              color: Colors.amber,
-                            );
-                          }),
-                        ),
-                      ),
-                    );
-                  },
+          Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              children: [
+                const SizedBox(height: 40),
+                const Text(
+                  "Reviews",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 20),
+                Expanded(
+                  child: ValueListenableBuilder(
+                    valueListenable: Hive.box('reviews').listenable(),
+                    builder: (context, reviewBox, _) {
+                      final reviews = reviewBox.values.toList().cast<Map>();
+
+                      return ValueListenableBuilder(
+                        valueListenable: Hive.box('feedbacks').listenable(),
+                        builder: (context, feedbackBox, _) {
+                          final feedbacks = feedbackBox.values.toList().cast<Map>();
+
+                          if (reviews.isEmpty && feedbacks.isEmpty) {
+                            return const Center(
+                              child: Text(
+                                "No reviews or feedback yet",
+                                style: TextStyle(color: Colors.white70, fontSize: 16),
+                              ),
+                            );
+                          }
+
+                          // Create a map to group feedback and reviews by user
+                          Map<String, Map<String, dynamic>> combinedData = {};
+
+                          // Process reviews
+                          for (var review in reviews) {
+                            String userName = review['name'] ?? "User";
+                            if (!combinedData.containsKey(userName)) {
+                              combinedData[userName] = {
+                                'name': userName,
+                                'ratings': review['ratings'],
+                                'review': null,
+                              };
+                            } else {
+                              combinedData[userName]!['ratings'] = review['ratings'];
+                            }
+                          }
+
+                          // Process feedbacks
+                          for (var feedback in feedbacks) {
+                            String userName = feedback['name'] ?? "User";
+                            if (!combinedData.containsKey(userName)) {
+                              combinedData[userName] = {
+                                'name': userName,
+                                'feedback': feedback['feedback'],
+                                'ratings': null,
+                              };
+                            } else {
+                              combinedData[userName]!['feedback'] = feedback['feedback'];
+                            }
+                          }
+
+                          // ... existing code ...
+
+                          return ListView.builder(
+                            padding: const EdgeInsets.all(16),
+                            itemCount: combinedData.length,
+                            itemBuilder: (context, index) {
+                              final userData = combinedData.values.elementAt(index);
+
+                              return Container(
+                                margin: const EdgeInsets.only(bottom: 20),
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.1),
+
+
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: AssetImage('assets/images/user.png'),
+                                          backgroundColor: Colors.grey[300],
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          userData['name'],
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+
+                                    if (userData['feedback'] != null)
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            "Feedback:",
+                                            style: TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            userData['feedback'],
+                                            style: const TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 12),
+                                        ],
+                                      ),
+
+                                    if (userData['ratings'] != null)
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            "Ratings:",
+                                            style: TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          ...(userData['ratings'] as Map).entries.map<Widget>((entry) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(bottom: 8),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                      "${entry.key}",
+                                                      style: const TextStyle(
+                                                        color: Colors.white70,
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: List.generate(5, (i) {
+                                                      return Icon(
+                                                        i < entry.value ? Icons.star : Icons.star_border,
+                                                        color: Colors.amber,
+                                                        size: 18,
+                                                      );
+                                                    }),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ],
+                                      ),
+                                  ],
+                                ),
+
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -1021,20 +1173,32 @@ class _RateServicesState extends State<RateServices> {
     'Interview': 0,
   };
 
+  final TextEditingController _feedbackController = TextEditingController();
+  String feedbackText = "";
+
   Widget _buildRatingItem(String serviceName) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.015, horizontal: MediaQuery.of(context).size.width * 0.05),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
         children: [
-          Text(
-            serviceName,
-            style: TextStyle(color: Colors.white, fontFamily: 'Inter',fontSize: 18),
+          Expanded(
+            child: Text(
+              serviceName,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Inter',
+                fontSize: 18,
+              ),
+            ),
           ),
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: List.generate(5, (index) {
               return IconButton(
-                iconSize: 20,
+                padding: EdgeInsets.zero,
+                constraints: BoxConstraints(),
+                iconSize: 23,
                 icon: Icon(
                   index < ratings[serviceName]! ? Icons.star : Icons.star_border,
                   color: Colors.yellow.shade200,
@@ -1052,21 +1216,19 @@ class _RateServicesState extends State<RateServices> {
     );
   }
 
-  _submitRating() {
-    List<Map<String, dynamic>> reviews = ratings.keys.map((service) {
-      return {
-        "name": service,
-        "review": "Great service!",
-        "rating": ratings[service]!.toDouble(),
-      };
-    }).toList();
+  void _submitRating() {
+    String feedbackText = _feedbackController.text.trim();
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ReviewsScreen(reviews: reviews),
-      ),
-    );
+    final review = {
+      "name": "User!",
+      "review": feedbackText.isEmpty ? " " : feedbackText,
+      "ratings": ratings,
+    };
+
+    Hive.box('reviews').add(review);
+
+
+    print('Rating saved in Hive');
   }
 
   @override
@@ -1236,7 +1398,7 @@ class _RateServicesState extends State<RateServices> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20, // حجم ثابت
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Inter',
                         ),
@@ -1395,246 +1557,248 @@ class _FeedbackState extends State<Feedback> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF110A2B),
-      body: Stack(
-        children: [
-          Positioned(
-            top: 300,
-            left: 60,
-            child: ImageFiltered(
-              imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-              child: Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFF352250),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: -30,
-            right: -70,
-            child: ImageFiltered(
-              imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-              child: Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFF9860E4),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 100,
-            left: 200,
-            child: ImageFiltered(
-              imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-              child: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFF9860E4),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 50,
-            right: 50,
-            child: ImageFiltered(
-              imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-              child: Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
+      body: SizedBox.expand(
+        child: Stack(
+          children: [
+            Positioned(
+              top: 300,
+              left: 60,
+              child: ImageFiltered(
+                imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                child: Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Color(0xFF40174C)
-                ),
-              ),
-            ),
-          ),
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 40, left: 20),
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    color: Color(0xFF352250),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Stack(
+              ),
+            ),
+            Positioned(
+              top: -30,
+              right: -70,
+              child: ImageFiltered(
+                imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFF9860E4),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 100,
+              left: 200,
+              child: ImageFiltered(
+                imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFF9860E4),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 50,
+              right: 50,
+              child: ImageFiltered(
+                imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                child: Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFF40174C)
+                  ),
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 40, left: 20),
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Align(
                       alignment: Alignment.center,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Transform.rotate(
+                            angle: 50.39,
+                            child: Container(
+                              width: 291.38,
+                              height: 100.97,
+                              decoration: ShapeDecoration(
+                                shape: OvalBorder(
+                                  side: BorderSide(
+                                    width: 1.55,
+                                    color: Colors.white.withAlpha(28),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Transform.rotate(
+                            angle: 50.41,
+                            child: Container(
+                              width: 229.88,
+                              height: 70.46,
+                              decoration: ShapeDecoration(
+                                shape: OvalBorder(
+                                  side: BorderSide(
+                                    width: 1.55,
+                                    color: Colors.white.withAlpha(28),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Transform.rotate(
+                            angle: 50.44,
+                            child: Container(
+                              width: 200.92,
+                              height: 50.40,
+                              decoration: ShapeDecoration(
+                                shape: OvalBorder(
+                                  side: BorderSide(
+                                    width: 1.55,
+                                    color: Colors.white.withAlpha(28),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 70,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2,
+                              ),
+                            ),
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: AssetImage('assets/images/user.png'),
+                              backgroundColor: Colors.transparent,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 80),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Transform.rotate(
-                          angle: 50.39,
-                          child: Container(
-                            width: 291.38,
-                            height: 100.97,
-                            decoration: ShapeDecoration(
-                              shape: OvalBorder(
-                                side: BorderSide(
-                                  width: 1.55,
-                                  color: Colors.white.withAlpha(28),
+                        Text(
+                          'Your Feedbacks',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Inter',
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'Click the button below to write your feedback.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 16,
+                            fontFamily: 'Inter',
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        ...feedbacks.asMap().map((index, feedback) {
+                          return MapEntry(
+                            index,
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: IntrinsicHeight(
+                                child: Container(
+                                  width: 380,
+                                  padding: EdgeInsets.all(10),
+                                  decoration: ShapeDecoration(
+                                    color: Colors.white10,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          feedback,
+                                          style: TextStyle(
+                                            color: const Color(0xFFF5EFFC),
+                                            fontSize: 14,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500,
+                                            height: 1.40,
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          IconButton(
+                                            icon: SvgPicture.asset(
+                                              'assets/images/Pen_2.svg',
+                                              width: 24,
+                                              height: 24,
+                                              color: Colors.white30,
+                                            ),
+                                            onPressed: () => _editFeedback(index),
+                                          ),
+                                          IconButton(
+                                            icon: SvgPicture.asset(
+                                              'assets/images/Trash_Bin_Minimalistic.svg',
+                                              width: 24,
+                                              height: 24,
+                                              color: Colors.white30,
+                                            ),
+                                            onPressed: () => _deleteFeedback(index),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                        Transform.rotate(
-                          angle: 50.41,
-                          child: Container(
-                            width: 229.88,
-                            height: 70.46,
-                            decoration: ShapeDecoration(
-                              shape: OvalBorder(
-                                side: BorderSide(
-                                  width: 1.55,
-                                  color: Colors.white.withAlpha(28),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Transform.rotate(
-                          angle: 50.44,
-                          child: Container(
-                            width: 200.92,
-                            height: 50.40,
-                            decoration: ShapeDecoration(
-                              shape: OvalBorder(
-                                side: BorderSide(
-                                  width: 1.55,
-                                  color: Colors.white.withAlpha(28),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 70,
-                          height: 70,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 2,
-                            ),
-                          ),
-                          child: CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage('assets/images/user.png'),
-                            backgroundColor: Colors.transparent,
-                          ),
-                        )
+                          );
+                        }).values.toList(),
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 80),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        'Your Feedbacks',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Inter',
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        'Click the button below to write your feedback.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 16,
-                          fontFamily: 'Inter',
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      ...feedbacks.asMap().map((index, feedback) {
-                        return MapEntry(
-                          index,
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: IntrinsicHeight(
-                              child: Container(
-                                width: 380,
-                                padding: EdgeInsets.all(10),
-                                decoration: ShapeDecoration(
-                                  color: Colors.white10,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        feedback,
-                                        style: TextStyle(
-                                          color: const Color(0xFFF5EFFC),
-                                          fontSize: 14,
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w500,
-                                          height: 1.40,
-                                        ),
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        IconButton(
-                                          icon: SvgPicture.asset(
-                                            'assets/images/Pen_2.svg',
-                                            width: 24,
-                                            height: 24,
-                                            color: Colors.white30,
-                                          ),
-                                          onPressed: () => _editFeedback(index),
-                                        ),
-                                        IconButton(
-                                          icon: SvgPicture.asset(
-                                            'assets/images/Trash_Bin_Minimalistic.svg',
-                                            width: 24,
-                                            height: 24,
-                                            color: Colors.white30,
-                                          ),
-                                          onPressed: () => _deleteFeedback(index),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }).values.toList(),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
 
       floatingActionButton: Container(
@@ -1663,7 +1827,6 @@ class _FeedbackState extends State<Feedback> {
     );
   }
 }
-
 
 class WriteFeedbackScreen extends StatefulWidget {
   @override
@@ -1872,9 +2035,17 @@ class _WriteFeedbackScreenState extends State<WriteFeedbackScreen> {
                       SizedBox(height: 20),
                       Center(
                         child: GestureDetector(
-                          onTap: () {
-                            String feedbackText = _controller.text;
-                            Navigator.pop(context, feedbackText);
+                          onTap: () async {
+                            String feedbackText = _controller.text.trim();
+                            if (feedbackText.isNotEmpty) {
+                              final box = Hive.box('feedbacks');
+                              box.add({
+                                'name': "user",
+                                'feedback': feedbackText,
+                                'timestamp': DateTime.now().toString(),
+                              });
+                              Navigator.pop(context, feedbackText);
+                            }
                           },
                           child: Container(
                             width: double.infinity,

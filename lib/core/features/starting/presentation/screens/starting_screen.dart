@@ -253,7 +253,7 @@ class _SplashScreenState extends State<StartingScreen> with TickerProviderStateM
                           ),
                         ),
                         Positioned(
-                          right: (_animation.value * 5),
+                          right: (_animation.value * 5) + 30,
                           top: 22,
                           child: Opacity(
                             opacity: 1 - _animation.value,
