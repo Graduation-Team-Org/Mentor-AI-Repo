@@ -17,6 +17,9 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
+  await Hive.openBox('reviews');
+  await Hive.openBox('feedbacks');
+
   // Initialize HydratedBloc storage
   final storage = await getTemporaryDirectory();
   HydratedBloc.storage = await HydratedStorage.build(
