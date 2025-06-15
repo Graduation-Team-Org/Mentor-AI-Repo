@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:road_map_mentor/core/features/build_cv/screens/build_cv_page.dart';
-import 'package:road_map_mentor/core/features/chat_with_doc/screens/chat_with_doc_page.dart';
+import 'package:road_map_mentor/core/features/chat_with_doc/screens/chatscreen.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/screens/cv_analysis_page.dart';
 import 'package:road_map_mentor/core/features/interview/screens/interview_page.dart';
 import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
 import 'dart:ui';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/chat_message_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:road_map_mentor/core/utils/app_routers.dart';
 
 class HomePage extends StatefulWidget {
   final String? username;
@@ -86,7 +88,7 @@ class _HomePageState extends State<HomePage> {
               type: BottomNavigationBarType.fixed,
               items: List.generate(
                 _pages.length,
-                    (index) {
+                (index) {
                   final isSelected = _selectedIndex == index;
                   return BottomNavigationBarItem(
                     icon: SvgPicture.asset(
@@ -100,6 +102,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+
           for (int i = 0; i < _pages.length; i++)
             if (_selectedIndex == i)
               Positioned(
@@ -116,8 +119,8 @@ class _HomePageState extends State<HomePage> {
                     color: const Color(0xFF6A1B9A),
                   ),
                 ),
-              ),
 
+              
         ],
       ),
 
@@ -234,9 +237,7 @@ class HomeScreen extends StatelessWidget {
                 width: 70,
                 height: 70,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFF40174C)
-                ),
+                    shape: BoxShape.circle, color: Color(0xFF40174C)),
               ),
             ),
           ),
@@ -249,10 +250,8 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-
     );
   }
-
 
   Widget _buildHeader() {
     return Padding(
@@ -282,8 +281,13 @@ class HomeScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Hello,", style: TextStyle(color: Colors.white70, fontSize: 14)),
-                  Text("User!", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text("Hello,",
+                      style: TextStyle(color: Colors.white70, fontSize: 14)),
+                  Text("User!",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold)),
                 ],
               ),
             ],
@@ -294,21 +298,46 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-
   Widget _buildServicesList(BuildContext context) {
     return ListView(
       padding: EdgeInsets.symmetric(horizontal: 20),
       children: [
-        _buildServiceCard(context, "Roadmap", "Talk to Steve to find out which roadmap to follow for your desired track.", "assets/images/home1.png", "assets/images/Roadmap.png"),
-        _buildServiceCard(context, "Chat With Document", "Talk to Serena to discuss your document in detail and get valuable insights.", "assets/images/home2.png", "assets/images/Chat.png"),
-        _buildServiceCard(context, "CV Analysis", "Talk to Marcus to review your CV and find ways to make it stronger.", "assets/images/home3.png", "assets/images/CV.png"),
-        _buildServiceCard(context, "Interview", "Talk to David to prepare for your next big interview with confidence and expert guidance.", "assets/images/home4.png", "assets/images/Interview.png"),
-        _buildServiceCard(context, "Build CV", "Helping you create a CV tailored for the job market by guiding you on what to include", null, "assets/images/BuildCV.png"),
+        _buildServiceCard(
+            context,
+            "Roadmap",
+            "Talk to Steve to find out which roadmap to follow for your desired track.",
+            "assets/images/home1.png",
+            "assets/images/Roadmap.png"),
+        _buildServiceCard(
+            context,
+            "Chat With Document",
+            "Talk to Serena to discuss your document in detail and get valuable insights.",
+            "assets/images/home2.png",
+            "assets/images/Chat.png"),
+        _buildServiceCard(
+            context,
+            "CV Analysis",
+            "Talk to Marcus to review your CV and find ways to make it stronger.",
+            "assets/images/home3.png",
+            "assets/images/CV.png"),
+        _buildServiceCard(
+            context,
+            "Interview",
+            "Talk to David to prepare for your next big interview with confidence and expert guidance.",
+            "assets/images/home4.png",
+            "assets/images/Interview.png"),
+        _buildServiceCard(
+            context,
+            "Build CV",
+            "Helping you create a CV tailored for the job market by guiding you on what to include",
+            null,
+            "assets/images/BuildCV.png"),
       ],
     );
   }
 
-  Widget _buildServiceCard(BuildContext context, String title, String description, String? imagePath, String backgroundImagePath) {
+  Widget _buildServiceCard(BuildContext context, String title,
+      String description, String? imagePath, String backgroundImagePath) {
     return Container(
       margin: EdgeInsets.only(bottom: 15),
       padding: EdgeInsets.all(15),
@@ -326,15 +355,21 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                Text(title,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold)),
                 SizedBox(height: 5),
-                Text(description, style: TextStyle(color: Colors.white70, fontSize: 14)),
+                Text(description,
+                    style: TextStyle(color: Colors.white70, fontSize: 14)),
                 SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () => _navigateToService(context, title),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
                   ),
                   child: Text(
                     "Get Started",
@@ -352,40 +387,34 @@ class HomeScreen extends StatelessWidget {
           if (imagePath != null)
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.asset(imagePath, width: 120, height: 120, fit: BoxFit.cover),
+              child: Image.asset(imagePath,
+                  width: 120, height: 120, fit: BoxFit.cover),
             ),
         ],
       ),
     );
   }
 
-
   void _navigateToService(BuildContext context, String service) {
-    Widget page;
     switch (service) {
       case "Roadmap":
-        page = RoadMapChatScreen();
+        context.go(AppRouter.chatScreen);
         break;
       case "Chat With Document":
-        page = ChatWithDocPage();
+        context.go(AppRouter.chatWithDocPage);
         break;
       case "CV Analysis":
-        page = CvAnalysisPage();
+        context.go(AppRouter.cvAnalysisPage);
         break;
       case "Interview":
-        page = InterviewPage();
+        context.go(AppRouter.interviewPage);
         break;
       case "Build CV":
-        page = BuildCvPage();
+        context.go(AppRouter.buildCvPage);
         break;
       default:
         return;
     }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
   }
 }
 
@@ -468,6 +497,7 @@ class AboutScreen extends StatelessWidget {
               ),
             ),
           ),
+
 
 
           SafeArea(
@@ -650,6 +680,7 @@ class AboutScreen extends StatelessWidget {
                   ],
                 ),
               ),
+
             ),
           ),
         ],
@@ -722,7 +753,6 @@ class _ServiceCard extends StatelessWidget {
 }
 
 class ReviewsScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -797,6 +827,7 @@ class ReviewsScreen extends StatelessWidget {
                   padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).padding.bottom + 80,
                   ),
+
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                       minHeight: constraints.maxHeight,
@@ -868,6 +899,7 @@ class ReviewsScreen extends StatelessWidget {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Row(
+
                                                 children: [
                                                   ClipOval(
                                                     child: Image.asset(
@@ -877,6 +909,7 @@ class ReviewsScreen extends StatelessWidget {
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
+
 
                                                   const SizedBox(width: 10),
                                                   Text(
@@ -946,11 +979,11 @@ class ReviewsScreen extends StatelessWidget {
                                                               );
                                                             }
 
-                                                            // باقي النجوم (ممتلئة أو فارغة حسب القيمة)
+                                                           
                                                             return SvgPicture.asset(
                                                               i < entry.value
-                                                                  ? 'assets/images/Component_71.svg' // نجمة ممتلئة
-                                                                  : 'assets/images/Component_70.svg', // نجمة فارغة
+                                                                  ? 'assets/images/Component_71.svg' 
+                                                                  : 'assets/images/Component_70.svg', 
                                                               width: 18,
                                                               height: 18,
                                                             );
@@ -975,6 +1008,7 @@ class ReviewsScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+
                   ),
                 );
               },
@@ -991,8 +1025,7 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>  {
-
+class _ProfileScreenState extends State<ProfileScreen> {
   String userName = "User";
   String userEmail = "user@gmail.com";
 
@@ -1062,9 +1095,7 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                 width: 70,
                 height: 70,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFF40174C)
-                ),
+                    shape: BoxShape.circle, color: Color(0xFF40174C)),
               ),
             ),
           ),
@@ -1075,7 +1106,8 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                   maxWidth: 600,
                 ),
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Column(
                     children: <Widget>[
                       Padding(
@@ -1142,7 +1174,8 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                                 ),
                                 child: CircleAvatar(
                                   radius: 30,
-                                  backgroundImage: AssetImage('assets/images/user.png'),
+                                  backgroundImage:
+                                      AssetImage('assets/images/user.png'),
                                   backgroundColor: Colors.transparent,
                                 ),
                               )
@@ -1258,12 +1291,17 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                                   onPressed: () {
                                     Navigator.pushReplacement(
                                       context,
-                                      MaterialPageRoute(builder: (context) => HomePage1()),
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage1()),
                                     );
 
-                                    Future.delayed(Duration(milliseconds: 500), () {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text('Logged out successfully!')),
+                                    Future.delayed(Duration(milliseconds: 500),
+                                        () {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Logged out successfully!')),
                                       );
                                     });
                                   },
@@ -1282,11 +1320,9 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                                 ),
                               ],
                             );
-
                           },
                         );
                       }),
-
                       SizedBox(height: 16),
                       _buildTextButton('Delete account', () {
                         showDialog(
@@ -1340,9 +1376,11 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          backgroundColor: Colors.black.withOpacity(0.6),
+                                          backgroundColor:
+                                              Colors.black.withOpacity(0.6),
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(15),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
                                             side: BorderSide(
                                               color: Color(0xFF7E46CA),
                                               width: 2,
@@ -1350,7 +1388,8 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                                           ),
                                           content: Container(
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(15),
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
                                             ),
                                             padding: EdgeInsets.all(20),
                                             child: Text(
@@ -1366,18 +1405,26 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                                               onPressed: () {
                                                 Navigator.pushReplacement(
                                                   context,
-                                                  MaterialPageRoute(builder: (context) => HomePage1()),
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          HomePage1()),
                                                 );
-                                                Future.delayed(Duration(milliseconds: 500), () {
-                                                  ScaffoldMessenger.of(context).showSnackBar(
-                                                    SnackBar(content: Text('Your account has been deleted successfully')),
+                                                Future.delayed(
+                                                    Duration(milliseconds: 500),
+                                                    () {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                        content: Text(
+                                                            'Your account has been deleted successfully')),
                                                   );
                                                 });
                                               },
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.white,
                                                 shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
                                                 ),
                                               ),
                                               child: Text(
@@ -1407,7 +1454,6 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                                 ),
                               ],
                             );
-
                           },
                         );
                       }),
@@ -1423,8 +1469,8 @@ class _ProfileScreenState extends State<ProfileScreen>  {
     );
   }
 
-  Widget _buildProfileButton(BuildContext context, String text,
-      Widget icon, Color iconColor, Widget page) {
+  Widget _buildProfileButton(BuildContext context, String text, Widget icon,
+      Color iconColor, Widget page) {
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => page));
@@ -1501,9 +1547,10 @@ class _RateServicesState extends State<RateServices> {
 
   Widget _buildRatingItem(String serviceName) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.015, horizontal: MediaQuery.of(context).size.width * 0.05),
+      padding: EdgeInsets.symmetric(
+          vertical: MediaQuery.of(context).size.height * 0.015,
+          horizontal: MediaQuery.of(context).size.width * 0.05),
       child: Row(
-
         children: [
           Expanded(
             child: Text(
@@ -1519,6 +1566,7 @@ class _RateServicesState extends State<RateServices> {
             children: List.generate(5, (i) {
               return GestureDetector(
                 onTap: () {
+
                   setState(() {
                     ratings[serviceName] = i + 1;
                   });
@@ -1550,7 +1598,6 @@ class _RateServicesState extends State<RateServices> {
     };
 
     Hive.box('reviews').add(review);
-
 
     print('Rating saved in Hive');
   }
@@ -1617,9 +1664,7 @@ class _RateServicesState extends State<RateServices> {
                 width: 70,
                 height: 70,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFF40174C)
-                ),
+                    shape: BoxShape.circle, color: Color(0xFF40174C)),
               ),
             ),
           ),
@@ -1627,7 +1672,9 @@ class _RateServicesState extends State<RateServices> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 10, left: MediaQuery.of(context).size.width * 0.05),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top + 10,
+                    left: MediaQuery.of(context).size.width * 0.05),
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
@@ -1641,7 +1688,8 @@ class _RateServicesState extends State<RateServices> {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.05),
                   child: Column(
                     children: [
                       Padding(
@@ -1708,7 +1756,8 @@ class _RateServicesState extends State<RateServices> {
                                 ),
                                 child: CircleAvatar(
                                   radius: 30,
-                                  backgroundImage: AssetImage('assets/images/user.png'),
+                                  backgroundImage:
+                                      AssetImage('assets/images/user.png'),
                                   backgroundColor: Colors.transparent,
                                 ),
                               )
@@ -1716,7 +1765,8 @@ class _RateServicesState extends State<RateServices> {
                           ),
                         ),
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
                       Text(
                         'Rate our services',
                         textAlign: TextAlign.center,
@@ -1727,19 +1777,22 @@ class _RateServicesState extends State<RateServices> {
                           fontFamily: 'Inter',
                         ),
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
                       _buildRatingItem('Roadmap'),
                       _buildRatingItem('Analysis CV'),
                       _buildRatingItem('Build CV'),
                       _buildRatingItem('Chat with document'),
                       _buildRatingItem('Interview'),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
                       Align(
                         alignment: Alignment.center,
                         child: GestureDetector(
                           onTap: _submitRating,
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 15),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
@@ -1766,7 +1819,8 @@ class _RateServicesState extends State<RateServices> {
                           ),
                         ),
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.04),
                     ],
                   ),
                 ),
@@ -1784,7 +1838,6 @@ class Feedback extends StatefulWidget {
   _FeedbackState createState() => _FeedbackState();
 }
 
-
 class _FeedbackState extends State<Feedback> {
   List<String> feedbacks = []; // List to store all feedbacks
 
@@ -1794,7 +1847,8 @@ class _FeedbackState extends State<Feedback> {
     String? editedFeedback = await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        TextEditingController controller = TextEditingController(text: feedbacks[index]);
+        TextEditingController controller =
+            TextEditingController(text: feedbacks[index]);
         return AlertDialog(
           title: Text(
             "Edit Feedback",
@@ -1804,7 +1858,6 @@ class _FeedbackState extends State<Feedback> {
               fontSize: 20,
             ),
           ),
-
           backgroundColor: Colors.black.withOpacity(0.6),
           contentPadding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
@@ -1838,7 +1891,6 @@ class _FeedbackState extends State<Feedback> {
                   color: Colors.white,
                 ),
               ),
-
             ),
             TextButton(
               onPressed: () {
@@ -1856,7 +1908,6 @@ class _FeedbackState extends State<Feedback> {
                   color: Color(0xFF7E46CA),
                 ),
               ),
-
             ),
           ],
         );
@@ -1865,11 +1916,11 @@ class _FeedbackState extends State<Feedback> {
 
     if (editedFeedback != null && editedFeedback.isNotEmpty) {
       setState(() {
-        feedbacks[index] = editedFeedback; // Update feedback at the selected index
+        feedbacks[index] =
+            editedFeedback; // Update feedback at the selected index
       });
     }
   }
-
 
   void _deleteFeedback(int index) {
     setState(() {
@@ -1938,9 +1989,7 @@ class _FeedbackState extends State<Feedback> {
                   width: 70,
                   height: 70,
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFF40174C)
-                  ),
+                      shape: BoxShape.circle, color: Color(0xFF40174C)),
                 ),
               ),
             ),
@@ -2021,7 +2070,8 @@ class _FeedbackState extends State<Feedback> {
                             ),
                             child: CircleAvatar(
                               radius: 30,
-                              backgroundImage: AssetImage('assets/images/user.png'),
+                              backgroundImage:
+                                  AssetImage('assets/images/user.png'),
                               backgroundColor: Colors.transparent,
                             ),
                           )
@@ -2055,66 +2105,75 @@ class _FeedbackState extends State<Feedback> {
                           ),
                         ),
                         SizedBox(height: 5),
-                        ...feedbacks.asMap().map((index, feedback) {
-                          return MapEntry(
-                            index,
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: IntrinsicHeight(
-                                child: Container(
-                                  width: 380,
-                                  padding: EdgeInsets.all(10),
-                                  decoration: ShapeDecoration(
-                                    color: Colors.white10,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          feedback,
-                                          style: TextStyle(
-                                            color: const Color(0xFFF5EFFC),
-                                            fontSize: 14,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w500,
-                                            height: 1.40,
-                                          ),
+                        ...feedbacks
+                            .asMap()
+                            .map((index, feedback) {
+                              return MapEntry(
+                                index,
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: IntrinsicHeight(
+                                    child: Container(
+                                      width: 380,
+                                      padding: EdgeInsets.all(10),
+                                      decoration: ShapeDecoration(
+                                        color: Colors.white10,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                       ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          IconButton(
-                                            icon: SvgPicture.asset(
-                                              'assets/images/Pen_2.svg',
-                                              width: 24,
-                                              height: 24,
-                                              color: Colors.white30,
+                                          Expanded(
+                                            child: Text(
+                                              feedback,
+                                              style: TextStyle(
+                                                color: const Color(0xFFF5EFFC),
+                                                fontSize: 14,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w500,
+                                                height: 1.40,
+                                              ),
                                             ),
-                                            onPressed: () => _editFeedback(index),
                                           ),
-                                          IconButton(
-                                            icon: SvgPicture.asset(
-                                              'assets/images/Trash_Bin_Minimalistic.svg',
-                                              width: 24,
-                                              height: 24,
-                                              color: Colors.white30,
-                                            ),
-                                            onPressed: () => _deleteFeedback(index),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                icon: SvgPicture.asset(
+                                                  'assets/images/Pen_2.svg',
+                                                  width: 24,
+                                                  height: 24,
+                                                  color: Colors.white30,
+                                                ),
+                                                onPressed: () =>
+                                                    _editFeedback(index),
+                                              ),
+                                              IconButton(
+                                                icon: SvgPicture.asset(
+                                                  'assets/images/Trash_Bin_Minimalistic.svg',
+                                                  width: 24,
+                                                  height: 24,
+                                                  color: Colors.white30,
+                                                ),
+                                                onPressed: () =>
+                                                    _deleteFeedback(index),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
-                        }).values.toList(),
+                              );
+                            })
+                            .values
+                            .toList(),
                       ],
                     ),
                   ),
@@ -2124,7 +2183,6 @@ class _FeedbackState extends State<Feedback> {
           ],
         ),
       ),
-
       floatingActionButton: Container(
         height: 60,
         width: 60,
@@ -2223,9 +2281,7 @@ class _WriteFeedbackScreenState extends State<WriteFeedbackScreen> {
                 width: 70,
                 height: 70,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFF40174C)
-                ),
+                    shape: BoxShape.circle, color: Color(0xFF40174C)),
               ),
             ),
           ),
@@ -2233,7 +2289,9 @@ class _WriteFeedbackScreenState extends State<WriteFeedbackScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 10, left: MediaQuery.of(context).size.width * 0.05),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top + 10,
+                    left: MediaQuery.of(context).size.width * 0.05),
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
@@ -2328,7 +2386,6 @@ class _WriteFeedbackScreenState extends State<WriteFeedbackScreen> {
                   fontFamily: 'Inter',
                 ),
               ),
-
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(20.0),
@@ -2400,7 +2457,6 @@ class _WriteFeedbackScreenState extends State<WriteFeedbackScreen> {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -2413,18 +2469,18 @@ class _WriteFeedbackScreenState extends State<WriteFeedbackScreen> {
   }
 }
 
-class PersonalData extends StatefulWidget { // Changed to StatefulWidget
+class PersonalData extends StatefulWidget {
+  // Changed to StatefulWidget
   @override
   _PersonalDataState createState() => _PersonalDataState();
 }
 
-class _PersonalDataState extends State<PersonalData>  {
+class _PersonalDataState extends State<PersonalData> {
   bool _isEditing = false;
   String _username = 'user';
   String _email = 'user@gmail.com';
   String _joinDate = '04-02-2025';
   String _password = '1234';
-
 
   late TextEditingController _usernameController;
   late TextEditingController _emailController;
@@ -2450,7 +2506,6 @@ class _PersonalDataState extends State<PersonalData>  {
     _passwordController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -2512,9 +2567,7 @@ class _PersonalDataState extends State<PersonalData>  {
                 width: 70,
                 height: 70,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFF40174C)
-                ),
+                    shape: BoxShape.circle, color: Color(0xFF40174C)),
               ),
             ),
           ),
@@ -2595,7 +2648,8 @@ class _PersonalDataState extends State<PersonalData>  {
                           ),
                           child: CircleAvatar(
                             radius: 30,
-                            backgroundImage: AssetImage('assets/images/user.png'),
+                            backgroundImage:
+                                AssetImage('assets/images/user.png'),
                             backgroundColor: Colors.transparent,
                           ),
                         )
@@ -2608,7 +2662,6 @@ class _PersonalDataState extends State<PersonalData>  {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-
                       SizedBox(height: 30),
                       _buildTextField(
                         labelText: 'UserName',
@@ -2636,17 +2689,17 @@ class _PersonalDataState extends State<PersonalData>  {
                         suffixIcon: IconButton(
                           icon: _obscurePassword
                               ? SvgPicture.asset(
-                            'image/eye-off.svg',
-                            width: 24,
-                            height: 24,
-                            color: Colors.white70,
-                          )
+                                  'image/eye-off.svg',
+                                  width: 24,
+                                  height: 24,
+                                  color: Colors.white70,
+                                )
                               : SvgPicture.asset(
-                            'image/eye.svg',
-                            width: 24,
-                            height: 24,
-                            color: Colors.white70,
-                          ),
+                                  'image/eye.svg',
+                                  width: 24,
+                                  height: 24,
+                                  color: Colors.white70,
+                                ),
                           onPressed: () {
                             setState(() {
                               _obscurePassword = !_obscurePassword;
@@ -2680,7 +2733,11 @@ class _PersonalDataState extends State<PersonalData>  {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             gradient: LinearGradient(
-                              colors: [Color(0xFF7A4DB6), Color(0xFFDFCEF7), Color(0xFFF0E7FB)],
+                              colors: [
+                                Color(0xFF7A4DB6),
+                                Color(0xFFDFCEF7),
+                                Color(0xFFF0E7FB)
+                              ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
@@ -2701,7 +2758,6 @@ class _PersonalDataState extends State<PersonalData>  {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
