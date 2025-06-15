@@ -56,17 +56,25 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double itemWidth = width / _pages.length;
+    double centerX = (itemWidth * _selectedIndex) + itemWidth / 2;
+
     return Scaffold(
-      backgroundColor: Color(0xFF110A2B),
+      extendBody: true,
+      backgroundColor: Colors.transparent,
       body: _pages[_selectedIndex],
       bottomNavigationBar: Stack(
         clipBehavior: Clip.none,
         children: [
+          CustomPaint(
+            size: Size(width, 90),
+            painter: NavCurvePainter(centerX: centerX),
+          ),
           Container(
             height: 70.98,
-            decoration: BoxDecoration(
-              color: Color(0xFF150E31),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+            decoration: const BoxDecoration(
+              color: Colors.transparent,
             ),
             child: BottomNavigationBar(
               backgroundColor: Colors.transparent,
@@ -92,29 +100,79 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          Positioned(
-            left: MediaQuery.of(context).size.width / _pages.length * _selectedIndex +
-                MediaQuery.of(context).size.width / (_pages.length * 2) -
-                30,
-            top: -20,
-            child: FloatingActionButton(
-              onPressed: () => _onItemTapped(_selectedIndex),
-              backgroundColor: Colors.white,
-              shape: const CircleBorder(),
-              child: SvgPicture.asset(
-                _fabIcons[_selectedIndex]['selected']!,
-                width: 30,
-                height: 30,
-                color: const Color(0xFF6A1B9A),
+          for (int i = 0; i < _pages.length; i++)
+            if (_selectedIndex == i)
+              Positioned(
+                left: (itemWidth * i) + itemWidth / 2 - 30,
+                top: -20,
+                child: FloatingActionButton(
+                  onPressed: () => _onItemTapped(i),
+                  backgroundColor: Colors.white,
+                  shape: const CircleBorder(),
+                  child: SvgPicture.asset(
+                    _fabIcons[i]['selected']!,
+                    width: 30,
+                    height: 30,
+                    color: const Color(0xFF6A1B9A),
+                  ),
+                ),
               ),
-            ),
-          ),
+
         ],
       ),
+
     );
   }
 }
 
+class NavCurvePainter extends CustomPainter {
+  final double centerX;
+
+  NavCurvePainter({required this.centerX});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    double width = size.width;
+    double height = size.height;
+    double curveHeight = 90;
+    double curveWidth = 110;
+    double edgeCurveWidth = 20;
+
+    Paint paint = Paint()
+      ..color = const Color(0xFF110A2B)
+      ..style = PaintingStyle.fill;
+
+    Path path = Path();
+    path.moveTo(0, edgeCurveWidth);
+    path.quadraticBezierTo(0, 0, edgeCurveWidth, 0);
+
+    path.lineTo(centerX - curveWidth / 2 - 10, 0);
+    path.quadraticBezierTo(
+      centerX - curveWidth / 2,
+      0,
+      centerX - curveWidth / 2 + 10,
+      20,
+    );
+    path.quadraticBezierTo(centerX, curveHeight, centerX + curveWidth / 2 - 10, 20);
+    path.quadraticBezierTo(
+      centerX + curveWidth / 2,
+      0,
+      centerX + curveWidth / 2 + 10,
+      0,
+    );
+
+    path.lineTo(width - edgeCurveWidth, 0);
+    path.quadraticBezierTo(width, 0, width, edgeCurveWidth);
+    path.lineTo(width, height);
+    path.lineTo(0, height);
+    path.close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -204,9 +262,21 @@ class HomeScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleAvatar(
-                radius: 25,
-                backgroundImage: AssetImage("assets/images/user.png"),
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2,
+                  ),
+                ),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: AssetImage('assets/images/user.png'),
+                  backgroundColor: Colors.transparent,
+                ),
               ),
               const SizedBox(width: 10),
               Column(
@@ -322,81 +392,331 @@ class HomeScreen extends StatelessWidget {
 class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          color: Color(0xFF110A2B),
-        ),
-        Positioned(
-          top: 300,
-          left: 60,
-          child: ImageFiltered(
-            imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF352250),
+    final screenWidth = MediaQuery.of(context).size.width;
+    int crossAxisCount = 2;
+    if (screenWidth > 900) {
+      crossAxisCount = 4;
+    } else if (screenWidth > 600) {
+      crossAxisCount = 2;
+    } else {
+      crossAxisCount = 2;
+    }
+    return Scaffold(
+      backgroundColor: Color(0xFF110A2B),
+      extendBodyBehindAppBar: true,
+      body: Stack(
+        children: [
+
+
+          Positioned(
+            top: 300,
+            left: 60,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF352250),
+                ),
               ),
             ),
           ),
-        ),
-        Positioned(
-          top: -30,
-          right: -70,
-          child: ImageFiltered(
-            imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-            child: Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF9860E4),
+          Positioned(
+            top: -30,
+            right: -70,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF9860E4),
+                ),
               ),
             ),
           ),
-        ),
-        Positioned(
-          top: 100,
-          left: 200,
-          child: ImageFiltered(
-            imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF9860E4),
+          Positioned(
+            top: 100,
+            left: 200,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF9860E4),
+                ),
               ),
             ),
           ),
-        ),
-        Positioned(
-          bottom: 50,
-          right: 50,
-          child: ImageFiltered(
-            imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF40174C),
+          Positioned(
+            bottom: 50,
+            right: 50,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFF40174C)
+                ),
               ),
             ),
           ),
-        ),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Center(
-            child: Text(
-              'About',
-              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+
+
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Center(
+                child: Column(
+                  children: [
+                    const Text(
+                      "About the App",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Our application guides you from learning paths to\n"
+                          "job readiness by chatting with AI — analyze your\n"
+                          "documents, build your CV, and practice\n"
+                          "interviews, all in one place.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    const Text(
+                      "Our Services",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+
+                    GridView.count(
+                      crossAxisCount: crossAxisCount,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
+                      childAspectRatio: 0.8,
+                      children: const [
+                        _ServiceCard(
+                          title: "Roadmap",
+                          subtitle: "Discover your personalized learning path",
+                          imagePath: 'assets/images/back1.png',
+                        ),
+                        _ServiceCard(
+                          title: "Chat with document",
+                          subtitle: "Understand your documents easily",
+                          imagePath: 'assets/images/back3.png',
+                        ),
+                        _ServiceCard(
+                          title: "CV Analysis",
+                          subtitle: "AI reviews your CV for improvement",
+                          imagePath: 'assets/images/back2.png',
+                        ),
+                        _ServiceCard(
+                          title: "Interview",
+                          subtitle: "Sharpen your skills before the real talk",
+                          imagePath: 'assets/images/home4.png',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+
+                    const Text(
+                      "Why choose us?",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 60),
+                      child:  Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: SvgPicture.asset(
+                              'assets/images/icon-park-outline_correct.svg',
+                              width: 24,
+                              height: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              "Everything you need in one App",
+                              style: TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 60),
+                      child:  Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: SvgPicture.asset(
+                              'assets/images/icon-park-outline_correct.svg',
+                              width: 24,
+                              height: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              "Chat with AI, build your future",
+                              style: TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 60),
+                      child:  Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: SvgPicture.asset(
+                              'assets/images/icon-park-outline_correct.svg',
+                              width: 24,
+                              height: 24,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              "Realistic interview practice",
+                              style: TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 60),
+                      child:  Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: SvgPicture.asset(
+                              'assets/images/icon-park-outline_correct.svg',
+                              width: 24,
+                              height: 24,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              "Easy, smart, and fast career support",
+                              style: TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
+    );
+  }
+}
+class _ServiceCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String imagePath;
+
+  const _ServiceCard({
+    required this.title,
+    required this.subtitle,
+    required this.imagePath,
+  });
+
+  bool get isSvg => imagePath.endsWith('.svg');
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        color: const Color(0xFF3D1E70).withOpacity(0.4),
+        borderRadius: BorderRadius.circular(16),
+      ),
+
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          isSvg
+              ? SvgPicture.asset(
+            imagePath,
+            width: 60,
+            height: 60,
+          )
+              : ClipOval(
+            child: Image.asset(
+              imagePath,
+              width: 60,
+              height: 60,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            subtitle,
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -471,192 +791,195 @@ class ReviewsScreen extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.topCenter,
-            child: Column(
-              children: [
-                const SizedBox(height: 40),
-                const Text(
-                  "Reviews",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).padding.bottom + 80,
                   ),
-                ),
-                const SizedBox(height: 20),
-                Expanded(
-                  child: ValueListenableBuilder(
-                    valueListenable: Hive.box('reviews').listenable(),
-                    builder: (context, reviewBox, _) {
-                      final reviews = reviewBox.values.toList().cast<Map>();
-
-                      return ValueListenableBuilder(
-                        valueListenable: Hive.box('feedbacks').listenable(),
-                        builder: (context, feedbackBox, _) {
-                          final feedbacks = feedbackBox.values.toList().cast<Map>();
-
-                          if (reviews.isEmpty && feedbacks.isEmpty) {
-                            return const Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 30),
+                            const Center(
                               child: Text(
-                                "No reviews or feedback yet",
-                                style: TextStyle(color: Colors.white70, fontSize: 16),
-                              ),
-                            );
-                          }
-
-                          // Create a map to group feedback and reviews by user
-                          Map<String, Map<String, dynamic>> combinedData = {};
-
-                          // Process reviews
-                          for (var review in reviews) {
-                            String userName = review['name'] ?? "User";
-                            if (!combinedData.containsKey(userName)) {
-                              combinedData[userName] = {
-                                'name': userName,
-                                'ratings': review['ratings'],
-                                'review': null,
-                              };
-                            } else {
-                              combinedData[userName]!['ratings'] = review['ratings'];
-                            }
-                          }
-
-                          // Process feedbacks
-                          for (var feedback in feedbacks) {
-                            String userName = feedback['name'] ?? "User";
-                            if (!combinedData.containsKey(userName)) {
-                              combinedData[userName] = {
-                                'name': userName,
-                                'feedback': feedback['feedback'],
-                                'ratings': null,
-                              };
-                            } else {
-                              combinedData[userName]!['feedback'] = feedback['feedback'];
-                            }
-                          }
-
-                          // ... existing code ...
-
-                          return ListView.builder(
-                            padding: const EdgeInsets.all(16),
-                            itemCount: combinedData.length,
-                            itemBuilder: (context, index) {
-                              final userData = combinedData.values.elementAt(index);
-
-                              return Container(
-                                margin: const EdgeInsets.only(bottom: 20),
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.1),
-
-
-                                  borderRadius: BorderRadius.circular(16),
+                                "Reviews",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 20,
-                                          backgroundImage: AssetImage('assets/images/user.png'),
-                                          backgroundColor: Colors.grey[300],
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          userData['name'],
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 12),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            ValueListenableBuilder(
+                              valueListenable: Hive.box('reviews').listenable(),
+                              builder: (context, reviewBox, _) {
+                                final reviews = reviewBox.values.toList().cast<Map>();
 
-                                    if (userData['feedback'] != null)
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          const Text(
-                                            "Feedback:",
-                                            style: TextStyle(
-                                              color: Colors.white70,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            userData['feedback'],
-                                            style: const TextStyle(
-                                              color: Colors.white70,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 12),
-                                        ],
-                                      ),
+                                return ValueListenableBuilder(
+                                  valueListenable: Hive.box('feedbacks').listenable(),
+                                  builder: (context, feedbackBox, _) {
+                                    final feedbacks = feedbackBox.values.toList().cast<Map>();
 
-                                    if (userData['ratings'] != null)
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          const Text(
-                                            "Ratings:",
-                                            style: TextStyle(
-                                              color: Colors.white70,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                    if (reviews.isEmpty && feedbacks.isEmpty) {
+                                      return const Center(
+                                        child: Text(
+                                          "No reviews or feedback yet",
+                                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                                        ),
+                                      );
+                                    }
+
+                                    Map<String, Map<String, dynamic>> combinedData = {};
+
+                                    for (var review in reviews) {
+                                      String userName = review['name'] ?? "User";
+                                      combinedData[userName] = {
+                                        'name': userName,
+                                        'ratings': review['ratings'],
+                                        'feedback': null,
+                                      };
+                                    }
+
+                                    for (var feedback in feedbacks) {
+                                      String userName = feedback['name'] ?? "User";
+                                      combinedData[userName] ??= {'name': userName};
+                                      combinedData[userName]!['feedback'] = feedback['feedback'];
+                                    }
+
+                                    return Column(
+                                      children: combinedData.values.map((userData) {
+                                        return Container(
+                                          margin: const EdgeInsets.only(bottom: 20),
+                                          padding: const EdgeInsets.all(16),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white.withOpacity(0.1),
+                                            borderRadius: BorderRadius.circular(16),
                                           ),
-                                          const SizedBox(height: 4),
-                                          ...(userData['ratings'] as Map).entries.map<Widget>((entry) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(bottom: 8),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
                                                 children: [
-                                                  Expanded(
-                                                    child: Text(
-                                                      "${entry.key}",
-                                                      style: const TextStyle(
-                                                        color: Colors.white70,
-                                                        fontSize: 14,
-                                                      ),
+                                                  ClipOval(
+                                                    child: Image.asset(
+                                                      'assets/images/user.png',
+                                                      width: 40,
+                                                      height: 40,
+                                                      fit: BoxFit.cover,
                                                     ),
                                                   ),
-                                                  Row(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    children: List.generate(5, (i) {
-                                                      return Icon(
-                                                        i < entry.value ? Icons.star : Icons.star_border,
-                                                        color: Colors.amber,
-                                                        size: 18,
-                                                      );
-                                                    }),
-                                                  ),
 
+                                                  const SizedBox(width: 10),
+                                                  Text(
+                                                    userData['name'],
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
-                                            );
-                                          }).toList(),
-                                        ],
-                                      ),
-                                  ],
-                                ),
+                                              const SizedBox(height: 12),
+                                              if (userData['feedback'] != null) ...[
+                                                const Text(
+                                                  "Feedback:",
+                                                  style: TextStyle(
+                                                    color: Colors.white70,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Text(
+                                                  userData['feedback'],
+                                                  style: const TextStyle(
+                                                    color: Colors.white70,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 12),
+                                              ],
+                                              if (userData['ratings'] != null) ...[
+                                                const Text(
+                                                  "Ratings:",
+                                                  style: TextStyle(
+                                                    color: Colors.white70,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                ...(userData['ratings'] as Map).entries.map<Widget>((entry) {
+                                                  return Padding(
+                                                    padding: const EdgeInsets.only(bottom: 8),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Text(
+                                                            "${entry.key}",
+                                                            style: const TextStyle(
+                                                              color: Colors.white70,
+                                                              fontSize: 14,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Row(
+                                                          mainAxisSize: MainAxisSize.min,
+                                                          children: List.generate(5, (i) {
+                                                            if (i == 4 && entry.value >= 5) {
 
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
+                                                              return SvgPicture.asset(
+                                                                'assets/images/Component_65.svg',
+                                                                width: 18,
+                                                                height: 18,
+                                                              );
+                                                            }
+
+                                                            // باقي النجوم (ممتلئة أو فارغة حسب القيمة)
+                                                            return SvgPicture.asset(
+                                                              i < entry.value
+                                                                  ? 'assets/images/Component_71.svg' // نجمة ممتلئة
+                                                                  : 'assets/images/Component_70.svg', // نجمة فارغة
+                                                              width: 18,
+                                                              height: 18,
+                                                            );
+                                                          }),
+                                                        ),
+
+                                                      ],
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                              ],
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                );
+              },
             ),
-          ),
+          )
         ],
       ),
     );
@@ -867,9 +1190,9 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                           'assets/images/Chat_Round_Check.svg',
                           width: 24,
                           height: 24,
-                          color: Colors.green.shade300,
+                          color: Colors.yellow.shade500,
                         ),
-                        Colors.green.shade300,
+                        Colors.yellow.shade500,
                         Feedback(),
                       ),
                       SizedBox(height: 16),
@@ -880,9 +1203,9 @@ class _ProfileScreenState extends State<ProfileScreen>  {
                           'assets/images/Database.svg',
                           width: 24,
                           height: 24,
-                          color: Colors.blue.shade300,
+                          color: Colors.yellow.shade500,
                         ),
-                        Colors.blue.shade300,
+                        Colors.yellow.shade500,
                         PersonalData(),
                       ),
                       SizedBox(height: 24),
@@ -1193,21 +1516,22 @@ class _RateServicesState extends State<RateServices> {
             ),
           ),
           Row(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(5, (index) {
-              return IconButton(
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
-                iconSize: 23,
-                icon: Icon(
-                  index < ratings[serviceName]! ? Icons.star : Icons.star_border,
-                  color: Colors.yellow.shade200,
-                ),
-                onPressed: () {
+            children: List.generate(5, (i) {
+              return GestureDetector(
+                onTap: () {
                   setState(() {
-                    ratings[serviceName] = index + 1;
+                    ratings[serviceName] = i + 1;
                   });
                 },
+                child: SvgPicture.asset(
+                  i == 4 && ratings[serviceName]! >= 5
+                      ? 'assets/images/Component_65.svg'
+                      : i < ratings[serviceName]!
+                      ? 'assets/images/Component_71.svg'
+                      : 'assets/images/Component_70.svg',
+                  width: 24,
+                  height: 24,
+                ),
               );
             }),
           ),

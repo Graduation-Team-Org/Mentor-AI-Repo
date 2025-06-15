@@ -664,7 +664,7 @@ class InfoPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white70,
-                      fontSize: 16,
+                      fontSize: 14,
                       height: 1.5,
                     ),
                   ),
@@ -686,7 +686,7 @@ class InfoPage extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 20,
-                    childAspectRatio: 1.1,
+                    childAspectRatio: 0.8,
                     children: const [
                       _ServiceCard(
                         title: "Roadmap",
@@ -845,6 +845,7 @@ class _ServiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 200,
       decoration: BoxDecoration(
         color: const Color(0xFF3D1E70).withOpacity(0.4),
         borderRadius: BorderRadius.circular(16),
