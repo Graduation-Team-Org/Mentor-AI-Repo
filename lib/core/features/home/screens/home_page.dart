@@ -335,7 +335,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildServicesList(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.fromLTRB(20, 0, 20, 78),
       children: [
         _buildServiceCard(
             context,
