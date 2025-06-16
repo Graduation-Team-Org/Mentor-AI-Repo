@@ -111,20 +111,23 @@ class _HomePageState extends State<HomePage> {
                           key: iconKeys[index],
                           onTap: () => _onItemTapped(index),
                           child: Transform.translate(
-                            offset: isSelected ? const Offset(0, 1) : const Offset(0, 10),
+                            offset: isSelected
+                                ? const Offset(0, 1)
+                                : const Offset(0, 10),
                             child: Container(
                               width: 50,
                               height: 50,
                               margin: const EdgeInsets.only(bottom: 5),
                               decoration: isSelected
                                   ? const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              )
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                    )
                                   : null,
                               child: Center(
                                 child: SvgPicture.asset(
-                                  _fabIcons[index][isSelected ? 'selected' : 'unselected']!,
+                                  _fabIcons[index]
+                                      [isSelected ? 'selected' : 'unselected']!,
                                   width: 28,
                                   height: 28,
                                   color: const Color(0xFF7B4FD0),
@@ -174,7 +177,8 @@ class NavCurvePainter extends CustomPainter {
       centerX - curveWidth / 2 + 8,
       20,
     );
-    path.quadraticBezierTo(centerX, curveHeight, centerX + curveWidth / 2 - 8, 20);
+    path.quadraticBezierTo(
+        centerX, curveHeight, centerX + curveWidth / 2 - 8, 20);
     path.quadraticBezierTo(
       centerX + curveWidth / 2,
       0,
@@ -948,6 +952,8 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                             'ratings': review['ratings'],
                                             'feedback': review['feedback'],
                                             'timestamp': review['timestamp'],
+                                            'all_feedbacks':
+                                                [], // Initialize with an empty list
                                           };
                                         }
 
@@ -957,9 +963,13 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                           combinedData[userName] ??= {
                                             'name': userName,
                                             'timestamp': feedback['timestamp'],
+                                            'all_feedbacks':
+                                                [], // Initialize if not present
                                           };
-                                          combinedData[userName]!['feedback'] =
-                                              feedback['feedback'];
+                                          // Add all feedbacks to the list
+                                          (combinedData[userName]![
+                                                  'all_feedbacks'] as List)
+                                              .add(feedback['feedback']);
                                         }
 
                                         return Column(
@@ -1024,11 +1034,9 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                                     ],
                                                   ),
                                                   const SizedBox(height: 12),
-                                                  if (userData['feedback'] !=
-                                                          null &&
-                                                      userData['feedback']
-                                                          .toString()
-                                                          .isNotEmpty) ...[
+                                                  if ((userData['all_feedbacks']
+                                                          as List)
+                                                      .isNotEmpty) ...[
                                                     const Text(
                                                       "Feedback:",
                                                       style: TextStyle(
@@ -1039,14 +1047,24 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                                       ),
                                                     ),
                                                     const SizedBox(height: 4),
-                                                    Text(
-                                                      userData['feedback']
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                        color: Colors.white70,
-                                                        fontSize: 14,
-                                                      ),
-                                                    ),
+                                                    ...(userData[
+                                                                'all_feedbacks']
+                                                            as List)
+                                                        .map<Widget>(
+                                                            (f) => Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                          bottom:
+                                                                              4.0),
+                                                                  child: Text(
+                                                                    f.toString(),
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .white70),
+                                                                  ),
+                                                                ))
+                                                        .toList(),
                                                     const SizedBox(height: 12),
                                                   ],
                                                   if (userData['ratings'] !=
@@ -1170,40 +1188,53 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _auth = FirebaseAuth.instance;
-  String userName = "";
-  String userEmail = "";
-  String userPhotoURL = "";
-  String userJoinDate = "";
+  bool _isEditing = false;
+  late TextEditingController _usernameController;
+  late TextEditingController _emailController;
+  late TextEditingController _joinDateController;
+  late TextEditingController _passwordController;
 
   @override
   void initState() {
     super.initState();
-    _loadUserProfile();
+    _usernameController = TextEditingController();
+    _emailController = TextEditingController();
+    _joinDateController = TextEditingController();
+    _passwordController = TextEditingController();
+    _loadPersonalData();
   }
 
-  void _loadUserProfile() {
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _joinDateController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _loadPersonalData() {
     final user = _auth.currentUser;
     if (user != null) {
       setState(() {
-        userName = user.displayName ?? user.email?.split('@')[0] ?? "User";
-        userEmail = user.email ?? "";
-        userPhotoURL = user.photoURL ?? "";
+        _usernameController.text =
+            user.displayName ?? user.email?.split('@')[0] ?? "User";
+        _emailController.text = user.email ?? "";
         if (user.metadata.creationTime != null) {
-          userJoinDate =
+          _joinDateController.text =
               "Joined: ${user.metadata.creationTime!.toLocal().toString().split(' ')[0]}";
         }
       });
     }
   }
 
-  Future<void> _updateUserProfile(String newUsername) async {
+  Future<void> _updateUserProfile() async {
     try {
       final user = _auth.currentUser;
       if (user != null) {
-        await user.updateDisplayName(newUsername);
-        setState(() {
-          userName = newUsername;
-        });
+        if (_usernameController.text != user.displayName) {
+          await user.updateDisplayName(_usernameController.text);
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Profile updated successfully')),
         );
@@ -1392,10 +1423,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 child: CircleAvatar(
                                   radius: 30,
-                                  backgroundImage: userPhotoURL.isNotEmpty
-                                      ? NetworkImage(userPhotoURL)
-                                      : AssetImage('assets/images/user.png')
-                                          as ImageProvider,
+                                  backgroundImage:
+                                      AssetImage('assets/images/user.png'),
                                   backgroundColor: Colors.transparent,
                                 ),
                               )
@@ -1405,7 +1434,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        userName,
+                        _usernameController.text,
                         style: TextStyle(
                           color: const Color(0xFFF5EFFC),
                           fontFamily: 'Inter',
@@ -1415,7 +1444,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        userEmail,
+                        _emailController.text,
                         style: TextStyle(
                           color: const Color(0xFFF5EFFC),
                           fontFamily: 'Inter',
@@ -1424,7 +1453,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        userJoinDate,
+                        _joinDateController.text,
                         style: TextStyle(
                           color: const Color(0xFFF5EFFC),
                           fontFamily: 'Inter',
@@ -1673,9 +1702,11 @@ class _RateServicesState extends State<RateServices> {
 
   void _submitRating() {
     String feedbackText = _feedbackController.text.trim();
+    final user = FirebaseAuth.instance.currentUser;
+    final userName = user?.displayName ?? user?.email?.split('@')[0] ?? "User";
 
     final review = {
-      "name": "User!",
+      "name": userName,
       "review": feedbackText.isEmpty ? " " : feedbackText,
       "ratings": ratings,
     };
@@ -2503,8 +2534,12 @@ class _WriteFeedbackScreenState extends State<WriteFeedbackScreen> {
                             String feedbackText = _controller.text.trim();
                             if (feedbackText.isNotEmpty) {
                               final box = Hive.box('feedbacks');
+                              final user = FirebaseAuth.instance.currentUser;
+                              final userName = user?.displayName ??
+                                  user?.email?.split('@')[0] ??
+                                  "User";
                               box.add({
-                                'name': "user",
+                                'name': userName,
                                 'feedback': feedbackText,
                                 'timestamp': DateTime.now().toString(),
                               });
@@ -2561,29 +2596,97 @@ class PersonalData extends StatefulWidget {
 class _PersonalDataState extends State<PersonalData> {
   final _auth = FirebaseAuth.instance;
   bool _isEditing = false;
-  String _username = '';
-  String _email = '';
-  String _joinDate = '';
+  late TextEditingController _usernameController;
+  late TextEditingController _emailController;
+  late TextEditingController _joinDateController;
+  late TextEditingController _passwordController;
 
   @override
   void initState() {
     super.initState();
+    _usernameController = TextEditingController();
+    _emailController = TextEditingController();
+    _joinDateController = TextEditingController();
+    _passwordController = TextEditingController();
     _loadPersonalData();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _joinDateController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   void _loadPersonalData() {
     final user = _auth.currentUser;
     if (user != null) {
       setState(() {
-        _username = user.displayName ?? user.email?.split('@')[0] ?? "User";
-        _email = user.email ?? "";
+        _usernameController.text =
+            user.displayName ?? user.email?.split('@')[0] ?? "User";
+        _emailController.text = user.email ?? "";
         if (user.metadata.creationTime != null) {
-          _joinDate =
-              "${user.metadata.creationTime!.toLocal().day.toString().padLeft(2, '0')}-"
-              "${user.metadata.creationTime!.toLocal().month.toString().padLeft(2, '0')}-"
-              "${user.metadata.creationTime!.toLocal().year}";
+          _joinDateController.text =
+              "Joined: ${user.metadata.creationTime!.toLocal().toString().split(' ')[0]}";
         }
       });
+    }
+  }
+
+  Future<void> _updateUserProfile() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        if (_usernameController.text != user.displayName) {
+          await user.updateDisplayName(_usernameController.text);
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update profile: ${e.toString()}')),
+      );
+    }
+  }
+
+  Future<void> _deleteAccount() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        await user.delete();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage1()),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Account deleted successfully')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete account: ${e.toString()}')),
+      );
+    }
+  }
+
+  Future<void> _signOut() async {
+    try {
+      await _auth.signOut();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage1()),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Logged out successfully')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to logout: ${e.toString()}')),
+      );
     }
   }
 
@@ -2745,31 +2848,34 @@ class _PersonalDataState extends State<PersonalData> {
                       SizedBox(height: 30),
                       _buildTextField(
                         labelText: 'UserName',
-                        controller: TextEditingController(text: _username),
+                        controller: _usernameController,
                         enabled: _isEditing,
                       ),
                       SizedBox(height: 15),
                       _buildTextField(
                         labelText: 'Email',
-                        controller: TextEditingController(text: _email),
-                        enabled: _isEditing,
+                        controller: _emailController,
+                        enabled: false,
                       ),
                       SizedBox(height: 15),
                       _buildTextField(
                         labelText: 'Join date',
-                        controller: TextEditingController(text: _joinDate),
+                        controller: _joinDateController,
                         enabled: false,
                       ),
                       SizedBox(height: 15),
                       _buildTextField(
                         labelText: 'Password',
-                        controller: TextEditingController(),
+                        controller: _passwordController,
                         enabled: _isEditing,
                         obscureText: true,
                       ),
                       SizedBox(height: 30),
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          if (_isEditing) {
+                            await _updateUserProfile();
+                          }
                           setState(() {
                             _isEditing = !_isEditing;
                           });
