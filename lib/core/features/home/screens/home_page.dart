@@ -1663,9 +1663,11 @@ class _RateServicesState extends State<RateServices> {
 
   void _submitRating() {
     String feedbackText = _feedbackController.text.trim();
+    final user = FirebaseAuth.instance.currentUser;
+    final userName = user?.displayName ?? user?.email?.split('@')[0] ?? "User";
 
     final review = {
-      "name": "User!",
+      "name": userName,
       "review": feedbackText.isEmpty ? " " : feedbackText,
       "ratings": ratings,
     };
@@ -2493,8 +2495,12 @@ class _WriteFeedbackScreenState extends State<WriteFeedbackScreen> {
                             String feedbackText = _controller.text.trim();
                             if (feedbackText.isNotEmpty) {
                               final box = Hive.box('feedbacks');
+                              final user = FirebaseAuth.instance.currentUser;
+                              final userName = user?.displayName ??
+                                  user?.email?.split('@')[0] ??
+                                  "User";
                               box.add({
-                                'name': "user",
+                                'name': userName,
                                 'feedback': feedbackText,
                                 'timestamp': DateTime.now().toString(),
                               });
