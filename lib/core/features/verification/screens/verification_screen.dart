@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'dart:math';
 import 'package:road_map_mentor/core/features/verification_code/screens/verification_code_screen.dart';
+import 'package:road_map_mentor/core/services/firebase_auth_service.dart';
 
 import 'dart:ui';
 
@@ -12,10 +13,12 @@ class VerificationScreen extends StatefulWidget {
   State<VerificationScreen> createState() => _VerificationScreenState();
 }
 
-class _VerificationScreenState extends State<VerificationScreen>  with SingleTickerProviderStateMixin {
-
+class _VerificationScreenState extends State<VerificationScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  final _authService = FirebaseAuthService();
+  bool _isLoading = false;
 
   TextEditingController emailController = TextEditingController();
   String? errorMessage;
@@ -25,7 +28,7 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
     return (1000 + random.nextInt(9000)).toString();
   }
 
-  void validateAndContinue() {
+  void validateAndContinue() async {
     setState(() {
       String email = emailController.text.trim();
 
@@ -38,22 +41,36 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
       } else {
         errorMessage = null;
       }
-
-      String code = generateVerificationCode();
-
-
-      print("Verification code sent $code to $email");
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => VerificationCodeScreen(
-            email: email,
-            sentCode: code,
-          ),
-        ),
-      );
     });
+
+    if (errorMessage == null) {
+      setState(() => _isLoading = true);
+      try {
+        final code = await _authService
+            .generateAndStoreVerificationCode(emailController.text.trim());
+        if (mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => VerificationCodeScreen(
+                email: emailController.text.trim(),
+                sentCode: code,
+              ),
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          setState(() {
+            errorMessage = e.toString();
+          });
+        }
+      } finally {
+        if (mounted) {
+          setState(() => _isLoading = false);
+        }
+      }
+    }
   }
 
   @override
@@ -137,9 +154,7 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
                 width: 70,
                 height: 70,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFF40174C)
-                ),
+                    shape: BoxShape.circle, color: Color(0xFF40174C)),
               ),
             ),
           ),
@@ -159,8 +174,7 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
                     padding: EdgeInsets.only(
                         top: size.height * 0.05,
                         left: size.width * 0.06,
-                        right: size.width * 0.06
-                    ),
+                        right: size.width * 0.06),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -192,7 +206,6 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
                                       ),
                                     ),
                                   ),
-
                                 ],
                               );
                             },
@@ -212,7 +225,8 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
                         SizedBox(height: size.height * 0.01),
                         Text(
                           "Enter your email to send OTP code",
-                          style: TextStyle(fontFamily: 'Inter', color: Colors.white70),
+                          style: TextStyle(
+                              fontFamily: 'Inter', color: Colors.white70),
                         ),
                         SizedBox(height: size.height * 0.04),
                         TextField(
@@ -221,7 +235,10 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                             hintText: "Email",
-                            hintStyle: TextStyle(color: Color(0xCCF5EFFC),fontSize: 14, fontFamily: 'Inter'),
+                            hintStyle: TextStyle(
+                                color: Color(0xCCF5EFFC),
+                                fontSize: 14,
+                                fontFamily: 'Inter'),
                             prefixIcon: Padding(
                               padding: const EdgeInsets.only(left: 12.0),
                               child: SvgPicture.asset(
@@ -250,22 +267,36 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
                           ),
                         SizedBox(height: size.height * 0.04),
                         GestureDetector(
-                          onTap: validateAndContinue,
+                          onTap: _isLoading ? null : validateAndContinue,
                           child: Container(
                             width: double.infinity,
                             height: size.height * 0.07,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               gradient: LinearGradient(
-                                colors: [Color(0xFF7A4DB6), Color(0xFFDFCEF7), Color(0xFFF0E7FB)],
+                                colors: [
+                                  Color(0xFF7A4DB6),
+                                  Color(0xFFDFCEF7),
+                                  Color(0xFFF0E7FB)
+                                ],
                               ),
                             ),
-                            child: Center(child: Text("Continue", style: TextStyle(
-                              color: const Color(0xFF352250),
-                              fontSize: 16,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                            ),)),
+                            child: Center(
+                              child: _isLoading
+                                  ? const CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Color(0xFF352250)),
+                                    )
+                                  : Text(
+                                      "Send Reset Link",
+                                      style: TextStyle(
+                                        color: const Color(0xFF352250),
+                                        fontSize: 16,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                            ),
                           ),
                         ),
                       ],

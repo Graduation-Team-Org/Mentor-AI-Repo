@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart';
 import 'package:road_map_mentor/core/features/terms_conditions/screens/terms_conditions_screen.dart';
+import 'package:road_map_mentor/core/services/firebase_auth_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui';
 
@@ -12,17 +13,19 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderStateMixin {
-
+class _SignUpScreenState extends State<SignUpScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-
+  final _authService = FirebaseAuthService();
+  bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool _isChecked = false;
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
@@ -38,59 +41,87 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
     } catch (e) {
       debugPrint('Error launching URL: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Cannot open link at this time"))
-      );
+          SnackBar(content: Text("Cannot open link at this time")));
     }
   }
 
-  void _signUp() {
+  void _signUp() async {
     if (_formKey.currentState!.validate()) {
       if (!_isChecked) {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("You must accept the terms & conditions!"))
+          const SnackBar(
+              content: Text("You must accept the terms & conditions!")),
         );
         return;
       }
 
-      // Schedule navigation for the next frame to avoid Navigator lock issues
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        try {
-          // Use of or pushReplacement to avoid stack manipulation issues
-          Navigator.of(context).pushReplacement(
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                return FadeTransition(opacity: animation, child: child);
-              },
-            ),
-          );
-        } catch (e) {
-          debugPrint('Navigation error: $e');
+      setState(() => _isLoading = true);
+      try {
+        final userCredential =
+            await _authService.createUserWithEmailAndPassword(
+          _emailController.text.trim(),
+          _passwordController.text,
+          _usernameController.text.trim(),
+        );
+
+        if (userCredential?.user != null && mounted) {
+          _navigateToSignIn();
+        }
+      } catch (e) {
+        if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("An error occurred. Please try again."))
+            SnackBar(content: Text(e.toString())),
           );
         }
-      });
+      } finally {
+        if (mounted) {
+          setState(() => _isLoading = false);
+        }
+      }
+    }
+  }
+
+  void _signUpWithGoogle() async {
+    setState(() => _isLoading = true);
+    try {
+      final userCredential = await _authService.signInWithGoogle();
+      if (userCredential?.user != null && mounted) {
+        _navigateToSignIn();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
   void _navigateToSignIn() {
-    // Schedule navigation for the next frame to avoid Navigator lock issues
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const SignInScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
               return FadeTransition(opacity: animation, child: child);
             },
           ),
         );
       } catch (e) {
         debugPrint('Navigation error: $e');
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("An error occurred. Please try again."))
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text("An error occurred. Please try again.")),
+          );
+        }
       }
     });
   }
@@ -182,9 +213,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                 width: 70,
                 height: 70,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFF40174C)
-                ),
+                    shape: BoxShape.circle, color: Color(0xFF40174C)),
               ),
             ),
           ),
@@ -212,7 +241,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                                     width: size.width * 0.15,
                                     errorBuilder: (context, error, stackTrace) {
                                       debugPrint('Error loading image: $error');
-                                      return Icon(Icons.error, size: size.width * 0.15, color: Colors.white);
+                                      return Icon(Icons.error,
+                                          size: size.width * 0.15,
+                                          color: Colors.white);
                                     },
                                   ),
                                 ),
@@ -232,13 +263,16 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                         ),
                       ),
                       SizedBox(height: size.height * 0.02),
-                      Text("Sign Up", style: TextStyle(
-                        color: const Color(0xFFF0E7FB),
-                        fontSize: 32,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 1.60,
-                      ),),
+                      Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          color: const Color(0xFFF0E7FB),
+                          fontSize: 32,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w700,
+                          height: 1.60,
+                        ),
+                      ),
                       SizedBox(height: size.height * 0.03),
                       _buildTextField(
                           SvgPicture.asset(
@@ -248,20 +282,19 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                             color: Colors.grey,
                             errorBuilder: (context, error, stackTrace) {
                               debugPrint('Error loading SVG: $error');
-                              return Icon(Icons.person, size: 24, color: Colors.grey);
+                              return Icon(Icons.person,
+                                  size: 24, color: Colors.grey);
                             },
                           ),
                           "UserName",
-                          _usernameController,
-                              (value) {
-                            if (value == null || value.isEmpty) return "Username is required";
-                            if (!RegExp(r'^[a-zA-Z0-9@._-]+$').hasMatch(value)) return "Invalid username format";
-                            return null;
-                          }
-                      ),
-
+                          _usernameController, (value) {
+                        if (value == null || value.isEmpty)
+                          return "Username is required";
+                        if (!RegExp(r'^[a-zA-Z0-9@._-]+$').hasMatch(value))
+                          return "Invalid username format";
+                        return null;
+                      }),
                       SizedBox(height: size.height * 0.02),
-
                       _buildTextField(
                           SvgPicture.asset(
                             'assets/images/Letter.svg',
@@ -270,28 +303,38 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                             color: Colors.grey,
                             errorBuilder: (context, error, stackTrace) {
                               debugPrint('Error loading SVG: $error');
-                              return Icon(Icons.email, size: 24, color: Colors.grey);
+                              return Icon(Icons.email,
+                                  size: 24, color: Colors.grey);
                             },
                           ),
                           "Email",
-                          _emailController,
-                              (value) {
-                            if (value == null || value.isEmpty) return "Email is required";
-                            if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
-                              return "Invalid email format";
-                            }
-                            return null;
-                          }
-                      ),
-                      SizedBox(height: size.height * 0.02),
-                      _buildPasswordField("Password", _passwordController, _isPasswordVisible, () {
-                        setState(() => _isPasswordVisible = !_isPasswordVisible);
+                          _emailController, (value) {
+                        if (value == null || value.isEmpty)
+                          return "Email is required";
+                        if (!RegExp(
+                                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+                            .hasMatch(value)) {
+                          return "Invalid email format";
+                        }
+                        return null;
                       }),
                       SizedBox(height: size.height * 0.02),
-                      _buildPasswordField("Confirm Password", _confirmPasswordController, _isConfirmPasswordVisible, () {
-                        setState(() => _isConfirmPasswordVisible = !_isConfirmPasswordVisible);
+                      _buildPasswordField(
+                          "Password", _passwordController, _isPasswordVisible,
+                          () {
+                        setState(
+                            () => _isPasswordVisible = !_isPasswordVisible);
+                      }),
+                      SizedBox(height: size.height * 0.02),
+                      _buildPasswordField(
+                          "Confirm Password",
+                          _confirmPasswordController,
+                          _isConfirmPasswordVisible, () {
+                        setState(() => _isConfirmPasswordVisible =
+                            !_isConfirmPasswordVisible);
                       }, (value) {
-                        if (value != _passwordController.text) return "Passwords do not match";
+                        if (value != _passwordController.text)
+                          return "Passwords do not match";
                         return null;
                       }),
                       SizedBox(height: size.height * 0.02),
@@ -304,7 +347,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                             },
                             activeColor: Colors.purpleAccent,
                           ),
-                          Text("I agree with ", style: TextStyle(color: Colors.white , fontFamily: 'Inter')),
+                          Text("I agree with ",
+                              style: TextStyle(
+                                  color: Colors.white, fontFamily: 'Inter')),
                           InkWell(
                             onTap: () {
                               // Schedule navigation for the next frame to avoid Navigator lock issues
@@ -312,48 +357,72 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                                 try {
                                   Navigator.of(context).push(
                                     PageRouteBuilder(
-                                      pageBuilder: (context, animation, secondaryAnimation) => TermsConditionsScreen(),
-                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                        return FadeTransition(opacity: animation, child: child);
+                                      pageBuilder: (context, animation,
+                                              secondaryAnimation) =>
+                                          TermsConditionsScreen(),
+                                      transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        return FadeTransition(
+                                            opacity: animation, child: child);
                                       },
                                     ),
                                   );
                                 } catch (e) {
                                   debugPrint('Navigation error: $e');
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text("An error occurred. Please try again."))
-                                  );
+                                      SnackBar(
+                                          content: Text(
+                                              "An error occurred. Please try again.")));
                                 }
                               });
                             },
-                            child: Text("terms & conditions", style: TextStyle(color: Color(0xFF9860E4),fontFamily: 'Inter', fontWeight: FontWeight.bold )),
+                            child: Text("terms & conditions",
+                                style: TextStyle(
+                                    color: Color(0xFF9860E4),
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.bold)),
                           )
                         ],
                       ),
                       SizedBox(height: size.height * 0.02),
-                      InkWell( // Changed from GestureDetector to InkWell for better feedback
-                        onTap: _signUp,
+                      InkWell(
+                        onTap: _isLoading ? null : _signUp,
                         child: Container(
                           width: double.infinity,
                           height: size.height * 0.08,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            gradient: LinearGradient(
-                              colors: [Color(0xFF7A4DB6), Color(0xFFDFCEF7), Color(0xFFF0E7FB)],
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color(0xFF7A4DB6),
+                                Color(0xFFDFCEF7),
+                                Color(0xFFF0E7FB),
+                              ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
                           ),
-                          child: Center(child: Text("Sign up", style: TextStyle(
-                            color: const Color(0xFF352250),
-                            fontSize: 16,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w600,
-                          ),)),
+                          child: Center(
+                            child: _isLoading
+                                ? const CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Color(0xFF352250)),
+                                  )
+                                : const Text(
+                                    "Sign up",
+                                    style: TextStyle(
+                                      color: Color(0xFF352250),
+                                      fontSize: 16,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                          ),
                         ),
                       ),
                       SizedBox(height: size.height * 0.02),
-                      Text("Sign up with", style: TextStyle(color: Colors.white)),
+                      Text("Sign up with",
+                          style: TextStyle(color: Colors.white)),
                       SizedBox(height: size.height * 0.02),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -373,8 +442,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                           SizedBox(width: size.width * 0.02),
                           GlassmorphicIcon(
                             imageUrl: 'assets/images/gmail.png',
-                            url: 'https://www.gmail.com',
+                            url: '',
                             glassColor: Colors.red,
+                            onTap: _isLoading ? null : _signUpWithGoogle,
                           ),
                         ],
                       ),
@@ -382,12 +452,16 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Already have an account?", style: TextStyle(color: Colors.white)),
-                          InkWell( // Changed from GestureDetector to InkWell for better feedback
+                          Text("Already have an account?",
+                              style: TextStyle(color: Colors.white)),
+                          InkWell(
+                            // Changed from GestureDetector to InkWell for better feedback
                             onTap: _navigateToSignIn,
                             child: Text(
                               " Sign in",
-                              style: TextStyle(color: Color(0xFF9860E4), fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  color: Color(0xFF9860E4),
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         ],
@@ -405,19 +479,19 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
   }
 
   Widget _buildTextField(
-      Widget iconWidget,
-      String hint,
-      TextEditingController controller,
-      String? Function(String?) validator,
-      ) {
+    Widget iconWidget,
+    String hint,
+    TextEditingController controller,
+    String? Function(String?) validator,
+  ) {
     return TextFormField(
       controller: controller,
       validator: validator,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Color(0xCCF5EFFC),fontSize: 14,
-            fontFamily: 'Inter'),
+        hintStyle: TextStyle(
+            color: Color(0xCCF5EFFC), fontSize: 14, fontFamily: 'Inter'),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 12.0),
           child: iconWidget,
@@ -449,21 +523,19 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
     );
   }
 
-  Widget _buildPasswordField(
-      String hint,
-      TextEditingController controller,
-      bool isVisible,
-      VoidCallback toggleVisibility,
-      [String? Function(String?)? validator]
-      ) {
+  Widget _buildPasswordField(String hint, TextEditingController controller,
+      bool isVisible, VoidCallback toggleVisibility,
+      [String? Function(String?)? validator]) {
     return TextFormField(
       controller: controller,
       obscureText: !isVisible,
-      validator: validator ?? (value) => value!.isEmpty ? "Password is required" : null,
+      validator: validator ??
+          (value) => value!.isEmpty ? "Password is required" : null,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Color(0xCCF5EFFC),fontSize: 14, fontFamily: 'Inter'),
+        hintStyle: TextStyle(
+            color: Color(0xCCF5EFFC), fontSize: 14, fontFamily: 'Inter'),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 12.0),
           child: SvgPicture.asset(
@@ -479,19 +551,14 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
         ),
         suffixIcon: IconButton(
           icon: SvgPicture.asset(
-            isVisible
-                ? 'assets/images/eye.svg'
-                : 'assets/images/eye-off.svg',
+            isVisible ? 'assets/images/eye.svg' : 'assets/images/eye-off.svg',
             width: 24,
             height: 24,
             color: Colors.grey,
             errorBuilder: (context, error, stackTrace) {
               debugPrint('Error loading SVG: $error');
-              return Icon(
-                  isVisible ? Icons.visibility : Icons.visibility_off,
-                  size: 24,
-                  color: Colors.grey
-              );
+              return Icon(isVisible ? Icons.visibility : Icons.visibility_off,
+                  size: 24, color: Colors.grey);
             },
           ),
           onPressed: toggleVisibility,
@@ -529,6 +596,7 @@ class GlassmorphicIcon extends StatelessWidget {
   final String url;
   final Color? glassColor;
   final Color? iconColor;
+  final VoidCallback? onTap;
 
   const GlassmorphicIcon({
     super.key,
@@ -536,25 +604,13 @@ class GlassmorphicIcon extends StatelessWidget {
     required this.url,
     this.glassColor,
     this.iconColor,
+    this.onTap,
   });
-
-  _launchURL(String url) async {
-    final Uri uri = Uri.parse(url);
-    try {
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } else {
-        throw 'Could not launch $url';
-      }
-    } catch (e) {
-      debugPrint('Error launching URL: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => _launchURL(url),
+      onTap: onTap,
       borderRadius: BorderRadius.circular(15),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
@@ -586,7 +642,10 @@ class GlassmorphicIcon extends StatelessWidget {
                 color: iconColor,
                 errorBuilder: (context, error, stackTrace) {
                   debugPrint('Error loading image: $error');
-                  return Icon(Icons.image, size: 24, color: iconColor ?? Colors.white);
+                  return Icon(
+                    Icons.error_outline,
+                    color: iconColor ?? Colors.white,
+                  );
                 },
               ),
             ),

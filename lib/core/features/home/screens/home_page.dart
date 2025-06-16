@@ -6,6 +6,7 @@ import 'package:road_map_mentor/core/features/chat_with_doc/screens/chatscreen.d
 import 'package:road_map_mentor/core/features/cv_analysis/screens/cv_analysis_page.dart';
 import 'package:road_map_mentor/core/features/interview/screens/interview_page.dart';
 import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:ui';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/chat_message_screen.dart';
@@ -102,7 +103,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-
           for (int i = 0; i < _pages.length; i++)
             if (_selectedIndex == i)
               Positioned(
@@ -119,11 +119,9 @@ class _HomePageState extends State<HomePage> {
                     color: const Color(0xFF6A1B9A),
                   ),
                 ),
-
-              
+              )
         ],
       ),
-
     );
   }
 }
@@ -156,7 +154,8 @@ class NavCurvePainter extends CustomPainter {
       centerX - curveWidth / 2 + 10,
       20,
     );
-    path.quadraticBezierTo(centerX, curveHeight, centerX + curveWidth / 2 - 10, 20);
+    path.quadraticBezierTo(
+        centerX, curveHeight, centerX + curveWidth / 2 - 10, 20);
     path.quadraticBezierTo(
       centerX + curveWidth / 2,
       0,
@@ -176,7 +175,10 @@ class NavCurvePainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
+
 class HomeScreen extends StatelessWidget {
+  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -254,6 +256,10 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildHeader() {
+    final user = _auth.currentUser;
+    final displayName = user?.displayName ?? "User";
+    final email = user?.email ?? "";
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Row(
@@ -273,7 +279,9 @@ class HomeScreen extends StatelessWidget {
                 ),
                 child: CircleAvatar(
                   radius: 20,
-                  backgroundImage: AssetImage('assets/images/user.png'),
+                  backgroundImage: user?.photoURL != null
+                      ? NetworkImage(user!.photoURL!)
+                      : AssetImage('assets/images/user.png') as ImageProvider,
                   backgroundColor: Colors.transparent,
                 ),
               ),
@@ -283,7 +291,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Text("Hello,",
                       style: TextStyle(color: Colors.white70, fontSize: 14)),
-                  Text("User!",
+                  Text(displayName,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -435,8 +443,6 @@ class AboutScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
-
-
           Positioned(
             top: 300,
             left: 60,
@@ -491,15 +497,10 @@ class AboutScreen extends StatelessWidget {
                 width: 70,
                 height: 70,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFF40174C)
-                ),
+                    shape: BoxShape.circle, color: Color(0xFF40174C)),
               ),
             ),
           ),
-
-
-
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -517,9 +518,9 @@ class AboutScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     const Text(
                       "Our application guides you from learning paths to\n"
-                          "job readiness by chatting with AI — analyze your\n"
-                          "documents, build your CV, and practice\n"
-                          "interviews, all in one place.",
+                      "job readiness by chatting with AI — analyze your\n"
+                      "documents, build your CV, and practice\n"
+                      "interviews, all in one place.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white70,
@@ -537,8 +538,6 @@ class AboutScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-
-
                     GridView.count(
                       crossAxisCount: crossAxisCount,
                       shrinkWrap: true,
@@ -570,7 +569,6 @@ class AboutScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 30),
-
                     const Text(
                       "Why choose us?",
                       style: TextStyle(
@@ -582,7 +580,7 @@ class AboutScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.only(left: 60),
-                      child:  Row(
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
@@ -597,7 +595,8 @@ class AboutScreen extends StatelessWidget {
                           Expanded(
                             child: Text(
                               "Everything you need in one App",
-                              style: TextStyle(color: Colors.white, fontSize: 16),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ),
                         ],
@@ -606,7 +605,7 @@ class AboutScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(left: 60),
-                      child:  Row(
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
@@ -621,7 +620,8 @@ class AboutScreen extends StatelessWidget {
                           Expanded(
                             child: Text(
                               "Chat with AI, build your future",
-                              style: TextStyle(color: Colors.white, fontSize: 16),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ),
                         ],
@@ -630,7 +630,7 @@ class AboutScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(left: 60),
-                      child:  Row(
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
@@ -645,7 +645,8 @@ class AboutScreen extends StatelessWidget {
                           Expanded(
                             child: Text(
                               "Realistic interview practice",
-                              style: TextStyle(color: Colors.white, fontSize: 16),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ),
                         ],
@@ -654,7 +655,7 @@ class AboutScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(left: 60),
-                      child:  Row(
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
@@ -669,18 +670,16 @@ class AboutScreen extends StatelessWidget {
                           Expanded(
                             child: Text(
                               "Easy, smart, and fast career support",
-                              style: TextStyle(color: Colors.white, fontSize: 16),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ),
-
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),
-
             ),
           ),
         ],
@@ -688,6 +687,7 @@ class AboutScreen extends StatelessWidget {
     );
   }
 }
+
 class _ServiceCard extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -709,25 +709,24 @@ class _ServiceCard extends StatelessWidget {
         color: const Color(0xFF3D1E70).withOpacity(0.4),
         borderRadius: BorderRadius.circular(16),
       ),
-
       padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           isSvg
               ? SvgPicture.asset(
-            imagePath,
-            width: 60,
-            height: 60,
-          )
+                  imagePath,
+                  width: 60,
+                  height: 60,
+                )
               : ClipOval(
-            child: Image.asset(
-              imagePath,
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-            ),
-          ),
+                  child: Image.asset(
+                    imagePath,
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                  ),
+                ),
           const SizedBox(height: 12),
           Text(
             title,
@@ -752,7 +751,41 @@ class _ServiceCard extends StatelessWidget {
   }
 }
 
-class ReviewsScreen extends StatelessWidget {
+class ReviewsScreen extends StatefulWidget {
+  @override
+  _ReviewsScreenState createState() => _ReviewsScreenState();
+}
+
+class _ReviewsScreenState extends State<ReviewsScreen> {
+  Box? reviewsBox;
+  Box? feedbacksBox;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _initHiveBoxes();
+  }
+
+  Future<void> _initHiveBoxes() async {
+    try {
+      reviewsBox = await Hive.openBox('reviews');
+      feedbacksBox = await Hive.openBox('feedbacks');
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('Error opening Hive boxes: $e');
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -819,204 +852,293 @@ class ReviewsScreen extends StatelessWidget {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return SingleChildScrollView(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).padding.bottom + 80,
-                  ),
-
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
+          if (isLoading)
+            const Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            )
+          else
+            Align(
+              alignment: Alignment.topCenter,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).padding.bottom + 80,
                     ),
-                    child: IntrinsicHeight(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 30),
-                            const Center(
-                              child: Text(
-                                "Reviews",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      child: IntrinsicHeight(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 30),
+                              const Center(
+                                child: Text(
+                                  "Reviews",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 20),
-                            ValueListenableBuilder(
-                              valueListenable: Hive.box('reviews').listenable(),
-                              builder: (context, reviewBox, _) {
-                                final reviews = reviewBox.values.toList().cast<Map>();
+                              const SizedBox(height: 20),
+                              if (reviewsBox != null && feedbacksBox != null)
+                                ValueListenableBuilder(
+                                  valueListenable: reviewsBox!.listenable(),
+                                  builder: (context, reviewBox, _) {
+                                    final reviews =
+                                        reviewBox.values.toList().cast<Map>();
 
-                                return ValueListenableBuilder(
-                                  valueListenable: Hive.box('feedbacks').listenable(),
-                                  builder: (context, feedbackBox, _) {
-                                    final feedbacks = feedbackBox.values.toList().cast<Map>();
+                                    return ValueListenableBuilder(
+                                      valueListenable:
+                                          feedbacksBox!.listenable(),
+                                      builder: (context, feedbackBox, _) {
+                                        final feedbacks = feedbackBox.values
+                                            .toList()
+                                            .cast<Map>();
 
-                                    if (reviews.isEmpty && feedbacks.isEmpty) {
-                                      return const Center(
-                                        child: Text(
-                                          "No reviews or feedback yet",
-                                          style: TextStyle(color: Colors.white70, fontSize: 16),
-                                        ),
-                                      );
-                                    }
+                                        if (reviews.isEmpty &&
+                                            feedbacks.isEmpty) {
+                                          return const Center(
+                                            child: Text(
+                                              "No reviews or feedback yet",
+                                              style: TextStyle(
+                                                  color: Colors.white70,
+                                                  fontSize: 16),
+                                            ),
+                                          );
+                                        }
 
-                                    Map<String, Map<String, dynamic>> combinedData = {};
+                                        Map<String, Map<String, dynamic>>
+                                            combinedData = {};
 
-                                    for (var review in reviews) {
-                                      String userName = review['name'] ?? "User";
-                                      combinedData[userName] = {
-                                        'name': userName,
-                                        'ratings': review['ratings'],
-                                        'feedback': null,
-                                      };
-                                    }
+                                        for (var review in reviews) {
+                                          String userName =
+                                              review['name'] ?? "User";
+                                          combinedData[userName] = {
+                                            'name': userName,
+                                            'ratings': review['ratings'],
+                                            'feedback': review['feedback'],
+                                            'timestamp': review['timestamp'],
+                                          };
+                                        }
 
-                                    for (var feedback in feedbacks) {
-                                      String userName = feedback['name'] ?? "User";
-                                      combinedData[userName] ??= {'name': userName};
-                                      combinedData[userName]!['feedback'] = feedback['feedback'];
-                                    }
+                                        for (var feedback in feedbacks) {
+                                          String userName =
+                                              feedback['name'] ?? "User";
+                                          combinedData[userName] ??= {
+                                            'name': userName,
+                                            'timestamp': feedback['timestamp'],
+                                          };
+                                          combinedData[userName]!['feedback'] =
+                                              feedback['feedback'];
+                                        }
 
-                                    return Column(
-                                      children: combinedData.values.map((userData) {
-                                        return Container(
-                                          margin: const EdgeInsets.only(bottom: 20),
-                                          padding: const EdgeInsets.all(16),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white.withOpacity(0.1),
-                                            borderRadius: BorderRadius.circular(16),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-
-                                                children: [
-                                                  ClipOval(
-                                                    child: Image.asset(
-                                                      'assets/images/user.png',
-                                                      width: 40,
-                                                      height: 40,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-
-
-                                                  const SizedBox(width: 10),
-                                                  Text(
-                                                    userData['name'],
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
+                                        return Column(
+                                          children: combinedData.values
+                                              .map((userData) {
+                                            return Container(
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 20),
+                                              padding: const EdgeInsets.all(16),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white
+                                                    .withOpacity(0.1),
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
                                               ),
-                                              const SizedBox(height: 12),
-                                              if (userData['feedback'] != null) ...[
-                                                const Text(
-                                                  "Feedback:",
-                                                  style: TextStyle(
-                                                    color: Colors.white70,
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 4),
-                                                Text(
-                                                  userData['feedback'],
-                                                  style: const TextStyle(
-                                                    color: Colors.white70,
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 12),
-                                              ],
-                                              if (userData['ratings'] != null) ...[
-                                                const Text(
-                                                  "Ratings:",
-                                                  style: TextStyle(
-                                                    color: Colors.white70,
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 4),
-                                                ...(userData['ratings'] as Map).entries.map<Widget>((entry) {
-                                                  return Padding(
-                                                    padding: const EdgeInsets.only(bottom: 8),
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                        Expanded(
-                                                          child: Text(
-                                                            "${entry.key}",
-                                                            style: const TextStyle(
-                                                              color: Colors.white70,
-                                                              fontSize: 14,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      ClipOval(
+                                                        child: Image.asset(
+                                                          'assets/images/user.png',
+                                                          width: 40,
+                                                          height: 40,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 10),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            userData['name'],
+                                                            style:
+                                                                const TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
                                                           ),
-                                                        ),
-                                                        Row(
-                                                          mainAxisSize: MainAxisSize.min,
-                                                          children: List.generate(5, (i) {
-                                                            if (i == 4 && entry.value >= 5) {
-
-                                                              return SvgPicture.asset(
-                                                                'assets/images/Component_65.svg',
-                                                                width: 18,
-                                                                height: 18,
-                                                              );
-                                                            }
-
-                                                           
-                                                            return SvgPicture.asset(
-                                                              i < entry.value
-                                                                  ? 'assets/images/Component_71.svg' 
-                                                                  : 'assets/images/Component_70.svg', 
-                                                              width: 18,
-                                                              height: 18,
-                                                            );
-                                                          }),
-                                                        ),
-
-                                                      ],
+                                                          if (userData[
+                                                                  'timestamp'] !=
+                                                              null)
+                                                            Text(
+                                                              _formatDate(userData[
+                                                                  'timestamp']),
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white70,
+                                                                fontSize: 12,
+                                                              ),
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 12),
+                                                  if (userData['feedback'] !=
+                                                          null &&
+                                                      userData['feedback']
+                                                          .toString()
+                                                          .isNotEmpty) ...[
+                                                    const Text(
+                                                      "Feedback:",
+                                                      style: TextStyle(
+                                                        color: Colors.white70,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
-                                                  );
-                                                }).toList(),
-                                              ],
-                                            ],
-                                          ),
+                                                    const SizedBox(height: 4),
+                                                    Text(
+                                                      userData['feedback']
+                                                          .toString(),
+                                                      style: const TextStyle(
+                                                        color: Colors.white70,
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 12),
+                                                  ],
+                                                  if (userData['ratings'] !=
+                                                      null) ...[
+                                                    const Text(
+                                                      "Ratings:",
+                                                      style: TextStyle(
+                                                        color: Colors.white70,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    ...(userData['ratings']
+                                                            as Map)
+                                                        .entries
+                                                        .map<Widget>((entry) {
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                bottom: 8),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Expanded(
+                                                              child: Text(
+                                                                "${entry.key}",
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .white70,
+                                                                  fontSize: 14,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children:
+                                                                  List.generate(
+                                                                      5, (i) {
+                                                                if (i == 4 &&
+                                                                    entry.value >=
+                                                                        5) {
+                                                                  return SvgPicture
+                                                                      .asset(
+                                                                    'assets/images/Component_65.svg',
+                                                                    width: 18,
+                                                                    height: 18,
+                                                                  );
+                                                                }
+
+                                                                return SvgPicture
+                                                                    .asset(
+                                                                  i < entry.value
+                                                                      ? 'assets/images/Component_71.svg'
+                                                                      : 'assets/images/Component_70.svg',
+                                                                  width: 18,
+                                                                  height: 18,
+                                                                );
+                                                              }),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    }).toList(),
+                                                  ],
+                                                ],
+                                              ),
+                                            );
+                                          }).toList(),
                                         );
-                                      }).toList(),
+                                      },
                                     );
                                   },
-                                );
-                              },
-                            ),
-                          ],
+                                )
+                              else
+                                const Center(
+                                  child: Text(
+                                    "Error loading reviews",
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          )
         ],
       ),
     );
+  }
+
+  String _formatDate(String? dateString) {
+    if (dateString == null) return '';
+    try {
+      final date = DateTime.parse(dateString);
+      return '${date.day}/${date.month}/${date.year}';
+    } catch (e) {
+      return '';
+    }
   }
 }
 
@@ -1026,12 +1148,87 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String userName = "User";
-  String userEmail = "user@gmail.com";
+  final _auth = FirebaseAuth.instance;
+  String userName = "";
+  String userEmail = "";
+  String userPhotoURL = "";
+  String userJoinDate = "";
 
   @override
   void initState() {
     super.initState();
+    _loadUserProfile();
+  }
+
+  void _loadUserProfile() {
+    final user = _auth.currentUser;
+    if (user != null) {
+      setState(() {
+        userName = user.displayName ?? user.email?.split('@')[0] ?? "User";
+        userEmail = user.email ?? "";
+        userPhotoURL = user.photoURL ?? "";
+        if (user.metadata.creationTime != null) {
+          userJoinDate =
+              "Joined: ${user.metadata.creationTime!.toLocal().toString().split(' ')[0]}";
+        }
+      });
+    }
+  }
+
+  Future<void> _updateUserProfile(String newUsername) async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        await user.updateDisplayName(newUsername);
+        setState(() {
+          userName = newUsername;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update profile: ${e.toString()}')),
+      );
+    }
+  }
+
+  Future<void> _deleteAccount() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        await user.delete();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage1()),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Account deleted successfully')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete account: ${e.toString()}')),
+      );
+    }
+  }
+
+  Future<void> _signOut() async {
+    try {
+      await _auth.signOut();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage1()),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Logged out successfully')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to logout: ${e.toString()}')),
+      );
+    }
   }
 
   @override
@@ -1174,8 +1371,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 child: CircleAvatar(
                                   radius: 30,
-                                  backgroundImage:
-                                      AssetImage('assets/images/user.png'),
+                                  backgroundImage: userPhotoURL.isNotEmpty
+                                      ? NetworkImage(userPhotoURL)
+                                      : AssetImage('assets/images/user.png')
+                                          as ImageProvider,
                                   backgroundColor: Colors.transparent,
                                 ),
                               )
@@ -1200,6 +1399,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: const Color(0xFFF5EFFC),
                           fontFamily: 'Inter',
                           fontSize: 16,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        userJoinDate,
+                        style: TextStyle(
+                          color: const Color(0xFFF5EFFC),
+                          fontFamily: 'Inter',
+                          fontSize: 14,
                         ),
                       ),
                       SizedBox(height: 16),
@@ -1242,87 +1450,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         PersonalData(),
                       ),
                       SizedBox(height: 24),
-                      _buildTextButton('Logout', () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              backgroundColor: Colors.black.withOpacity(0.6),
-                              contentPadding: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                side: BorderSide(
-                                  color: Color(0xFF7E46CA),
-                                  width: 2,
-                                ),
-                              ),
-                              content: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                padding: EdgeInsets.all(20),
-                                child: Text(
-                                  'Are you sure you want to logout?',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Cancel',
-                                    style: TextStyle(
-                                      color: Color(0xFF7E46CA),
-                                    ),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => HomePage1()),
-                                    );
-
-                                    Future.delayed(Duration(milliseconds: 500),
-                                        () {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                            content: Text(
-                                                'Logged out successfully!')),
-                                      );
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color(0xFF7E46CA),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Logout',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }),
+                      _buildTextButton('Logout', _signOut),
                       SizedBox(height: 16),
                       _buildTextButton('Delete account', () {
                         showDialog(
@@ -1372,72 +1500,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          backgroundColor:
-                                              Colors.black.withOpacity(0.6),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            side: BorderSide(
-                                              color: Color(0xFF7E46CA),
-                                              width: 2,
-                                            ),
-                                          ),
-                                          content: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                            ),
-                                            padding: EdgeInsets.all(20),
-                                            child: Text(
-                                              'Your account has been deleted successfully.',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          HomePage1()),
-                                                );
-                                                Future.delayed(
-                                                    Duration(milliseconds: 500),
-                                                    () {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                        content: Text(
-                                                            'Your account has been deleted successfully')),
-                                                  );
-                                                });
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                              ),
-                                              child: Text(
-                                                'OK',
-                                                style: TextStyle(
-                                                  color: Color(0xFF7E46CA),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
+                                    _deleteAccount();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Color(0xFF7E46CA),
@@ -1566,7 +1629,6 @@ class _RateServicesState extends State<RateServices> {
             children: List.generate(5, (i) {
               return GestureDetector(
                 onTap: () {
-
                   setState(() {
                     ratings[serviceName] = i + 1;
                   });
@@ -1575,8 +1637,8 @@ class _RateServicesState extends State<RateServices> {
                   i == 4 && ratings[serviceName]! >= 5
                       ? 'assets/images/Component_65.svg'
                       : i < ratings[serviceName]!
-                      ? 'assets/images/Component_71.svg'
-                      : 'assets/images/Component_70.svg',
+                          ? 'assets/images/Component_71.svg'
+                          : 'assets/images/Component_70.svg',
                   width: 24,
                   height: 24,
                 ),
@@ -2476,35 +2538,32 @@ class PersonalData extends StatefulWidget {
 }
 
 class _PersonalDataState extends State<PersonalData> {
+  final _auth = FirebaseAuth.instance;
   bool _isEditing = false;
-  String _username = 'user';
-  String _email = 'user@gmail.com';
-  String _joinDate = '04-02-2025';
-  String _password = '1234';
-
-  late TextEditingController _usernameController;
-  late TextEditingController _emailController;
-  late TextEditingController _joinDateController;
-  late TextEditingController _passwordController;
-
-  bool _obscurePassword = true;
+  String _username = '';
+  String _email = '';
+  String _joinDate = '';
 
   @override
   void initState() {
     super.initState();
-    _usernameController = TextEditingController(text: _username);
-    _emailController = TextEditingController(text: _email);
-    _joinDateController = TextEditingController(text: _joinDate);
-    _passwordController = TextEditingController(text: _password);
+    _loadPersonalData();
   }
 
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _emailController.dispose();
-    _joinDateController.dispose();
-    _passwordController.dispose();
-    super.dispose();
+  void _loadPersonalData() {
+    final user = _auth.currentUser;
+    if (user != null) {
+      setState(() {
+        _username = user.displayName ?? user.email?.split('@')[0] ?? "User";
+        _email = user.email ?? "";
+        if (user.metadata.creationTime != null) {
+          _joinDate =
+              "${user.metadata.creationTime!.toLocal().day.toString().padLeft(2, '0')}-"
+              "${user.metadata.creationTime!.toLocal().month.toString().padLeft(2, '0')}-"
+              "${user.metadata.creationTime!.toLocal().year}";
+        }
+      });
+    }
   }
 
   @override
@@ -2665,62 +2724,33 @@ class _PersonalDataState extends State<PersonalData> {
                       SizedBox(height: 30),
                       _buildTextField(
                         labelText: 'UserName',
-                        controller: _usernameController,
+                        controller: TextEditingController(text: _username),
                         enabled: _isEditing,
                       ),
                       SizedBox(height: 15),
                       _buildTextField(
                         labelText: 'Email',
-                        controller: _emailController,
+                        controller: TextEditingController(text: _email),
                         enabled: _isEditing,
                       ),
                       SizedBox(height: 15),
                       _buildTextField(
                         labelText: 'Join date',
-                        controller: _joinDateController,
+                        controller: TextEditingController(text: _joinDate),
                         enabled: false,
                       ),
                       SizedBox(height: 15),
                       _buildTextField(
                         labelText: 'Password',
-                        controller: _passwordController,
+                        controller: TextEditingController(),
                         enabled: _isEditing,
-                        obscureText: _obscurePassword,
-                        suffixIcon: IconButton(
-                          icon: _obscurePassword
-                              ? SvgPicture.asset(
-                                  'image/eye-off.svg',
-                                  width: 24,
-                                  height: 24,
-                                  color: Colors.white70,
-                                )
-                              : SvgPicture.asset(
-                                  'image/eye.svg',
-                                  width: 24,
-                                  height: 24,
-                                  color: Colors.white70,
-                                ),
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
-                        ),
+                        obscureText: true,
                       ),
                       SizedBox(height: 30),
                       TextButton(
                         onPressed: () {
                           setState(() {
                             _isEditing = !_isEditing;
-                            if (!_isEditing) {
-                              print('Username: ${_usernameController.text}');
-                              print('Email: ${_emailController.text}');
-                              print('Password: ${_passwordController.text}');
-
-                              _username = _usernameController.text;
-                              _email = _emailController.text;
-                              _password = _passwordController.text;
-                            }
                           });
                         },
                         style: TextButton.styleFrom(
@@ -2774,7 +2804,6 @@ class _PersonalDataState extends State<PersonalData> {
     required TextEditingController controller,
     required bool enabled,
     bool obscureText = false,
-    Widget? suffixIcon,
   }) {
     return TextField(
       controller: controller,
@@ -2797,9 +2826,8 @@ class _PersonalDataState extends State<PersonalData> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.purpleAccent),
+          borderSide: BorderSide(color: Colors.purple),
         ),
-        suffixIcon: suffixIcon,
       ),
     );
   }
