@@ -690,7 +690,7 @@ class InfoPage extends StatelessWidget {
                     children: const [
                       _ServiceCard(
                         title: "Roadmap",
-                        subtitle: "Discover your personalized learning path",
+                        subtitle: "Discover your learning path",
                         imagePath: 'assets/images/back1.png',
                       ),
                       _ServiceCard(

@@ -155,8 +155,8 @@ class NavCurvePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     double width = size.width;
     double height = size.height;
-    double curveHeight = 80;
-    double curveWidth = 100;
+    double curveHeight = 90;
+    double curveWidth = 90;
     double edgeCurveWidth = 20;
 
     Paint paint = Paint()
@@ -568,7 +568,7 @@ class AboutScreen extends StatelessWidget {
                       children: const [
                         _ServiceCard(
                           title: "Roadmap",
-                          subtitle: "Discover your personalized learning path",
+                          subtitle: "Discover your learning path",
                           imagePath: 'assets/images/back1.png',
                         ),
                         _ServiceCard(
