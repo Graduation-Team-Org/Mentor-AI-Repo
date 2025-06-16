@@ -23,6 +23,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<GlobalKey> iconKeys = List.generate(4, (_) => GlobalKey());
+  double centerX = 0;
+
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
@@ -51,75 +54,92 @@ class _HomePageState extends State<HomePage> {
     },
   ];
 
+  void _updateCenterX() {
+    final key = iconKeys[_selectedIndex];
+    final RenderBox? box = key.currentContext?.findRenderObject() as RenderBox?;
+    if (box != null) {
+      final position = box.localToGlobal(Offset.zero);
+      final size = box.size;
+      setState(() {
+        centerX = position.dx + size.width / 2;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _updateCenterX());
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    Future.delayed(const Duration(milliseconds: 50), () => _updateCenterX());
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double itemWidth = width / _pages.length;
-    double centerX = (itemWidth * _selectedIndex) + itemWidth / 2;
 
     return Scaffold(
       extendBody: true,
-      backgroundColor: Colors.transparent,
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: Stack(
-        clipBehavior: Clip.none,
+      body: Stack(
         children: [
-          CustomPaint(
-            size: Size(width, 90),
-            painter: NavCurvePainter(centerX: centerX),
-          ),
-          Container(
-            height: 70.98,
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-            ),
-            child: BottomNavigationBar(
-              backgroundColor: Colors.transparent,
-              selectedItemColor: Colors.white,
-              unselectedItemColor: Colors.purple.shade200,
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
-              elevation: 0,
-              type: BottomNavigationBarType.fixed,
-              items: List.generate(
-                _pages.length,
-                (index) {
-                  final isSelected = _selectedIndex == index;
-                  return BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      _fabIcons[index][isSelected ? 'selected' : 'unselected']!,
-                      width: 24,
-                      height: 24,
+          _pages[_selectedIndex],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              height: 70,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  CustomPaint(
+                    size: Size(width, 90),
+                    painter: NavCurvePainter(centerX: centerX),
+                  ),
+                  Positioned(
+                    bottom: 20,
+                    left: 0,
+                    right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: List.generate(_pages.length, (index) {
+                        final bool isSelected = index == _selectedIndex;
+                        return GestureDetector(
+                          key: iconKeys[index],
+                          onTap: () => _onItemTapped(index),
+                          child: Transform.translate(
+                            offset: isSelected ? const Offset(0, 1) : const Offset(0, 10),
+                            child: Container(
+                              width: 50,
+                              height: 50,
+                              margin: const EdgeInsets.only(bottom: 5),
+                              decoration: isSelected
+                                  ? const BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              )
+                                  : null,
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  _fabIcons[index][isSelected ? 'selected' : 'unselected']!,
+                                  width: 28,
+                                  height: 28,
+                                  color: const Color(0xFF7B4FD0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                     ),
-                    label: '',
-                  );
-                },
+                  ),
+                ],
               ),
             ),
           ),
-          for (int i = 0; i < _pages.length; i++)
-            if (_selectedIndex == i)
-              Positioned(
-                left: (itemWidth * i) + itemWidth / 2 - 30,
-                top: -20,
-                child: FloatingActionButton(
-                  onPressed: () => _onItemTapped(i),
-                  backgroundColor: Colors.white,
-                  shape: const CircleBorder(),
-                  child: SvgPicture.asset(
-                    _fabIcons[i]['selected']!,
-                    width: 30,
-                    height: 30,
-                    color: const Color(0xFF6A1B9A),
-                  ),
-                ),
-              )
         ],
       ),
     );
@@ -135,8 +155,8 @@ class NavCurvePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     double width = size.width;
     double height = size.height;
-    double curveHeight = 90;
-    double curveWidth = 110;
+    double curveHeight = 80;
+    double curveWidth = 100;
     double edgeCurveWidth = 20;
 
     Paint paint = Paint()
@@ -147,24 +167,24 @@ class NavCurvePainter extends CustomPainter {
     path.moveTo(0, edgeCurveWidth);
     path.quadraticBezierTo(0, 0, edgeCurveWidth, 0);
 
-    path.lineTo(centerX - curveWidth / 2 - 10, 0);
+    path.lineTo(centerX - curveWidth / 2 - 8, 0);
     path.quadraticBezierTo(
       centerX - curveWidth / 2,
       0,
-      centerX - curveWidth / 2 + 10,
+      centerX - curveWidth / 2 + 8,
       20,
     );
-    path.quadraticBezierTo(
-        centerX, curveHeight, centerX + curveWidth / 2 - 10, 20);
+    path.quadraticBezierTo(centerX, curveHeight, centerX + curveWidth / 2 - 8, 20);
     path.quadraticBezierTo(
       centerX + curveWidth / 2,
       0,
-      centerX + curveWidth / 2 + 10,
+      centerX + curveWidth / 2 + 8,
       0,
     );
 
     path.lineTo(width - edgeCurveWidth, 0);
     path.quadraticBezierTo(width, 0, width, edgeCurveWidth);
+
     path.lineTo(width, height);
     path.lineTo(0, height);
     path.close();
@@ -544,7 +564,7 @@ class AboutScreen extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20,
-                      childAspectRatio: 0.8,
+                      childAspectRatio: 0.86,
                       children: const [
                         _ServiceCard(
                           title: "Roadmap",
@@ -677,6 +697,7 @@ class AboutScreen extends StatelessWidget {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),
@@ -706,7 +727,7 @@ class _ServiceCard extends StatelessWidget {
     return Container(
       height: 200,
       decoration: BoxDecoration(
-        color: const Color(0xFF3D1E70).withOpacity(0.4),
+        color: const Color(0xFF3D1E70).withOpacity(0.3),
         borderRadius: BorderRadius.circular(16),
       ),
       padding: const EdgeInsets.all(16),
@@ -732,7 +753,7 @@ class _ServiceCard extends StatelessWidget {
             title,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -741,7 +762,7 @@ class _ServiceCard extends StatelessWidget {
             subtitle,
             style: const TextStyle(
               color: Colors.white70,
-              fontSize: 14,
+              fontSize: 12,
             ),
             textAlign: TextAlign.center,
           ),

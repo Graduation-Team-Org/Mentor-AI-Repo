@@ -520,6 +520,171 @@ class _SignInScreenState extends State<SignInScreen>
               ),
             ),
             SizedBox(height: size.height * 0.03),
+
+
+            // Email field
+            _buildTextField(
+                Container(
+                  width: 16,
+                  height: 16,
+                  alignment: Alignment.center,
+                  child: SvgPicture.asset(
+                    'assets/images/Letter.svg',
+                    color: Colors.grey,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                      debugPrint('Error loading SVG: $error');
+                      return const Icon(Icons.email, color: Colors.grey);
+                    },
+                  ),
+                ),
+                "Email",
+                _emailController,
+                    (value) {
+                  if (value == null || value.isEmpty) return "Email is required";
+                  if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
+                    return "Invalid email format";
+                  }
+                  return null;
+                }
+            ),
+            SizedBox(height: size.height * 0.02),
+
+            // Password field
+            _buildPasswordField("Password", _passwordController),
+            SizedBox(height: size.height * 0.015),
+
+            // Remember me and Forgot Password row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _rememberMe,
+                      onChanged: (value) {
+                        setState(() => _rememberMe = value!);
+                      },
+                      activeColor: Colors.purpleAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    const Text(
+                        "Remember me",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Inter'
+                        )
+                    ),
+                  ],
+                ),
+                InkWell(
+                  onTap: _navigateToVerification,
+                  child: const Text(
+                    "Forgot Password?",
+                    style: TextStyle(
+                        color: Color(0xFF9860E4),
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Inter'
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: size.height * 0.03),
+
+            // Sign In button
+            InkWell(
+              onTap: _signIn,
+              child: Container(
+                width: double.infinity,
+                height: size.height * 0.07,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFF7A4DB6),
+                      Color(0xFFDFCEF7),
+                      Color(0xFFF0E7FB),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: const Center(
+                    child: Text(
+                      "Sign In",
+                      style: TextStyle(
+                        color: Color(0xFF352250),
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )
+                ),
+              ),
+            ),
+            SizedBox(height: size.height * 0.02),
+
+            // Sign in with text
+            const Text(
+                "Sign in with",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Inter'
+                )
+            ),
+            SizedBox(height: size.height * 0.02),
+
+            // Social login options
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GlassmorphicIcon(
+                  imageUrl: 'assets/images/facebook.png',
+                  url: 'https://www.facebook.com',
+                  glassColor: Colors.blue,
+                ),
+                SizedBox(width: size.width * 0.02),
+                GlassmorphicIcon(
+                  imageUrl: 'assets/images/apple.png',
+                  url: 'https://www.apple.com',
+                  glassColor: Colors.black,
+                  iconColor: Colors.white,
+                ),
+                SizedBox(width: size.width * 0.02),
+                GlassmorphicIcon(
+                  imageUrl: 'assets/images/gmail.png',
+                  url: 'https://www.gmail.com',
+                  glassColor: Colors.red,
+                ),
+              ],
+            ),
+            SizedBox(height: size.height * 0.03),
+
+            // Don't have an account row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                    "Don't have an account?",
+                    style: TextStyle(color: Colors.white)
+                ),
+                InkWell(
+                  onTap: _navigateToSignUp,
+                  child: const Text(
+                    " Sign up",
+                    style: TextStyle(
+                        color: Color(0xFF9860E4),
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: size.height * 0.04),
+
           ],
         );
       },
@@ -537,6 +702,8 @@ class _SignInScreenState extends State<SignInScreen>
       validator: validator,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        isDense: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 12),
         hintText: hint,
         hintStyle: const TextStyle(
             color: Color(0xCCF5EFFC), fontSize: 14, fontFamily: 'Inter'),
@@ -580,6 +747,8 @@ class _SignInScreenState extends State<SignInScreen>
       obscureText: !_isPasswordVisible,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        isDense: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 12),
         hintText: hint,
         hintStyle: const TextStyle(
           color: Color(0xCCF5EFFC),
@@ -590,32 +759,40 @@ class _SignInScreenState extends State<SignInScreen>
         fillColor: Colors.black12,
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 12.0),
-          child: SvgPicture.asset(
-            'assets/images/Lock_Keyhole_Minimalistic.svg',
-            width: 24,
-            height: 24,
-            color: Colors.grey,
-            errorBuilder: (context, error, stackTrace) {
-              debugPrint('Error loading SVG: $error');
-              return const Icon(Icons.lock, color: Colors.grey);
-            },
+          child: Container(
+            width: 16,
+            height: 16,
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              'assets/images/Lock_Keyhole_Minimalistic.svg',
+              color: Colors.grey,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                debugPrint('Error loading SVG: $error');
+                return const Icon(Icons.lock, color: Colors.grey);
+              },
+            ),
           ),
         ),
         suffixIcon: IconButton(
-          icon: SvgPicture.asset(
-            _isPasswordVisible
-                ? 'assets/images/eye.svg'
-                : 'assets/images/eye-off.svg',
-            color: const Color(0xFFF5EFFC),
-            height: 24,
-            width: 24,
-            errorBuilder: (context, error, stackTrace) {
-              debugPrint('Error loading SVG: $error');
-              return Icon(
-                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                color: const Color(0xFFF5EFFC),
-              );
-            },
+          icon: Container(
+            width: 16,
+            height: 16,
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              _isPasswordVisible
+                  ? 'assets/images/eye.svg'
+                  : 'assets/images/eye-off.svg',
+              color: Colors.grey,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                debugPrint('Error loading SVG: $error');
+                return Icon(
+                  _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: const Color(0xFFF5EFFC),
+                );
+              },
+            ),
           ),
           onPressed: () =>
               setState(() => _isPasswordVisible = !_isPasswordVisible),
