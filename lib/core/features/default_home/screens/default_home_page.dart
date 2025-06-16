@@ -435,7 +435,7 @@ class BottomNavWithDynamicCurve extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     return SizedBox(
-      height: 90,
+      height: 70,
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -455,7 +455,7 @@ class BottomNavWithDynamicCurve extends StatelessWidget {
                   key: iconKeys[index],
                   onTap: () => onTap(index),
                   child: Transform.translate(
-                    offset: isSelected ? const Offset(0, -10) : Offset.zero,
+                    offset: isSelected ? const Offset(0, 5) : const Offset(0, 10),
                     child: Container(
                       width: 50,
                       height: 50,
@@ -521,8 +521,8 @@ class NavCurvePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     double width = size.width;
     double height = size.height;
-    double curveHeight = 110;
-    double curveWidth = 110;
+    double curveHeight = 90;
+    double curveWidth = 100;
     double edgeCurveWidth = 20;
 
     Paint paint = Paint()
@@ -643,7 +643,7 @@ class InfoPage extends StatelessWidget {
         ),
         SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            padding: const EdgeInsets.fromLTRB(20, 30, 20, 90),
             child: Center(
               child: Column(
                 children: [
@@ -686,7 +686,7 @@ class InfoPage extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 20,
-                    childAspectRatio: 0.8,
+                    childAspectRatio: 0.86,
                     children: const [
                       _ServiceCard(
                         title: "Roadmap",
@@ -847,7 +847,7 @@ class _ServiceCard extends StatelessWidget {
     return Container(
       height: 200,
       decoration: BoxDecoration(
-        color: const Color(0xFF3D1E70).withOpacity(0.4),
+        color: const Color(0xFF3D1E70).withOpacity(0.3),
         borderRadius: BorderRadius.circular(16),
       ),
 
@@ -874,7 +874,7 @@ class _ServiceCard extends StatelessWidget {
             title,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -883,7 +883,7 @@ class _ServiceCard extends StatelessWidget {
             subtitle,
             style: const TextStyle(
               color: Colors.white70,
-              fontSize: 14,
+              fontSize: 12,
             ),
             textAlign: TextAlign.center,
           ),
