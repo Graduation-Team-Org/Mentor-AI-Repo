@@ -265,7 +265,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen>
                             Text(
                               "We have sent the verification code to ${widget.email}",
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white70 , fontFamily: 'Inter'),
+                              style: TextStyle(color: Colors.white70 , fontFamily: 'Inter' , fontSize: 12,),
                             ),
                           ],
                         ),
