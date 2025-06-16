@@ -285,30 +285,34 @@ class HomeScreen extends StatelessWidget {
     final email = user?.email ?? "";
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 2,
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2,
+                    ),
+                  ),
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundImage: user?.photoURL != null
+                        ? NetworkImage(user!.photoURL!)
+                        : AssetImage('assets/images/user.png') as ImageProvider,
+                    backgroundColor: Colors.transparent,
                   ),
                 ),
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundImage: user?.photoURL != null
-                      ? NetworkImage(user!.photoURL!)
-                      : AssetImage('assets/images/user.png') as ImageProvider,
-                  backgroundColor: Colors.transparent,
-                ),
               ),
+
               const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,7 +328,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-          Icon(Icons.notifications, color: Colors.white),
         ],
       ),
     );
@@ -332,7 +335,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildServicesList(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.fromLTRB(20, 0, 20, 78),
       children: [
         _buildServiceCard(
             context,
@@ -1037,15 +1040,6 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                                   if ((userData['all_feedbacks']
                                                           as List)
                                                       .isNotEmpty) ...[
-                                                    const Text(
-                                                      "Feedback:",
-                                                      style: TextStyle(
-                                                        color: Colors.white70,
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
                                                     const SizedBox(height: 4),
                                                     ...(userData[
                                                                 'all_feedbacks']
@@ -1069,15 +1063,6 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                                   ],
                                                   if (userData['ratings'] !=
                                                       null) ...[
-                                                    const Text(
-                                                      "Ratings:",
-                                                      style: TextStyle(
-                                                        color: Colors.white70,
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
                                                     const SizedBox(height: 4),
                                                     ...(userData['ratings']
                                                             as Map)
