@@ -312,15 +312,19 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
 
             // Email field
             _buildTextField(
-                SvgPicture.asset(
-                  'assets/images/Letter.svg',
-                  width: 24,
-                  height: 24,
-                  color: Colors.grey,
-                  errorBuilder: (context, error, stackTrace) {
-                    debugPrint('Error loading SVG: $error');
-                    return const Icon(Icons.email, color: Colors.grey);
-                  },
+                Container(
+                  width: 16,
+                  height: 16,
+                  alignment: Alignment.center,
+                  child: SvgPicture.asset(
+                    'assets/images/Letter.svg',
+                    color: Colors.grey,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                      debugPrint('Error loading SVG: $error');
+                      return const Icon(Icons.email, color: Colors.grey);
+                    },
+                  ),
                 ),
                 "Email",
                 _emailController,
@@ -383,7 +387,7 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
               onTap: _signIn,
               child: Container(
                 width: double.infinity,
-                height: size.height * 0.08,
+                height: size.height * 0.07,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   gradient: const LinearGradient(
@@ -485,6 +489,8 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
       validator: validator,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        isDense: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 12),
         hintText: hint,
         hintStyle: const TextStyle(
             color: Color(0xCCF5EFFC),
@@ -531,6 +537,8 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
       obscureText: !_isPasswordVisible,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        isDense: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 12),
         hintText: hint,
         hintStyle: const TextStyle(
           color: Color(0xCCF5EFFC),
@@ -541,32 +549,40 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
         fillColor: Colors.black12,
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 12.0),
-          child: SvgPicture.asset(
-            'assets/images/Lock_Keyhole_Minimalistic.svg',
-            width: 24,
-            height: 24,
-            color: Colors.grey,
-            errorBuilder: (context, error, stackTrace) {
-              debugPrint('Error loading SVG: $error');
-              return const Icon(Icons.lock, color: Colors.grey);
-            },
+          child: Container(
+            width: 16,
+            height: 16,
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              'assets/images/Lock_Keyhole_Minimalistic.svg',
+              color: Colors.grey,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                debugPrint('Error loading SVG: $error');
+                return const Icon(Icons.lock, color: Colors.grey);
+              },
+            ),
           ),
         ),
         suffixIcon: IconButton(
-          icon: SvgPicture.asset(
-            _isPasswordVisible
-                ? 'assets/images/eye.svg'
-                : 'assets/images/eye-off.svg',
-            color: const Color(0xFFF5EFFC),
-            height: 24,
-            width: 24,
-            errorBuilder: (context, error, stackTrace) {
-              debugPrint('Error loading SVG: $error');
-              return Icon(
-                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                color: const Color(0xFFF5EFFC),
-              );
-            },
+          icon: Container(
+            width: 16,
+            height: 16,
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              _isPasswordVisible
+                  ? 'assets/images/eye.svg'
+                  : 'assets/images/eye-off.svg',
+              color: Colors.grey,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                debugPrint('Error loading SVG: $error');
+                return Icon(
+                  _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: const Color(0xFFF5EFFC),
+                );
+              },
+            ),
           ),
           onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
         ),

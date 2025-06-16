@@ -220,15 +220,21 @@ class _VerificationScreenState extends State<VerificationScreen>  with SingleTic
                           style: TextStyle(color: Colors.white),
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.symmetric(vertical: 12),
                             hintText: "Email",
                             hintStyle: TextStyle(color: Color(0xCCF5EFFC),fontSize: 14, fontFamily: 'Inter'),
                             prefixIcon: Padding(
                               padding: const EdgeInsets.only(left: 12.0),
-                              child: SvgPicture.asset(
-                                'assets/images/Letter.svg',
-                                color: const Color(0xFFF5EFFC),
-                                height: 24,
-                                width: 24,
+                              child: Container(
+                                width: 16,
+                                height: 16,
+                                alignment: Alignment.center,
+                                child: SvgPicture.asset(
+                                  'assets/images/Letter.svg',
+                                  color: Colors.grey,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                             ),
                             border: OutlineInputBorder(

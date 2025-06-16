@@ -7,7 +7,6 @@ import 'dart:ui';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
-
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
@@ -241,16 +240,21 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                       ),),
                       SizedBox(height: size.height * 0.03),
                       _buildTextField(
-                          SvgPicture.asset(
-                            'assets/images/User.svg',
-                            width: 24,
-                            height: 24,
-                            color: Colors.grey,
-                            errorBuilder: (context, error, stackTrace) {
-                              debugPrint('Error loading SVG: $error');
-                              return Icon(Icons.person, size: 24, color: Colors.grey);
-                            },
+                          Container(
+                            width: 16,
+                            height: 16,
+                            alignment: Alignment.center,
+                            child: SvgPicture.asset(
+                              'assets/images/User.svg',
+                              color: Colors.grey,
+                              fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) {
+                                debugPrint('Error loading SVG: $error');
+                                return Icon(Icons.person, size: 16, color: Colors.grey);
+                              },
+                            ),
                           ),
+
                           "UserName",
                           _usernameController,
                               (value) {
@@ -263,15 +267,19 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                       SizedBox(height: size.height * 0.02),
 
                       _buildTextField(
-                          SvgPicture.asset(
-                            'assets/images/Letter.svg',
-                            width: 24,
-                            height: 24,
-                            color: Colors.grey,
-                            errorBuilder: (context, error, stackTrace) {
-                              debugPrint('Error loading SVG: $error');
-                              return Icon(Icons.email, size: 24, color: Colors.grey);
-                            },
+                          Container(
+                            width: 16,
+                            height: 16,
+                            alignment: Alignment.center,
+                            child: SvgPicture.asset(
+                              'assets/images/Letter.svg',
+                              color: Colors.grey,
+                              fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) {
+                                debugPrint('Error loading SVG: $error');
+                                return Icon(Icons.email, size: 16, color: Colors.grey);
+                              },
+                            ),
                           ),
                           "Email",
                           _emailController,
@@ -335,7 +343,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                         onTap: _signUp,
                         child: Container(
                           width: double.infinity,
-                          height: size.height * 0.08,
+                          height: size.height * 0.07,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             gradient: LinearGradient(
@@ -415,6 +423,8 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
       validator: validator,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        isDense: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 12),
         hintText: hint,
         hintStyle: TextStyle(color: Color(0xCCF5EFFC),fontSize: 14,
             fontFamily: 'Inter'),
@@ -422,8 +432,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
           padding: const EdgeInsets.only(left: 12.0),
           child: iconWidget,
         ),
-        filled: true,
-        fillColor: Colors.white.withOpacity(0.1),
+
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
@@ -431,20 +440,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
             color: const Color(0xFF605B6C),
           ),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            width: 1,
-            color: const Color(0xFF605B6C),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            width: 1,
-            color: const Color(0xFF9860E4),
-          ),
-        ),
+
       ),
     );
   }
@@ -462,37 +458,45 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
       validator: validator ?? (value) => value!.isEmpty ? "Password is required" : null,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        isDense: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 12),
         hintText: hint,
         hintStyle: TextStyle(color: Color(0xCCF5EFFC),fontSize: 14, fontFamily: 'Inter'),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 12.0),
-          child: SvgPicture.asset(
-            'assets/images/Lock_Keyhole_Minimalistic.svg',
-            width: 24,
-            height: 24,
-            color: Colors.grey,
-            errorBuilder: (context, error, stackTrace) {
-              debugPrint('Error loading SVG: $error');
-              return Icon(Icons.lock, size: 24, color: Colors.grey);
-            },
+          child: Container(
+            width: 16,
+            height: 16,
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              'assets/images/Lock_Keyhole_Minimalistic.svg',
+              color: Colors.grey,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                debugPrint('Error loading SVG: $error');
+                return Icon(Icons.lock, size: 24, color: Colors.grey);
+              },
+            ),
           ),
         ),
         suffixIcon: IconButton(
-          icon: SvgPicture.asset(
-            isVisible
-                ? 'assets/images/eye.svg'
-                : 'assets/images/eye-off.svg',
-            width: 24,
-            height: 24,
-            color: Colors.grey,
-            errorBuilder: (context, error, stackTrace) {
-              debugPrint('Error loading SVG: $error');
-              return Icon(
-                  isVisible ? Icons.visibility : Icons.visibility_off,
-                  size: 24,
-                  color: Colors.grey
-              );
-            },
+          icon: Container(
+            width: 16,
+            height: 16,
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              isVisible ? 'assets/images/eye.svg' : 'assets/images/eye-off.svg',
+              color: Colors.grey,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                debugPrint('Error loading SVG: $error');
+                return Icon(
+                    isVisible ? Icons.visibility : Icons.visibility_off,
+                    size: 24,
+                    color: Colors.grey
+                );
+              },
+            ),
           ),
           onPressed: toggleVisibility,
         ),
