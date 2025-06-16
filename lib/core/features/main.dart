@@ -19,6 +19,8 @@ void main() async {
 
   await Hive.openBox('reviews');
   await Hive.openBox('feedbacks');
+  await Hive.openBox('ratings');
+  await Hive.openBox('about');
 
   // Initialize HydratedBloc storage
   final storage = await getTemporaryDirectory();

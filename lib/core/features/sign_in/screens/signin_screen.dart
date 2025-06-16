@@ -5,6 +5,7 @@ import 'package:road_map_mentor/core/features/sign_up/screens/signup_screen.dart
 import 'package:road_map_mentor/core/features/verification/screens/verification_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:road_map_mentor/core/features/home/screens/home_page.dart';
+import 'package:road_map_mentor/core/services/firebase_auth_service.dart';
 import 'dart:ui';
 
 class SignInScreen extends StatefulWidget {
@@ -14,9 +15,12 @@ class SignInScreen extends StatefulWidget {
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderStateMixin {
+class _SignInScreenState extends State<SignInScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  final _authService = FirebaseAuthService();
+  bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -38,17 +42,63 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
     }
   }
 
-  void _signIn() {
+  void _signIn() async {
     if (_formKey.currentState!.validate() && !_isNavigating) {
+      setState(() => _isLoading = true);
+      try {
+        final userCredential = await _authService.signInWithEmailAndPassword(
+          _emailController.text.trim(),
+          _passwordController.text,
+        );
+
+        if (userCredential?.user != null && mounted) {
+          _navigateToHome();
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.toString())),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() => _isLoading = false);
+        }
+      }
+    }
+  }
+
+  void _signInWithGoogle() async {
+    setState(() => _isLoading = true);
+    try {
+      final userCredential = await _authService.signInWithGoogle();
+      if (userCredential?.user != null && mounted) {
+        _navigateToHome();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  void _navigateToHome() {
+    if (_isNavigating) return;
       _isNavigating = true;
 
-      // Use post-frame callback to ensure navigation happens after the current frame
       SchedulerBinding.instance.addPostFrameCallback((_) {
         try {
           Navigator.of(context).pushReplacement(
             PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>  HomePage(),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
                 const begin = 0.0;
                 const end = 1.0;
                 var tween = Tween(begin: begin, end: end);
@@ -63,12 +113,12 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
           debugPrint('Navigation error: $e');
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("An error occurred. Please try again."))
+            const SnackBar(
+                content: Text("An error occurred. Please try again.")),
             );
           }
         }
       });
-    }
   }
 
   void _navigateToSignUp() {
@@ -78,10 +128,13 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
     // Use post-frame callback to ensure navigation happens after the current frame
     SchedulerBinding.instance.addPostFrameCallback((_) {
       try {
-        Navigator.of(context).push(
+        Navigator.of(context)
+            .push(
           PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => const SignUpScreen(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const SignUpScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
               const begin = 0.0;
               const end = 1.0;
               var tween = Tween(begin: begin, end: end);
@@ -90,7 +143,8 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
             },
             transitionDuration: const Duration(milliseconds: 300),
           ),
-        ).then((_) {
+        )
+            .then((_) {
           // Reset navigation flag when returning from the next screen
           _isNavigating = false;
         });
@@ -98,9 +152,9 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
         _isNavigating = false;
         debugPrint('Navigation error to SignUp: $e');
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Unable to open Sign Up screen. Please try again."))
-          );
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content:
+                  Text("Unable to open Sign Up screen. Please try again.")));
         }
       }
     });
@@ -113,10 +167,13 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
     // Use post-frame callback to ensure navigation happens after the current frame
     SchedulerBinding.instance.addPostFrameCallback((_) {
       try {
-        Navigator.of(context).push(
+        Navigator.of(context)
+            .push(
           PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => const VerificationScreen(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const VerificationScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
               const begin = 0.0;
               const end = 1.0;
               var tween = Tween(begin: begin, end: end);
@@ -125,7 +182,8 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
             },
             transitionDuration: const Duration(milliseconds: 300),
           ),
-        ).then((_) {
+        )
+            .then((_) {
           // Reset navigation flag when returning from the next screen
           _isNavigating = false;
         });
@@ -133,9 +191,9 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
         _isNavigating = false;
         debugPrint('Navigation error to Verification: $e');
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Unable to open Verification screen. Please try again."))
-          );
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                  "Unable to open Verification screen. Please try again.")));
         }
       }
     });
@@ -167,14 +225,14 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: const Color(0xFF110A2B),
-      body: SafeArea(
-        child: Stack(
+      body: Stack(
           children: [
             // Background elements
             _buildBackgroundEffects(),
 
             // Main content
-            SingleChildScrollView(
+          SafeArea(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
                 child: Form(
@@ -185,13 +243,169 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
                       SizedBox(height: size.height * 0.07),
                       _buildAnimatedLogo(size),
                       SizedBox(height: size.height * 0.04),
+
+                      // Email field
+                      _buildTextField(
+                          SvgPicture.asset(
+                            'assets/images/Letter.svg',
+                            width: 24,
+                            height: 24,
+                            color: Colors.grey,
+                            errorBuilder: (context, error, stackTrace) {
+                              debugPrint('Error loading SVG: $error');
+                              return const Icon(Icons.email,
+                                  color: Colors.grey);
+                            },
+                          ),
+                          "Email",
+                          _emailController, (value) {
+                        if (value == null || value.isEmpty)
+                          return "Email is required";
+                        if (!RegExp(
+                                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+                            .hasMatch(value)) {
+                          return "Invalid email format";
+                        }
+                        return null;
+                      }),
+                      SizedBox(height: size.height * 0.02),
+
+                      // Password field
+                      _buildPasswordField("Password", _passwordController),
+                      SizedBox(height: size.height * 0.015),
+
+                      // Remember me and Forgot Password row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _rememberMe,
+                                onChanged: (value) {
+                                  setState(() => _rememberMe = value!);
+                                },
+                                activeColor: Colors.purpleAccent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                              ),
+                              const Text("Remember me",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Inter')),
+                            ],
+                          ),
+                          InkWell(
+                            onTap: _navigateToVerification,
+                            child: const Text(
+                              "Forgot Password?",
+                              style: TextStyle(
+                                  color: Color(0xFF9860E4),
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Inter'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: size.height * 0.03),
+
+                      // Sign In button
+                      InkWell(
+                        onTap: _isLoading ? null : _signIn,
+                        child: Container(
+                          width: double.infinity,
+                          height: size.height * 0.08,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color(0xFF7A4DB6),
+                                Color(0xFFDFCEF7),
+                                Color(0xFFF0E7FB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          child: Center(
+                            child: _isLoading
+                                ? const CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Color(0xFF352250)),
+                                  )
+                                : const Text(
+                                    "Sign In",
+                                    style: TextStyle(
+                                      color: Color(0xFF352250),
+                                      fontSize: 16,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: size.height * 0.02),
+
+                      // Sign in with text
+                      const Text("Sign in with",
+                          style: TextStyle(
+                              color: Colors.white, fontFamily: 'Inter')),
+                      SizedBox(height: size.height * 0.02),
+
+                      // Social login options
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GlassmorphicIcon(
+                            imageUrl: 'assets/images/facebook.png',
+                            url: 'https://www.facebook.com',
+                            glassColor: Colors.blue,
+                          ),
+                          SizedBox(width: size.width * 0.02),
+                          GlassmorphicIcon(
+                            imageUrl: 'assets/images/apple.png',
+                            url: 'https://www.apple.com',
+                            glassColor: Colors.black,
+                            iconColor: Colors.white,
+                          ),
+                          SizedBox(width: size.width * 0.02),
+                          GlassmorphicIcon(
+                            imageUrl: 'assets/images/gmail.png',
+                            url: '',
+                            glassColor: Colors.red,
+                            onTap: _isLoading ? null : _signInWithGoogle,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: size.height * 0.03),
+
+                      // Don't have an account row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Don't have an account?",
+                              style: TextStyle(color: Colors.white)),
+                          InkWell(
+                            onTap: _navigateToSignUp,
+                            child: const Text(
+                              " Sign up",
+                              style: TextStyle(
+                                  color: Color(0xFF9860E4),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: size.height * 0.04),
                     ],
+                  ),
                   ),
                 ),
               ),
             ),
           ],
-        ),
       ),
     );
   }
@@ -254,9 +468,7 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
               width: 70,
               height: 70,
               decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFF40174C)
-              ),
+                  shape: BoxShape.circle, color: Color(0xFF40174C)),
             ),
           ),
         ),
@@ -296,7 +508,6 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
                 shape: OvalBorder(),
               ),
             ),
-
             SizedBox(height: size.height * 0.02),
             const Text(
               "Sign In",
@@ -309,6 +520,7 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
               ),
             ),
             SizedBox(height: size.height * 0.03),
+
 
             // Email field
             _buildTextField(
@@ -472,6 +684,7 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
               ],
             ),
             SizedBox(height: size.height * 0.04),
+
           ],
         );
       },
@@ -493,10 +706,7 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
         contentPadding: EdgeInsets.symmetric(vertical: 12),
         hintText: hint,
         hintStyle: const TextStyle(
-            color: Color(0xCCF5EFFC),
-            fontSize: 14,
-            fontFamily: 'Inter'
-        ),
+            color: Color(0xCCF5EFFC), fontSize: 14, fontFamily: 'Inter'),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 12.0),
           child: iconWidget,
@@ -584,7 +794,8 @@ class _SignInScreenState extends State<SignInScreen> with SingleTickerProviderSt
               },
             ),
           ),
-          onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
+          onPressed: () =>
+              setState(() => _isPasswordVisible = !_isPasswordVisible),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -618,6 +829,7 @@ class GlassmorphicIcon extends StatelessWidget {
   final String url;
   final Color? glassColor;
   final Color? iconColor;
+  final VoidCallback? onTap;
 
   const GlassmorphicIcon({
     super.key,
@@ -625,6 +837,7 @@ class GlassmorphicIcon extends StatelessWidget {
     required this.url,
     this.glassColor,
     this.iconColor,
+    this.onTap,
   });
 
   void _launchURL(String url) async {
@@ -643,7 +856,7 @@ class GlassmorphicIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => _launchURL(url),
+      onTap: onTap,
       borderRadius: BorderRadius.circular(15),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),

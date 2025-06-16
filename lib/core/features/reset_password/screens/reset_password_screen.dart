@@ -4,7 +4,7 @@ import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart
 import 'dart:ui';
 
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({super.key});
+  const ResetPasswordScreen({super.key, required String email});
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();

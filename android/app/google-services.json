@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "648261593298",
+    "project_id": "mentor-ai-27a35",
+    "storage_bucket": "mentor-ai-27a35.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648261593298:android:7f3d39f6526f25cdd6e50b",
+        "android_client_info": {
+          "package_name": "com.example.road_map_mentor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648261593298-fdpbka5c1p4or030v4qkhbeet5u9edij.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.road_map_mentor",
+            "certificate_hash": "6e63f1a902867912e2ce0fcdccaa7f5ef5d3c485"
+          }
+        },
+        {
+          "client_id": "648261593298-b992b5abvhpjaacsgvruqq0ad52mc0ej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNk2yRUeaBDFifi1pIVXFQ98Ojg-f7pgI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648261593298-b992b5abvhpjaacsgvruqq0ad52mc0ej.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
