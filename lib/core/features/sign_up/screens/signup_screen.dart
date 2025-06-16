@@ -574,8 +574,7 @@ class _SignUpScreenState extends State<SignUpScreen>
           ),
           onPressed: toggleVisibility,
         ),
-        filled: true,
-        fillColor: Colors.white.withOpacity(0.1),
+
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
