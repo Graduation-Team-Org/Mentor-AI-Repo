@@ -90,35 +90,35 @@ class _SignInScreenState extends State<SignInScreen>
 
   void _navigateToHome() {
     if (_isNavigating) return;
-      _isNavigating = true;
+    _isNavigating = true;
 
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        try {
-          Navigator.of(context).pushReplacement(
-            PageRouteBuilder(
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      try {
+        Navigator.of(context).pushReplacement(
+          PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
-                const begin = 0.0;
-                const end = 1.0;
-                var tween = Tween(begin: begin, end: end);
-                var fadeAnimation = animation.drive(tween);
-                return FadeTransition(opacity: fadeAnimation, child: child);
-              },
-              transitionDuration: const Duration(milliseconds: 300),
-            ),
-          );
-        } catch (e) {
-          _isNavigating = false;
-          debugPrint('Navigation error: $e');
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
+              const begin = 0.0;
+              const end = 1.0;
+              var tween = Tween(begin: begin, end: end);
+              var fadeAnimation = animation.drive(tween);
+              return FadeTransition(opacity: fadeAnimation, child: child);
+            },
+            transitionDuration: const Duration(milliseconds: 300),
+          ),
+        );
+      } catch (e) {
+        _isNavigating = false;
+        debugPrint('Navigation error: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 content: Text("An error occurred. Please try again.")),
-            );
-          }
+          );
         }
-      });
+      }
+    });
   }
 
   void _navigateToSignUp() {
@@ -226,11 +226,11 @@ class _SignInScreenState extends State<SignInScreen>
     return Scaffold(
       backgroundColor: const Color(0xFF110A2B),
       body: Stack(
-          children: [
-            // Background elements
-            _buildBackgroundEffects(),
+        children: [
+          // Background elements
+          _buildBackgroundEffects(),
 
-            // Main content
+          // Main content
           SafeArea(
             child: SingleChildScrollView(
               child: Padding(
@@ -401,11 +401,11 @@ class _SignInScreenState extends State<SignInScreen>
                       SizedBox(height: size.height * 0.04),
                     ],
                   ),
-                  ),
                 ),
               ),
             ),
-          ],
+          ),
+        ],
       ),
     );
   }
@@ -520,171 +520,6 @@ class _SignInScreenState extends State<SignInScreen>
               ),
             ),
             SizedBox(height: size.height * 0.03),
-
-
-            // Email field
-            _buildTextField(
-                Container(
-                  width: 16,
-                  height: 16,
-                  alignment: Alignment.center,
-                  child: SvgPicture.asset(
-                    'assets/images/Letter.svg',
-                    color: Colors.grey,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      debugPrint('Error loading SVG: $error');
-                      return const Icon(Icons.email, color: Colors.grey);
-                    },
-                  ),
-                ),
-                "Email",
-                _emailController,
-                    (value) {
-                  if (value == null || value.isEmpty) return "Email is required";
-                  if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
-                    return "Invalid email format";
-                  }
-                  return null;
-                }
-            ),
-            SizedBox(height: size.height * 0.02),
-
-            // Password field
-            _buildPasswordField("Password", _passwordController),
-            SizedBox(height: size.height * 0.015),
-
-            // Remember me and Forgot Password row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _rememberMe,
-                      onChanged: (value) {
-                        setState(() => _rememberMe = value!);
-                      },
-                      activeColor: Colors.purpleAccent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-                    const Text(
-                        "Remember me",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Inter'
-                        )
-                    ),
-                  ],
-                ),
-                InkWell(
-                  onTap: _navigateToVerification,
-                  child: const Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                        color: Color(0xFF9860E4),
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Inter'
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: size.height * 0.03),
-
-            // Sign In button
-            InkWell(
-              onTap: _signIn,
-              child: Container(
-                width: double.infinity,
-                height: size.height * 0.07,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF7A4DB6),
-                      Color(0xFFDFCEF7),
-                      Color(0xFFF0E7FB),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: const Center(
-                    child: Text(
-                      "Sign In",
-                      style: TextStyle(
-                        color: Color(0xFF352250),
-                        fontSize: 16,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                ),
-              ),
-            ),
-            SizedBox(height: size.height * 0.02),
-
-            // Sign in with text
-            const Text(
-                "Sign in with",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Inter'
-                )
-            ),
-            SizedBox(height: size.height * 0.02),
-
-            // Social login options
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GlassmorphicIcon(
-                  imageUrl: 'assets/images/facebook.png',
-                  url: 'https://www.facebook.com',
-                  glassColor: Colors.blue,
-                ),
-                SizedBox(width: size.width * 0.02),
-                GlassmorphicIcon(
-                  imageUrl: 'assets/images/apple.png',
-                  url: 'https://www.apple.com',
-                  glassColor: Colors.black,
-                  iconColor: Colors.white,
-                ),
-                SizedBox(width: size.width * 0.02),
-                GlassmorphicIcon(
-                  imageUrl: 'assets/images/gmail.png',
-                  url: 'https://www.gmail.com',
-                  glassColor: Colors.red,
-                ),
-              ],
-            ),
-            SizedBox(height: size.height * 0.03),
-
-            // Don't have an account row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                    "Don't have an account?",
-                    style: TextStyle(color: Colors.white)
-                ),
-                InkWell(
-                  onTap: _navigateToSignUp,
-                  child: const Text(
-                    " Sign up",
-                    style: TextStyle(
-                        color: Color(0xFF9860E4),
-                        fontWeight: FontWeight.bold
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: size.height * 0.04),
-
           ],
         );
       },
@@ -692,11 +527,11 @@ class _SignInScreenState extends State<SignInScreen>
   }
 
   Widget _buildTextField(
-      Widget iconWidget,
-      String hint,
-      TextEditingController controller,
-      String? Function(String?) validator,
-      ) {
+    Widget iconWidget,
+    String hint,
+    TextEditingController controller,
+    String? Function(String?) validator,
+  ) {
     return TextFormField(
       controller: controller,
       validator: validator,
@@ -739,9 +574,9 @@ class _SignInScreenState extends State<SignInScreen>
   }
 
   Widget _buildPasswordField(
-      String hint,
-      TextEditingController controller,
-      ) {
+    String hint,
+    TextEditingController controller,
+  ) {
     return TextFormField(
       controller: controller,
       obscureText: !_isPasswordVisible,

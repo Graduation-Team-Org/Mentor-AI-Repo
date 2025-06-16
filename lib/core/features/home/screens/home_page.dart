@@ -111,20 +111,23 @@ class _HomePageState extends State<HomePage> {
                           key: iconKeys[index],
                           onTap: () => _onItemTapped(index),
                           child: Transform.translate(
-                            offset: isSelected ? const Offset(0, 1) : const Offset(0, 10),
+                            offset: isSelected
+                                ? const Offset(0, 1)
+                                : const Offset(0, 10),
                             child: Container(
                               width: 50,
                               height: 50,
                               margin: const EdgeInsets.only(bottom: 5),
                               decoration: isSelected
                                   ? const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              )
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                    )
                                   : null,
                               child: Center(
                                 child: SvgPicture.asset(
-                                  _fabIcons[index][isSelected ? 'selected' : 'unselected']!,
+                                  _fabIcons[index]
+                                      [isSelected ? 'selected' : 'unselected']!,
                                   width: 28,
                                   height: 28,
                                   color: const Color(0xFF7B4FD0),
@@ -174,7 +177,8 @@ class NavCurvePainter extends CustomPainter {
       centerX - curveWidth / 2 + 8,
       20,
     );
-    path.quadraticBezierTo(centerX, curveHeight, centerX + curveWidth / 2 - 8, 20);
+    path.quadraticBezierTo(
+        centerX, curveHeight, centerX + curveWidth / 2 - 8, 20);
     path.quadraticBezierTo(
       centerX + curveWidth / 2,
       0,
@@ -948,6 +952,8 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                             'ratings': review['ratings'],
                                             'feedback': review['feedback'],
                                             'timestamp': review['timestamp'],
+                                            'all_feedbacks':
+                                                [], // Initialize with an empty list
                                           };
                                         }
 
@@ -957,9 +963,13 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                           combinedData[userName] ??= {
                                             'name': userName,
                                             'timestamp': feedback['timestamp'],
+                                            'all_feedbacks':
+                                                [], // Initialize if not present
                                           };
-                                          combinedData[userName]!['feedback'] =
-                                              feedback['feedback'];
+                                          // Add all feedbacks to the list
+                                          (combinedData[userName]![
+                                                  'all_feedbacks'] as List)
+                                              .add(feedback['feedback']);
                                         }
 
                                         return Column(
@@ -1024,11 +1034,9 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                                     ],
                                                   ),
                                                   const SizedBox(height: 12),
-                                                  if (userData['feedback'] !=
-                                                          null &&
-                                                      userData['feedback']
-                                                          .toString()
-                                                          .isNotEmpty) ...[
+                                                  if ((userData['all_feedbacks']
+                                                          as List)
+                                                      .isNotEmpty) ...[
                                                     const Text(
                                                       "Feedback:",
                                                       style: TextStyle(
@@ -1039,14 +1047,24 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                                       ),
                                                     ),
                                                     const SizedBox(height: 4),
-                                                    Text(
-                                                      userData['feedback']
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                        color: Colors.white70,
-                                                        fontSize: 14,
-                                                      ),
-                                                    ),
+                                                    ...(userData[
+                                                                'all_feedbacks']
+                                                            as List)
+                                                        .map<Widget>(
+                                                            (f) => Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                          bottom:
+                                                                              4.0),
+                                                                  child: Text(
+                                                                    f.toString(),
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .white70),
+                                                                  ),
+                                                                ))
+                                                        .toList(),
                                                     const SizedBox(height: 12),
                                                   ],
                                                   if (userData['ratings'] !=
