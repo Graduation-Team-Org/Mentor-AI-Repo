@@ -25,7 +25,7 @@ class _PreferredMessagesScreenState extends State<PreferredMessagesScreen> {
         elevation: 0,
         forceMaterialTransparency: true,
         leading: MyBackButton(
-          backButtononPressed: () => context.go(AppRouter.chatScreen),
+          backButtononPressed: () => context.go('/home'),
         ),
         title: Text(
           'Preferred Messages',

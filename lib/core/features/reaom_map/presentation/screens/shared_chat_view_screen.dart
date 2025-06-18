@@ -5,6 +5,7 @@ import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/res
 import 'package:road_map_mentor/core/utils/colors.dart';
 import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
 import 'dart:ui';
+import 'package:go_router/go_router.dart';
 
 class SharedChatViewScreen extends StatelessWidget {
   final String conversationId;
@@ -24,6 +25,10 @@ class SharedChatViewScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Shared Conversation'),
         backgroundColor: AppColors.darkPerple,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => context.go('/home'),
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -42,7 +47,7 @@ class SharedChatViewScreen extends StatelessWidget {
                     ),
                   ),
                   // More background elements as needed
-                  
+
                   // Chat messages
                   ListView(
                     controller: scrollController,
@@ -60,7 +65,7 @@ class SharedChatViewScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      
+
                       // Display all messages
                       ...messages.map(
                         (message) => Column(
@@ -70,7 +75,8 @@ class SharedChatViewScreen extends StatelessWidget {
                                   ? MainAxisAlignment.end
                                   : MainAxisAlignment.start,
                               children: [
-                                SenderAvatar(senderAvatar: message.senderAvatar),
+                                SenderAvatar(
+                                    senderAvatar: message.senderAvatar),
                               ],
                             ),
                             Padding(
@@ -107,7 +113,8 @@ class SharedChatViewScreen extends StatelessWidget {
                                   padding: const EdgeInsets.all(12.0),
                                   child: ResponseWidget(
                                     responseText: message.content,
-                                    widgetDuration: 0, // No animation in shared view
+                                    widgetDuration:
+                                        0, // No animation in shared view
                                   ),
                                 ),
                               ),

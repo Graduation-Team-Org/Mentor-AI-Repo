@@ -10,12 +10,12 @@ import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/pre
 import 'package:road_map_mentor/core/utils/app_routers.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   ///Initialize [Hive]
   await Hive.initFlutter();
   Hive.registerAdapter(PreferredMessagesModelAdapter());
   await Hive.openBox<PreferredMessagesModel>(kPreferredMessages);
-
-  WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.openBox('reviews');
   await Hive.openBox('feedbacks');
@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
       routerConfig: AppRouter.router,
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
+      title: 'Road Map Mentor',
     );
   }
 }

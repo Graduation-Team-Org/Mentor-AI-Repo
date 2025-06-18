@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:go_router/go_router.dart';
 
 class CvAnalysisPage extends StatefulWidget {
   const CvAnalysisPage({super.key});
@@ -38,7 +38,6 @@ class _CvAnalysisPageState extends State<CvAnalysisPage> {
     setState(() {
       isProcessing = false;
     });
-
 
     Navigator.push(
       context,
@@ -118,9 +117,7 @@ class _CvAnalysisPageState extends State<CvAnalysisPage> {
               alignment: Alignment.topLeft,
               child: IconButton(
                 icon: Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: () => context.go('/home'),
               ),
             ),
           ),
@@ -152,27 +149,28 @@ class _CvAnalysisPageState extends State<CvAnalysisPage> {
                       child: Center(
                         child: _fileName == null
                             ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/images/icon_upload.svg',
-                              width: 40,
-                              height: 40,
-                              color: Colors.white70,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              "Upload your CV here to process\nand analyze it",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white70),
-                            ),
-                          ],
-                        )
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/images/icon_upload.svg',
+                                    width: 40,
+                                    height: 40,
+                                    color: Colors.white70,
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    "Upload your CV here to process\nand analyze it",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                ],
+                              )
                             : Text(
-                          _fileName!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
+                                _fileName!,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
                       ),
                     ),
                   ),
@@ -182,22 +180,24 @@ class _CvAnalysisPageState extends State<CvAnalysisPage> {
               GestureDetector(
                 onTap: _fileName != null
                     ? () {
-                  _startProcessing();
-                }
+                        _startProcessing();
+                      }
                     : _pickFile,
                 child: CircleAvatar(
                   radius: 30,
                   backgroundColor: const Color(0xFF9860E4),
                   child: isProcessing
                       ? CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 3,
-                  )
+                          color: Colors.white,
+                          strokeWidth: 3,
+                        )
                       : Icon(
-                    _fileName != null ? Icons.arrow_forward : Icons.upload,
-                    color: Colors.white,
-                    size: 20,
-                  ),
+                          _fileName != null
+                              ? Icons.arrow_forward
+                              : Icons.upload,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                 ),
               ),
               SizedBox(height: 40),
@@ -209,14 +209,12 @@ class _CvAnalysisPageState extends State<CvAnalysisPage> {
   }
 }
 
-
 class ChatScreen extends StatefulWidget {
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen>
-    with TickerProviderStateMixin {
+class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   String _userName = 'User';
   bool _hasStarted = false;
   late Animation<Offset> _animation;
@@ -240,7 +238,6 @@ class _ChatScreenState extends State<ChatScreen>
   }
 
   List<String> _filteredChatHistory = [];
-
 
   @override
   void initState() {
@@ -321,7 +318,8 @@ class _ChatScreenState extends State<ChatScreen>
 
   void _startNewChat() {
     setState(() {
-      String conversationName = "محادثة ${DateTime.now().millisecondsSinceEpoch}";
+      String conversationName =
+          "محادثة ${DateTime.now().millisecondsSinceEpoch}";
       _saveConversation(conversationName);
       messages.clear();
       _isSidebarOpen = false;
@@ -338,7 +336,6 @@ class _ChatScreenState extends State<ChatScreen>
     prefs.setStringList('chat_history', chatHistory);
   }
 
-
   void _sendMessage(String message) {
     if (message.isNotEmpty) {
       setState(() {
@@ -353,20 +350,18 @@ class _ChatScreenState extends State<ChatScreen>
     }
   }
 
-
   void _shareChat() {
     final text = messages.map((e) => "${e['from']}: ${e['text']}").join("\n\n");
     Share.share(text);
     setState(() => _isSidebarOpen = false);
   }
 
-
-
   Widget _buildMessage(String from, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
       child: Row(
-        mainAxisAlignment: from == 'User' ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment:
+            from == 'User' ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (from != 'User')
@@ -379,7 +374,9 @@ class _ChatScreenState extends State<ChatScreen>
             ),
           Expanded(
             child: Column(
-              crossAxisAlignment: from == 'User' ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              crossAxisAlignment: from == 'User'
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
               children: [
                 Text(
                   from,
@@ -395,7 +392,8 @@ class _ChatScreenState extends State<ChatScreen>
                   decoration: BoxDecoration(
                     color: Colors.purpleAccent.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.purpleAccent.withOpacity(0.3)),
+                    border:
+                        Border.all(color: Colors.purpleAccent.withOpacity(0.3)),
                   ),
                   child: Text(
                     text,
@@ -494,15 +492,14 @@ class _ChatScreenState extends State<ChatScreen>
                   children: [
                     SizedBox(height: 30),
                     Padding(
-                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                      padding: const EdgeInsets.only(
+                          left: 16, right: 16, bottom: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
                             icon: Icon(Icons.arrow_back, color: Colors.white),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                            onPressed: () => context.go('/home'),
                           ),
                           Text(
                             'CV Analysis',
@@ -547,7 +544,8 @@ class _ChatScreenState extends State<ChatScreen>
                             children: [
                               CircleAvatar(
                                 radius: 50,
-                                backgroundImage: AssetImage('assets/images/home3.png'),
+                                backgroundImage:
+                                    AssetImage('assets/images/home3.png'),
                               ),
                               SizedBox(height: 10),
                               Text(
@@ -591,10 +589,12 @@ class _ChatScreenState extends State<ChatScreen>
                               controller: _controllerText,
                               decoration: InputDecoration(
                                 hintText: "Ask what's on your mind...",
-                                hintStyle: const TextStyle(color: Colors.white30),
+                                hintStyle:
+                                    const TextStyle(color: Colors.white30),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
-                                  borderSide: BorderSide(color: const Color(0xFF605B6C)),
+                                  borderSide: BorderSide(
+                                      color: const Color(0xFF605B6C)),
                                 ),
                               ),
                               style: const TextStyle(color: Colors.white),
@@ -614,7 +614,6 @@ class _ChatScreenState extends State<ChatScreen>
                               _sendMessage(_controllerText.text);
                             },
                           )
-
                         ],
                       ),
                     ),
@@ -654,10 +653,13 @@ class _ChatScreenState extends State<ChatScreen>
                             Row(
                               children: [
                                 CircleAvatar(
-                                  backgroundImage: AssetImage('assets/images/home3.png'),
+                                  backgroundImage:
+                                      AssetImage('assets/images/home3.png'),
                                 ),
                                 SizedBox(width: 10),
-                                Text("Marcus", style: TextStyle(color: Colors.white, fontSize: 18)),
+                                Text("Marcus",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18)),
                               ],
                             ),
                             SizedBox(height: 20),
@@ -667,7 +669,8 @@ class _ChatScreenState extends State<ChatScreen>
                                 hintText: "Search",
                                 hintStyle: TextStyle(color: Colors.white70),
                                 suffixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
                                   child: SvgPicture.asset(
                                     'assets/images/fi_search.svg',
                                     width: 20,
@@ -706,7 +709,8 @@ class _ChatScreenState extends State<ChatScreen>
                                 height: 24,
                                 color: Colors.white,
                               ),
-                              title: Text("New Chat", style: TextStyle(color: Colors.white)),
+                              title: Text("New Chat",
+                                  style: TextStyle(color: Colors.white)),
                               onTap: _startNewChat,
                             ),
                             ListTile(
@@ -716,7 +720,8 @@ class _ChatScreenState extends State<ChatScreen>
                                 height: 24,
                                 color: Colors.white,
                               ),
-                              title: Text("History", style: TextStyle(color: Colors.white)),
+                              title: Text("History",
+                                  style: TextStyle(color: Colors.white)),
                               onTap: _showHistory,
                             ),
                             ListTile(
@@ -726,14 +731,17 @@ class _ChatScreenState extends State<ChatScreen>
                                 height: 24,
                                 color: Colors.white,
                               ),
-                              title: Text("Preferred message", style: TextStyle(color: Colors.white)),
+                              title: Text("Preferred message",
+                                  style: TextStyle(color: Colors.white)),
                               onTap: () {},
                             ),
                             SizedBox(height: 20),
-                            Text('History:', style: TextStyle(color: Colors.white70)),
+                            Text('History:',
+                                style: TextStyle(color: Colors.white70)),
                             ..._filteredChatHistory.map((history) {
                               return ListTile(
-                                title: Text(history, style: TextStyle(color: Colors.white)),
+                                title: Text(history,
+                                    style: TextStyle(color: Colors.white)),
                                 onTap: () {
                                   _loadConversation(history);
                                   setState(() {
@@ -752,7 +760,8 @@ class _ChatScreenState extends State<ChatScreen>
                         children: [
                           CircleAvatar(
                             radius: 15,
-                            backgroundImage: AssetImage("assets/images/user.png"),
+                            backgroundImage:
+                                AssetImage("assets/images/user.png"),
                           ),
                           SizedBox(width: 10),
                           Text('User', style: TextStyle(color: Colors.white70)),
@@ -768,4 +777,3 @@ class _ChatScreenState extends State<ChatScreen>
     );
   }
 }
-

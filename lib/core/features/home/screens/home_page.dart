@@ -312,7 +312,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1236,10 +1235,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final user = _auth.currentUser;
       if (user != null) {
         await user.delete();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage1()),
-        );
+        if (context.mounted) {
+          context.go(AppRouter.home1);
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Account deleted successfully')),
         );
@@ -1254,10 +1252,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _signOut() async {
     try {
       await _auth.signOut();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage1()),
-      );
+      if (context.mounted) {
+        context.go(AppRouter.home1);
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Logged out successfully')),
       );
@@ -2643,10 +2640,7 @@ class _PersonalDataState extends State<PersonalData> {
       final user = _auth.currentUser;
       if (user != null) {
         await user.delete();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage1()),
-        );
+        context.go(AppRouter.home1);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Account deleted successfully')),
         );
@@ -2661,10 +2655,7 @@ class _PersonalDataState extends State<PersonalData> {
   Future<void> _signOut() async {
     try {
       await _auth.signOut();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage1()),
-      );
+      context.go(AppRouter.home1);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Logged out successfully')),
       );
