@@ -371,7 +371,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen>
                           onTap: _isLoading ? null : verifyCode,
                           child: Container(
                             width: double.infinity,
-                            height: size.height * 0.07,
+                            height: 50,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               gradient: LinearGradient(

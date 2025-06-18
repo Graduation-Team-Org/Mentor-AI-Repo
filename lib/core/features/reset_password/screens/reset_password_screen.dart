@@ -227,7 +227,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
                     onTap: resetPassword,
                     child: Container(
                       width: double.infinity,
-                      height: size.height * 0.07,
+                      height: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         gradient: const LinearGradient(

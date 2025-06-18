@@ -315,7 +315,7 @@ class _SignInScreenState extends State<SignInScreen>
                         onTap: _isLoading ? null : _signIn,
                         child: Container(
                           width: double.infinity,
-                          height: size.height * 0.08,
+                          height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             gradient: const LinearGradient(
