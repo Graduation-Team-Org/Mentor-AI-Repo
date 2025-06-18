@@ -398,7 +398,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                         onTap: _isLoading ? null : _signUp,
                         child: Container(
                           width: double.infinity,
-                          height: size.height * 0.07,
+                          height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             gradient: const LinearGradient(

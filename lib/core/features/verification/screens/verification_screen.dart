@@ -276,7 +276,7 @@ class _VerificationScreenState extends State<VerificationScreen>
                           onTap: _isLoading ? null : validateAndContinue,
                           child: Container(
                             width: double.infinity,
-                            height: size.height * 0.07,
+                            height: 50,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               gradient: LinearGradient(
