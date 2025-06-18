@@ -182,45 +182,13 @@ class MyAppWithError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Road Map Mentor',
       theme: ThemeData(
         primarySwatch: Colors.purple,
         scaffoldBackgroundColor: const Color(0xFF110A2B),
       ),
-      home: Scaffold(
-        backgroundColor: const Color(0xFF110A2B),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 64,
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'App Initialization Error',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                child: Text(
-                  error,
-                  style: const TextStyle(color: Colors.white70),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      routerConfig: AppRouter.router,
       debugShowCheckedModeBanner: false,
     );
   }

@@ -13,6 +13,7 @@ import '../services/chat_sharing_service.dart';
 import '../utils/chat_utils.dart';
 import '../models/chat_message.dart';
 import '../widgets/chat/message_bubble.dart';
+import 'package:go_router/go_router.dart';
 
 class ChatWithDocPage extends StatefulWidget {
   const ChatWithDocPage({super.key});
@@ -575,9 +576,7 @@ class _ChatWithDocPageState extends State<ChatWithDocPage> {
                     alignment: Alignment.topLeft,
                     child: IconButton(
                       icon: Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+                      onPressed: () => context.go('/home'),
                     ),
                   ),
                 ),
@@ -898,12 +897,7 @@ class _ChatWithDocPageState extends State<ChatWithDocPage> {
                     elevation: 0,
                     leading: IconButton(
                       icon: Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () {
-                        setState(() {
-                          _hasStarted = false;
-                          messages.clear();
-                        });
-                      },
+                      onPressed: () => context.go('/home'),
                     ),
                     title: Text('Chat with Document',
                         style: TextStyle(color: Colors.white)),
@@ -1060,9 +1054,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
               alignment: Alignment.topLeft,
               child: IconButton(
                 icon: Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: () => context.go('/home'),
               ),
             ),
           ),
@@ -1458,9 +1450,7 @@ class _ChatWithDocumentScreenState extends State<ChatWithDocumentScreen>
                         children: [
                           IconButton(
                             icon: Icon(Icons.arrow_back, color: Colors.white),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                            onPressed: () => context.go('/home'),
                           ),
                           Text(
                             'Chat with document',

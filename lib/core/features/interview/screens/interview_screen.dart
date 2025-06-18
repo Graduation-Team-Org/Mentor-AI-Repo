@@ -585,10 +585,9 @@ class _InterviewScreenState extends State<InterviewScreen>
 
     try {
       // Use the transcribed text instead of placeholder
-      final transcribedAnswer =
-          _transcribedText.isNotEmpty
-              ? _transcribedText
-              : "No speech was detected. Please try recording your answer again.";
+      final transcribedAnswer = _transcribedText.isNotEmpty
+          ? _transcribedText
+          : "No speech was detected. Please try recording your answer again.";
 
       // Save the answer to the current question
       _interviewModel!.currentQuestion.answer = transcribedAnswer;
@@ -694,8 +693,7 @@ class _InterviewScreenState extends State<InterviewScreen>
       final historyService = HistoryService(prefs);
 
       // Calculate total score
-      final totalScore =
-          _interviewModel!.questions.fold<int>(
+      final totalScore = _interviewModel!.questions.fold<int>(
             0,
             (sum, question) => sum + (question.score ?? 0),
           ) ~/
@@ -709,17 +707,16 @@ class _InterviewScreenState extends State<InterviewScreen>
         difficulty: widget.difficulty,
         date: DateTime.now(),
         totalScore: totalScore,
-        questions:
-            _interviewModel!.questions
-                .map(
-                  (q) => QuestionHistory(
-                    question: q.question,
-                    answer: q.answer ?? '',
-                    score: q.score ?? 0,
-                    feedback: q.feedback ?? '',
-                  ),
-                )
-                .toList(),
+        questions: _interviewModel!.questions
+            .map(
+              (q) => QuestionHistory(
+                question: q.question,
+                answer: q.answer ?? '',
+                score: q.score ?? 0,
+                feedback: q.feedback ?? '',
+              ),
+            )
+            .toList(),
       );
 
       // Save to history
@@ -814,287 +811,114 @@ class _InterviewScreenState extends State<InterviewScreen>
           const BackgroundDecorations(),
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 400),
-            child:
-                _isLoading
+            child: _isLoading
+                ? Center(
+                    key: const ValueKey('loading'),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon:
+                              const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(context, '/home');
+                          },
+                        ),
+                        const CircularProgressIndicator(
+                          color: AppColors.primaryPurple,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          _statusMessage,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  )
+                : _hasError
                     ? Center(
-                      key: const ValueKey('loading'),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const CircularProgressIndicator(
-                            color: AppColors.primaryPurple,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            _statusMessage,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    )
-                    : _hasError
-                    ? Center(
-                      key: const ValueKey('error'),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.error_outline,
-                            color: Colors.red,
-                            size: 48,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            _statusMessage,
-                            style: const TextStyle(color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 24),
-                          ElevatedButton.icon(
-                            onPressed: _loadInterviewQuestions,
-                            icon: const Icon(Icons.refresh),
-                            label: const Text('Try Again'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primaryPurple,
-                              foregroundColor: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                    : _interviewModel != null
-                    ? SafeArea(
-                      key: const ValueKey('content'),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        key: const ValueKey('error'),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Timer and progress indicator
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // Question progress
-                                Text(
-                                  'Question ${_interviewModel!.currentQuestionIndex + 1}/${_interviewModel!.questions.length}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                // Timer
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color:
-                                        _isTimeUp
-                                            ? Colors.red
-                                            : AppColors.darkPurple,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.timer,
-                                        color: Colors.white,
-                                        size: 16,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                            const Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 48,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              _statusMessage,
+                              style: const TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 24),
-
-                            // Question card
-                            Expanded(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Question
-                                    Container(
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.darkPurple,
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              const Text(
-                                                'Question:',
-                                                style: TextStyle(
-                                                  color:
-                                                      AppColors.primaryPurple,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              // Text-to-speech toggle button
-                                              IconButton(
-                                                onPressed: () {
-                                                  _speakQuestion(
-                                                    _interviewModel!
-                                                        .currentQuestion
-                                                        .question,
-                                                  );
-                                                },
-                                                icon: Icon(
-                                                  _isSpeaking
-                                                      ? Icons.volume_off
-                                                      : Icons.volume_up,
-                                                  color: Colors.white,
-                                                ),
-                                                tooltip:
-                                                    _isSpeaking
-                                                        ? 'Stop Speaking'
-                                                        : 'Speak Question',
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            _interviewModel!
-                                                .currentQuestion
-                                                .question,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 24),
-
-                                    // Answer display
-                                    Card(
-                                      elevation: 4,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              'Your Answer:',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 8),
-                                            Container(
-                                              width: double.infinity,
-                                              padding: const EdgeInsets.all(12),
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey[200],
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: Text(
-                                                _transcribedText.isEmpty
-                                                    ? 'Your answer will appear here...'
-                                                    : _transcribedText,
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color:
-                                                      _transcribedText.isEmpty
-                                                          ? Colors.grey[600]
-                                                          : Colors.black,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                            ElevatedButton.icon(
+                              onPressed: _loadInterviewQuestions,
+                              icon: const Icon(Icons.refresh),
+                              label: const Text('Try Again'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primaryPurple,
+                                foregroundColor: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : _interviewModel != null
+                        ? SafeArea(
+                            key: const ValueKey('content'),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Back button
+                                  IconButton(
+                                    icon: const Icon(Icons.arrow_back,
+                                        color: Colors.white),
+                                    onPressed: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, '/home');
+                                    },
+                                  ),
+                                  // Timer and progress indicator
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      // Question progress
+                                      Text(
+                                        'Question ${_interviewModel!.currentQuestionIndex + 1}/${_interviewModel!.questions.length}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    ),
-
-                                    // Evaluation results if available
-                                    if (_interviewModel!
-                                            .currentQuestion
-                                            .score !=
-                                        null) ...[
+                                      // Timer
                                       Container(
-                                        padding: const EdgeInsets.all(16),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.darkPurple,
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                          border: Border.all(
-                                            color: AppColors.primaryPurple,
-                                          ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 6,
                                         ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                        decoration: BoxDecoration(
+                                          color: _isTimeUp
+                                              ? Colors.red
+                                              : AppColors.darkPurple,
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Row(
                                           children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                const Text(
-                                                  'Evaluation:',
-                                                  style: TextStyle(
-                                                    color:
-                                                        AppColors.primaryPurple,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                        horizontal: 12,
-                                                        vertical: 4,
-                                                      ),
-                                                  decoration: BoxDecoration(
-                                                    color: _getScoreColor(
-                                                      _interviewModel!
-                                                          .currentQuestion
-                                                          .score!,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          20,
-                                                        ),
-                                                  ),
-                                                  child: Text(
-                                                    'Score: ${_interviewModel!.currentQuestion.score}',
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                            const Icon(
+                                              Icons.timer,
+                                              color: Colors.white,
+                                              size: 16,
                                             ),
-                                            const SizedBox(height: 8),
+                                            const SizedBox(width: 4),
                                             Text(
-                                              _interviewModel!
-                                                      .currentQuestion
-                                                      .feedback ??
-                                                  '',
+                                              '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
                                               style: const TextStyle(
                                                 color: Colors.white,
                                               ),
@@ -1102,158 +926,361 @@ class _InterviewScreenState extends State<InterviewScreen>
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(height: 16),
                                     ],
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            // Recording status and controls
-                            if (_isEvaluating) ...[
-                              Center(
-                                child: Column(
-                                  children: [
-                                    const CircularProgressIndicator(
-                                      color: AppColors.primaryPurple,
-                                    ),
-                                    const SizedBox(height: 16),
-                                    Text(
-                                      _statusMessage,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ] else ...[
-                              // Waveform visualization
-                              if (_isRecording) ...[
-                                Container(
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.darkPurple,
-                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: List.generate(
-                                      _waveformData.length,
-                                      (index) => AnimatedBuilder(
-                                        animation: _waveformAnimation,
-                                        builder: (context, child) {
-                                          return Container(
-                                            width: 4,
-                                            height:
-                                                10 +
-                                                (_waveformData[index] * 40),
+                                  const SizedBox(height: 24),
+
+                                  // Question card
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // Question
+                                          Container(
+                                            padding: const EdgeInsets.all(16),
                                             decoration: BoxDecoration(
-                                              color: AppColors.primaryPurple,
-                                              borderRadius:
-                                                  BorderRadius.circular(2),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                              ],
-
-                              // Action buttons
-                              if (!kIsWeb) ...[
-                                const SizedBox(
-                                  height: 0,
-                                ), // Adjusted spacing before action buttons to move button up
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    if (_interviewModel!
-                                            .currentQuestion
-                                            .score !=
-                                        null) ...[
-                                      Expanded(
-                                        child: GradientButton(
-                                          text:
-                                              _interviewModel!.hasNextQuestion
-                                                  ? 'Next Question'
-                                                  : 'Finish Interview',
-                                          height: 75,
-                                          icon: Icons.navigate_next,
-                                          isLoading: _isButtonLoading,
-                                          onPressed:
-                                              _isButtonLoading
-                                                  ? null
-                                                  : _nextQuestion,
-                                        ),
-                                      ),
-                                    ] else ...[
-                                      Expanded(
-                                        child: GradientButton(
-                                          text:
-                                              _isRecording
-                                                  ? 'Stop Recording'
-                                                  : 'Start Recording',
-                                          height: 75,
-                                          icon:
-                                              _isRecording
-                                                  ? Icons.stop
-                                                  : Icons.mic,
-                                          dynamicBackgroundColor:
-                                              _isRecording ? Colors.red : null,
-                                          isLoading: _isButtonLoading,
-                                          onPressed:
-                                              _isButtonLoading
-                                                  ? null
-                                                  : (_isRecording
-                                                      ? _stopRecording
-                                                      : _startRecording),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        child: ElevatedButton.icon(
-                                          onPressed:
-                                              _isButtonLoading
-                                                  ? null
-                                                  : _skipQuestion,
-                                          icon: const Icon(
-                                            Icons.skip_next,
-                                            color: Colors.white,
-                                          ),
-                                          label: const Text(
-                                            'Skip Question',
-                                            style: TextStyle(fontSize: 16),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                AppColors.darkPurple,
-                                            foregroundColor: Colors.white,
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 12,
-                                            ),
-                                            shape: RoundedRectangleBorder(
+                                              color: AppColors.darkPurple,
                                               borderRadius:
                                                   BorderRadius.circular(12),
                                             ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    const Text(
+                                                      'Question:',
+                                                      style: TextStyle(
+                                                        color: AppColors
+                                                            .primaryPurple,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    // Text-to-speech toggle button
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        _speakQuestion(
+                                                          _interviewModel!
+                                                              .currentQuestion
+                                                              .question,
+                                                        );
+                                                      },
+                                                      icon: Icon(
+                                                        _isSpeaking
+                                                            ? Icons.volume_off
+                                                            : Icons.volume_up,
+                                                        color: Colors.white,
+                                                      ),
+                                                      tooltip: _isSpeaking
+                                                          ? 'Stop Speaking'
+                                                          : 'Speak Question',
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  _interviewModel!
+                                                      .currentQuestion.question,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(height: 24),
+
+                                          // Answer display
+                                          Card(
+                                            elevation: 4,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(16),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const Text(
+                                                    'Your Answer:',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            12),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                    ),
+                                                    child: Text(
+                                                      _transcribedText.isEmpty
+                                                          ? 'Your answer will appear here...'
+                                                          : _transcribedText,
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: _transcribedText
+                                                                .isEmpty
+                                                            ? Colors.grey[600]
+                                                            : Colors.black,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+
+                                          // Evaluation results if available
+                                          if (_interviewModel!
+                                                  .currentQuestion.score !=
+                                              null) ...[
+                                            Container(
+                                              padding: const EdgeInsets.all(16),
+                                              decoration: BoxDecoration(
+                                                color: AppColors.darkPurple,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  12,
+                                                ),
+                                                border: Border.all(
+                                                  color:
+                                                      AppColors.primaryPurple,
+                                                ),
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      const Text(
+                                                        'Evaluation:',
+                                                        style: TextStyle(
+                                                          color: AppColors
+                                                              .primaryPurple,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          horizontal: 12,
+                                                          vertical: 4,
+                                                        ),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: _getScoreColor(
+                                                            _interviewModel!
+                                                                .currentQuestion
+                                                                .score!,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            20,
+                                                          ),
+                                                        ),
+                                                        child: Text(
+                                                          'Score: ${_interviewModel!.currentQuestion.score}',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  Text(
+                                                    _interviewModel!
+                                                            .currentQuestion
+                                                            .feedback ??
+                                                        '',
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(height: 16),
+                                          ],
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Recording status and controls
+                                  if (_isEvaluating) ...[
+                                    Center(
+                                      child: Column(
+                                        children: [
+                                          const CircularProgressIndicator(
+                                            color: AppColors.primaryPurple,
+                                          ),
+                                          const SizedBox(height: 16),
+                                          Text(
+                                            _statusMessage,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ] else ...[
+                                    // Waveform visualization
+                                    if (_isRecording) ...[
+                                      Container(
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.darkPurple,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: List.generate(
+                                            _waveformData.length,
+                                            (index) => AnimatedBuilder(
+                                              animation: _waveformAnimation,
+                                              builder: (context, child) {
+                                                return Container(
+                                                  width: 4,
+                                                  height: 10 +
+                                                      (_waveformData[index] *
+                                                          40),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        AppColors.primaryPurple,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            2),
+                                                  ),
+                                                );
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ),
+                                      const SizedBox(height: 16),
+                                    ],
+
+                                    // Action buttons
+                                    if (!kIsWeb) ...[
+                                      const SizedBox(
+                                        height: 0,
+                                      ), // Adjusted spacing before action buttons to move button up
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          if (_interviewModel!
+                                                  .currentQuestion.score !=
+                                              null) ...[
+                                            Expanded(
+                                              child: GradientButton(
+                                                text: _interviewModel!
+                                                        .hasNextQuestion
+                                                    ? 'Next Question'
+                                                    : 'Finish Interview',
+                                                height: 75,
+                                                icon: Icons.navigate_next,
+                                                isLoading: _isButtonLoading,
+                                                onPressed: _isButtonLoading
+                                                    ? null
+                                                    : _nextQuestion,
+                                              ),
+                                            ),
+                                          ] else ...[
+                                            Expanded(
+                                              child: GradientButton(
+                                                text: _isRecording
+                                                    ? 'Stop Recording'
+                                                    : 'Start Recording',
+                                                height: 75,
+                                                icon: _isRecording
+                                                    ? Icons.stop
+                                                    : Icons.mic,
+                                                dynamicBackgroundColor:
+                                                    _isRecording
+                                                        ? Colors.red
+                                                        : null,
+                                                isLoading: _isButtonLoading,
+                                                onPressed: _isButtonLoading
+                                                    ? null
+                                                    : (_isRecording
+                                                        ? _stopRecording
+                                                        : _startRecording),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: ElevatedButton.icon(
+                                                onPressed: _isButtonLoading
+                                                    ? null
+                                                    : _skipQuestion,
+                                                icon: const Icon(
+                                                  Icons.skip_next,
+                                                  color: Colors.white,
+                                                ),
+                                                label: const Text(
+                                                  'Skip Question',
+                                                  style:
+                                                      TextStyle(fontSize: 16),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      AppColors.darkPurple,
+                                                  foregroundColor: Colors.white,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    vertical: 12,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
                                     ],
                                   ],
-                                ),
-                              ],
-                            ],
-                          ],
-                        ),
-                      ),
-                    )
-                    : const SizedBox.shrink(),
+                                ],
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
           ),
         ],
       ),
