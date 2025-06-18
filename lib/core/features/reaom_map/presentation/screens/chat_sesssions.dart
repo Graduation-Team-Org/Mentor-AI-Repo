@@ -40,7 +40,7 @@ class _ChatSessionsScreenState extends State<ChatSessionsScreen> {
     if (widget.extra != null && widget.extra!.containsKey('sessionId')) {
       final sessionId = widget.extra!['sessionId'];
       final sessionData = await ChatSessionService.getChatSession(sessionId);
-      
+
       if (sessionData != null) {
         final List<dynamic> messagesJson = sessionData['messages'];
         setState(() {
@@ -53,7 +53,7 @@ class _ChatSessionsScreenState extends State<ChatSessionsScreen> {
         return;
       }
     }
-    
+
     setState(() {
       _isLoading = false;
     });
@@ -66,7 +66,7 @@ class _ChatSessionsScreenState extends State<ChatSessionsScreen> {
         elevation: 0,
         forceMaterialTransparency: true,
         leading: MyBackButton(
-          backButtononPressed: () => context.go(AppRouter.chatScreen),
+          backButtononPressed: () => context.go('/home'),
         ),
         title: Text(
           _sessionTitle ?? 'Chat Session',
@@ -96,12 +96,14 @@ class _ChatSessionsScreenState extends State<ChatSessionsScreen> {
                         CustomEllipseCircule(
                           alignment: const AlignmentDirectional(-1.4, 1),
                           imgPath: 'assets/images/Ellipse_3.svg',
-                          imageFilter: ImageFilter.blur(sigmaX: 220, sigmaY: 220),
+                          imageFilter:
+                              ImageFilter.blur(sigmaX: 220, sigmaY: 220),
                         ),
                         CustomEllipseCircule(
                           alignment: const AlignmentDirectional(-1.5, 1.1),
                           imgPath: 'assets/images/Ellipse_4.svg',
-                          imageFilter: ImageFilter.blur(sigmaX: 300, sigmaY: 300),
+                          imageFilter:
+                              ImageFilter.blur(sigmaX: 300, sigmaY: 300),
                         ),
                         KeepWidgetAlive(
                           aliveGivenWidget: ChatSessionListView(

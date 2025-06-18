@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../constants/constants.dart';
 import '../widgets/number_point.dart';
 import '../widgets/gradient_button.dart';
@@ -50,9 +51,7 @@ class InterviewPage extends StatelessWidget {
                               Icons.arrow_back,
                               color: Colors.white,
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                            onPressed: () => context.go('/home'),
                           ),
                         ),
                       ],
