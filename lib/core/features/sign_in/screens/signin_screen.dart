@@ -546,28 +546,42 @@ class _SignInScreenState extends State<SignInScreen>
           padding: const EdgeInsets.only(left: 12.0),
           child: iconWidget,
         ),
-        filled: true,
-        fillColor: Colors.black12,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-            width: 1,
-            color: Color(0xFF605B6C),
-          ),
-        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
+          borderSide: BorderSide(
             width: 1,
             color: Color(0xFF605B6C),
           ),
         ),
+
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
+          borderSide: BorderSide(
+            width: 1,
+            color: Color(0xFF605B6C),
+          ),
+        ),
+
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
             width: 1.5,
             color: Color(0xFF9860E4),
           ),
+        ),
+
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: Color(0xFF9860E4),
+          ),
+        ),
+
+        errorStyle: TextStyle(
+          color: Color(0xFF9860E4),
+          fontFamily: 'Inter',
+          fontSize: 12,
         ),
       ),
     );
@@ -632,26 +646,42 @@ class _SignInScreenState extends State<SignInScreen>
           onPressed: () =>
               setState(() => _isPasswordVisible = !_isPasswordVisible),
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-            width: 1,
-            color: Color(0xFF605B6C),
-          ),
-        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
+          borderSide: BorderSide(
             width: 1,
             color: Color(0xFF605B6C),
           ),
         ),
+
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
+          borderSide: BorderSide(
+            width: 1,
+            color: Color(0xFF605B6C),
+          ),
+        ),
+
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
             width: 1.5,
             color: Color(0xFF9860E4),
           ),
+        ),
+
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: Color(0xFF9860E4),
+          ),
+        ),
+
+        errorStyle: TextStyle(
+          color: Color(0xFF9860E4),
+          fontFamily: 'Inter',
+          fontSize: 12,
         ),
       ),
       validator: (value) => value!.isEmpty ? "Password is required" : null,

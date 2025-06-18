@@ -254,12 +254,33 @@ class _VerificationScreenState extends State<VerificationScreen>
                                 ),
                               ),
                             ),
-                            border: OutlineInputBorder(
+                            enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
                                 width: 1,
-                                color: const Color(0xFF605B6C),
+                                color: Color(0xFF605B6C),
                               ),
+                            ),
+
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Color(0xFF605B6C),
+                              ),
+                            ),
+
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                width: 1.5,
+                                color: Color(0xFF9860E4),
+                              ),
+                            ),
+                            errorStyle: const TextStyle(
+                              color: Color(0xFF9860E4),
+                              fontFamily: 'Inter',
+                              fontSize: 12,
                             ),
                           ),
                         ),
@@ -268,7 +289,7 @@ class _VerificationScreenState extends State<VerificationScreen>
                             padding: EdgeInsets.only(top: 10),
                             child: Text(
                               errorMessage!,
-                              style: TextStyle(color: Colors.red),
+                              style: TextStyle(color: Color(0xFF9860E4)),
                             ),
                           ),
                         SizedBox(height: size.height * 0.04),

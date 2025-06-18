@@ -281,7 +281,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen>
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
-                                    color: _hasError ? Colors.red : Color(0xFF605B6C),
+                                    color: _hasError ? Color(0xFF9860E4) : Color(0xFF605B6C),
                                   ),
                                 ),
                                 child: TextField(
@@ -310,7 +310,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen>
                             padding: EdgeInsets.only(top: 20),
                             child: Text(
                               "Incorrect code, please try again.",
-                              style: TextStyle(color: Colors.red , fontFamily: 'Inter'),
+                              style: TextStyle(color: Color(0xFF9860E4) , fontFamily: 'Inter'),
                             ),
                           ),
                         SizedBox(height: size.height * 0.03),
