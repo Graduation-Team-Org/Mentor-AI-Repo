@@ -1338,7 +1338,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 child: SingleChildScrollView(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
                   child: Column(
                     children: <Widget>[
                       Padding(
@@ -1571,6 +1571,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       },
       child: Container(
+        height: 50,
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -1584,7 +1585,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(
                 fontFamily: 'Inter',
                 color: const Color(0xFF7E46CA),
-                fontSize: 20,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -1600,12 +1601,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return InkWell(
       onTap: onPressed,
       child: Container(
+        height: 50,
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: const Color(0xFF7E46CA),
+            color: const Color(0xFF605B6C),
             width: 2,
           ),
         ),
@@ -1614,7 +1616,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             label,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 14,
             ),
           ),
         ),
