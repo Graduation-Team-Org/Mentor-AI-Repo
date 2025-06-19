@@ -19,20 +19,23 @@ class ChatSessionModelAdapter extends TypeAdapter<ChatSessionModel> {
     return ChatSessionModel(
       sessionId: fields[0] as String,
       sessionTitle: fields[1] as String,
-      messageContent: fields[2] as String,
+      messages: fields[2] as List<ChatMessageModel>,
+      createdAt: fields[3] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ChatSessionModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.sessionId)
       ..writeByte(1)
       ..write(obj.sessionTitle)
       ..writeByte(2)
-      ..write(obj.messageContent);
+      ..write(obj.messagesJson)
+      ..writeByte(3)
+      ..write(obj.createdAt);
   }
 
   @override

@@ -24,7 +24,7 @@ class SendPromptButtom extends StatelessWidget {
             onPressed: () {
               if (controller.text.trim().isNotEmpty) {
                 BlocProvider.of<AllMessagesCubit>(context)
-                    .addmessage(content: controller.text);
+                    .addmessage(content: controller.text, context: context);
                 controller.clear();
                 Fun().scrollToBottom(
                   scrollController: scrollController,

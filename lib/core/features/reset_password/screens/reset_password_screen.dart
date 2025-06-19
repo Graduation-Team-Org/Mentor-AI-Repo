@@ -4,7 +4,7 @@ import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart
 import 'dart:ui';
 
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({super.key});
+  const ResetPasswordScreen({super.key, required String email});
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
@@ -217,7 +217,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
                       padding: EdgeInsets.only(top: size.height * 0.02),
                       child: Text(
                         errorMessage!,
-                        style: TextStyle(color: Colors.red, fontSize: size.width * 0.04),
+                        style: TextStyle(color: Colors.red, fontSize: size.width * 0.035),
                       ),
                     ),
 
@@ -227,7 +227,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
                     onTap: resetPassword,
                     child: Container(
                       width: double.infinity,
-                      height: size.height * 0.07,
+                      height: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         gradient: const LinearGradient(
@@ -271,60 +271,134 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
       obscureText: isObscure,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        isDense: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 12),
         hintText: hint,
         hintStyle: TextStyle(color: Color(0xCCF5EFFC),fontSize: 14,
             fontFamily: 'Inter'),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 12.0),
-          child: SvgPicture.asset(
-            'assets/images/Lock_Keyhole_Minimalistic.svg',
-            color: const Color(0xFFF5EFFC),
-            height: 24,
-            width: 24,
+          child: Container(
+            width: 16,
+            height: 16,
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              'assets/images/Lock_Keyhole_Minimalistic.svg',
+              color: Colors.grey,
+              fit: BoxFit.contain,
+            ),
           ),
         ),
         suffixIcon: IconButton(
-          icon: SvgPicture.asset(
-            isObscure
-                ? 'assets/images/eye.svg'
-                : 'assets/images/eye-off.svg',
-            color: Colors.white,
-            height: 24,
-            width: 24,
+          icon: Container(
+            width: 16,
+            height: 16,
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              isObscure ? 'assets/images/eye-off.svg' : 'assets/images/eye.svg',
+              color: Colors.grey,
+              fit: BoxFit.contain,
+            ),
           ),
           onPressed: toggleVisibility,
         ),
 
-        border: OutlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
             width: 1,
-            color: const Color(0xFF605B6C),
+            color: Color(0xFF605B6C),
           ),
+        ),
+
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1,
+            color: Color(0xFF605B6C),
+          ),
+        ),
+
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: Color(0xFF9860E4),
+          ),
+        ),
+
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: Color(0xFF9860E4),
+          ),
+        ),
+
+        errorStyle: TextStyle(
+          color: Color(0xFF9860E4),
+          fontFamily: 'Inter',
+          fontSize: 12,
         ),
       ),
     );
   }
-
   void _showSuccessDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Success"),
-          content: const Text("Your password has been reset successfully."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignInScreen()),
-                );
-              },
-              child: const Text("OK"),
+        return Dialog(
+          backgroundColor: Color(0xFF2E1A47).withOpacity(0.7),
+
+          insetPadding: EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Color(0xFF2E1A47), width: 2),
             ),
-          ],
+            padding: EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Success",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Inter',
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "Your password has been reset successfully.",
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                    fontFamily: 'Inter',
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF7A4DB6),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInScreen()),
+                    );
+                  },
+                  child: Text("OK", style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );

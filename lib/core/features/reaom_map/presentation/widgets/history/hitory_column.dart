@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/animated_text_widget.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/history/history_list_view.dart';
-
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
 class HistoryColumn extends StatelessWidget {
@@ -9,7 +8,6 @@ class HistoryColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Building HistoryColumn'); // Debug print
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +21,8 @@ class HistoryColumn extends StatelessWidget {
             textStyle: title2Bold,
           ),
           const SizedBox(height: 8),
-          Expanded(child: HistoryListView()),
+          // Using a key to force rebuild when navigating back
+          Expanded(child: HistoryListView(key: UniqueKey())),
         ],
       ),
     );
