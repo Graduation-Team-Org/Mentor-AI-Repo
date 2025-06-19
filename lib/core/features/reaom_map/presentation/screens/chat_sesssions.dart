@@ -24,7 +24,6 @@ class ChatSessionsScreen extends StatefulWidget {
 }
 
 class _ChatSessionsScreenState extends State<ChatSessionsScreen> {
-  final ScrollController _scrollController = ScrollController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   String? _sessionTitle;
   List<ChatMessageModel> _messages = [];
