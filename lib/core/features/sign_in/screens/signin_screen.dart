@@ -280,16 +280,20 @@ class _SignInScreenState extends State<SignInScreen>
                         children: [
                           Row(
                             children: [
-                              Checkbox(
-                                value: _rememberMe,
-                                onChanged: (value) {
-                                  setState(() => _rememberMe = value!);
-                                },
-                                activeColor: Colors.purpleAccent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6),
+                              Transform.scale(
+                                scale: 1.1,
+                                child: Checkbox(
+                                  value: _rememberMe,
+                                  onChanged: (value) {
+                                    setState(() => _rememberMe = value!);
+                                  },
+                                  activeColor: Color(0xFF9860E4),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
                                 ),
                               ),
+
                               const Text("Remember me",
                                   style: TextStyle(
                                       color: Colors.white,
