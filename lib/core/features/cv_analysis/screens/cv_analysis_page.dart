@@ -426,8 +426,16 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 5.0),
               child: CircleAvatar(
-                radius: 15,
-                backgroundImage: AssetImage('assets/images/user.png'),
+                radius: 30,
+                backgroundColor: Colors.transparent,
+                child: ClipOval(
+                  child: Image.asset(
+                    "assets/images/user.png",
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
         ],
@@ -782,9 +790,16 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                       child: Row(
                         children: [
                           CircleAvatar(
-                            radius: 15,
-                            backgroundImage:
-                                AssetImage("assets/images/user.png"),
+                            radius: 30,
+                            backgroundColor: Colors.transparent,
+                            child: ClipOval(
+                              child: Image.asset(
+                                "assets/images/user.png",
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                           SizedBox(width: 10),
                           Text('User', style: TextStyle(color: Colors.white70)),
