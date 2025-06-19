@@ -16,23 +16,37 @@ class BuildCvPage extends StatefulWidget {
   State<BuildCvPage> createState() => _BuildCVPageState();
 }
 
-class _BuildCVPageState extends State<BuildCvPage>
-    with SingleTickerProviderStateMixin {
-  final TextEditingController _projectStartDateController =
-      TextEditingController();
-  final TextEditingController _projectEndDateController =
-      TextEditingController();
-  final TextEditingController _internshipStartDateController =
-      TextEditingController();
-  final TextEditingController _internshipEndDateController =
-      TextEditingController();
-  final TextEditingController _experienceStartDateController =
-      TextEditingController();
-  final TextEditingController _experienceEndDateController =
-      TextEditingController();
+class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStateMixin {
 
   late TabController _tabController;
   late Box cvDataBox;
+
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController linkedinController = TextEditingController();
+  final TextEditingController githubController = TextEditingController();
+  final TextEditingController summaryController = TextEditingController();
+  final TextEditingController universityNameController = TextEditingController();
+  final TextEditingController degreeNameController = TextEditingController();
+  final TextEditingController educationCountryController = TextEditingController();
+  final TextEditingController gpaController = TextEditingController();
+  final TextEditingController projectTitleController = TextEditingController();
+  final TextEditingController projectLinkController = TextEditingController();
+  final TextEditingController projectSummaryController = TextEditingController();
+  final TextEditingController _projectStartDateController = TextEditingController();
+  final TextEditingController _projectEndDateController = TextEditingController();
+  final TextEditingController activitiesController = TextEditingController();
+  final TextEditingController internshipOrganizationController = TextEditingController();
+  final TextEditingController internshipCountryController = TextEditingController();
+  final TextEditingController internshipDescriptionController = TextEditingController();
+  final TextEditingController _internshipStartDateController = TextEditingController();
+  final TextEditingController _internshipEndDateController = TextEditingController();
+  final TextEditingController jobTitleController = TextEditingController();
+  final TextEditingController companyNameController = TextEditingController();
+  final TextEditingController experienceDescriptionController = TextEditingController();
+  final TextEditingController _experienceStartDateController = TextEditingController();
+  final TextEditingController _experienceEndDateController = TextEditingController();
 
   List<String> softSkills = [
     "Communication",
@@ -104,13 +118,65 @@ class _BuildCVPageState extends State<BuildCvPage>
 
   List<String> selectedSoftSkills = [];
   List<String> selectedTechnicalSkills = [];
-  List<String> selectedLanguages = ['English'];
+  List<String> selectedLanguages = [];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 10, vsync: this);
-    _initializeHive();
+    _initializeData();
+  }
+
+  void _initializeData() async {
+    await _initializeHive();
+    fullNameController.text = _getData('fullName');
+    emailController.text = _getData('email');
+    phoneController.text = _getData('phone');
+    linkedinController.text = _getData('linkedin');
+    githubController.text = _getData('github');
+    summaryController.text = _getData('summary');
+    universityNameController.text = _getData('universityName');
+    degreeNameController.text = _getData('degreeName');
+    educationCountryController.text = _getData('educationCountry');
+    gpaController.text = _getData('gpa');
+    projectTitleController.text = _getData('projectTitle');
+    projectLinkController.text = _getData('projectLink');
+    projectSummaryController.text = _getData('projectSummary');
+    _projectStartDateController.text = _getData('projectStartDate');
+    _projectEndDateController.text = _getData('projectEndDate');
+    activitiesController.text = _getData('activities');
+    internshipOrganizationController.text = _getData('internshipOrganization');
+    internshipCountryController.text = _getData('internshipCountry');
+    internshipDescriptionController.text = _getData('internshipDescription');
+    _internshipStartDateController.text = _getData('internshipStartDate');
+    _internshipEndDateController.text = _getData('internshipEndDate');
+    jobTitleController.text = _getData('jobTitle');
+    companyNameController.text = _getData('companyName');
+    experienceDescriptionController.text = _getData('experienceDescription');
+    _experienceStartDateController.text = _getData('experienceStartDate');
+    _experienceEndDateController.text = _getData('experienceEndDate');
+
+    final savedSoft = _getData('softSkills');
+    selectedSoftSkills = savedSoft.isNotEmpty
+        ? savedSoft.split(', ').map((s) => s.trim()).toList()
+        : [];
+
+    final savedTech = _getData('technicalSkills');
+    selectedTechnicalSkills = savedTech.isNotEmpty
+        ? savedTech.split(', ').map((s) => s.trim()).toList()
+        : [];
+
+    final savedLanguages = _getData('languages');
+    selectedLanguages = savedLanguages.isNotEmpty
+        ? savedLanguages.split(', ').map((e) => e.trim()).toList()
+        : [''];
+
+    setState(() {});
+  }
+
+
+  Future<void> _initializeHive() async {
+    cvDataBox = await Hive.openBox('cvDataBox');
   }
 
   @override
@@ -119,9 +185,7 @@ class _BuildCVPageState extends State<BuildCvPage>
     super.dispose();
   }
 
-  Future<void> _initializeHive() async {
-    cvDataBox = await Hive.openBox('cvDataBox');
-  }
+
 
   void _saveData(String key, String value) {
     cvDataBox.put(key, value);
@@ -195,53 +259,76 @@ class _BuildCVPageState extends State<BuildCvPage>
                       width: 70,
                       height: 70,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Color(0xFF40174C)),
+                          shape: BoxShape.circle,
+                          color: Color(0xFF40174C)
+                      ),
                     ),
                   ),
                 ),
                 Column(
                   children: [
-                    SizedBox(height: 50),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.arrow_back, color: Colors.white),
-                            onPressed: () => context.go('/home'),
-                          ),
-                          Text(
-                            'Build CV',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                    Padding(
+                      padding:  const EdgeInsets.only(top: 40.0, left: 16.0, right: 16.0),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.arrow_back, color: Colors.white),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                             ),
-                          ),
-                          SizedBox(width: 48),
-                        ],
+                            Text(
+                              'Build CV',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(width: 48),
+                          ],
+                        ),
                       ),
+
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 15),
                     Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 3),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 3, vertical: 1),
                       decoration: BoxDecoration(
                         color: Colors.white10,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(20),
                       ),
+
+
+
                       child: TabBar(
                         controller: _tabController,
                         indicator: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.deepPurpleAccent[100],
+                          borderRadius: BorderRadius.circular(25),
+                          color: const Color(0xFF9860E4),
+                        ),
+                        labelStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        unselectedLabelStyle: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14,
                         ),
                         indicatorColor: Colors.transparent,
+                        indicatorSize: TabBarIndicatorSize.tab,
+
+
                         isScrollable: true,
+
                         labelColor: Colors.white,
                         unselectedLabelColor: Colors.white70,
+
                         tabs: [
                           Tab(text: 'Personal Info'),
                           Tab(text: 'Summary'),
@@ -280,18 +367,20 @@ class _BuildCVPageState extends State<BuildCvPage>
           );
         } else if (snapshot.hasError) {
           return Center(child: Text("Error loading data: ${snapshot.error}"));
-        } else {
+        }
+        else {
           return Center(child: CircularProgressIndicator());
         }
+
       },
     );
   }
 
-  Widget _customTextField(String label, String key,
-      {TextEditingController? controller, int? maxLines}) {
+  Widget _customTextField(String label, String key,  {TextEditingController? controller, int? maxLines} ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
+        controller: controller,
         maxLines: maxLines ?? 1,
         style: TextStyle(color: Colors.white),
         onChanged: (value) {
@@ -299,18 +388,19 @@ class _BuildCVPageState extends State<BuildCvPage>
         },
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.white70),
+          labelStyle: TextStyle(color: Colors.white70, fontSize: 14),
+
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white10),
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide(color: Color(0xFF9860E4),),
             borderRadius: BorderRadius.circular(10),
           ),
-          fillColor: Colors.white10,
-          filled: true,
+
         ),
+
       ),
     );
   }
@@ -318,7 +408,7 @@ class _BuildCVPageState extends State<BuildCvPage>
   Widget gradientButton({
     required String text,
     required VoidCallback onPressed,
-    double height = 55,
+    double height = 50,
   }) {
     return GestureDetector(
       onTap: onPressed,
@@ -326,7 +416,7 @@ class _BuildCVPageState extends State<BuildCvPage>
         width: double.infinity,
         height: height,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
           gradient: LinearGradient(
             colors: [
               Color(0xFF7A4DB6),
@@ -353,429 +443,392 @@ class _BuildCVPageState extends State<BuildCvPage>
   }
 
   Widget _buildTabContent(List<Widget> children) => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: children,
-        ),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: children,
+    ),
+  );
 
   Widget _buildPersonalInfo() => _buildTabContent([
-        _customTextField('Enter full name', 'fullName'),
-        _customTextField('Email', 'email'),
-        _customTextField('Phone number', 'phone'),
-        _customTextField('LinkedIn profile link', 'linkedin'),
-        _customTextField('GitHub profile link', 'github'),
-        gradientButton(
-          text: "Next",
-          onPressed: () {
-            _tabController.animateTo(_tabController.index + 1);
-          },
-        ),
-      ]);
+    _customTextField('Enter full name', 'fullName', controller: fullNameController),
+    _customTextField('Email', 'email', controller: emailController),
+    _customTextField('Phone number', 'phone', controller: phoneController),
+    _customTextField('LinkedIn profile link', 'linkedin', controller: linkedinController),
+    _customTextField('GitHub profile link', 'github', controller: githubController),
+    SizedBox(height: 20),
+    gradientButton(
+      text: "Next",
+      onPressed: () {
+        _saveData('fullName', fullNameController.text);
+        _saveData('email', emailController.text);
+        _saveData('phone', phoneController.text);
+        _saveData('linkedin', linkedinController.text);
+        _saveData('github', githubController.text);
+        _tabController.animateTo(_tabController.index + 1);
+      },
+    ),
+  ]);
 
   Widget _buildSummary() => _buildTabContent([
-        _customTextField(
-            'Please provide a brief descrption about yourself,hightlighting your interests',
-            'summary',
-            maxLines: 8),
-        gradientButton(
-          text: "Next",
-          onPressed: () {
-            _tabController.animateTo(_tabController.index + 1);
-          },
-        ),
-      ]);
+    _customTextField(
+        'Please provide a brief descrption about yourself,hightlighting your interests',
+        'summary', maxLines: 8,
+        controller: summaryController
+
+    ),
+    SizedBox(height: 20),
+    gradientButton(
+      text: "Next",
+      onPressed: () {
+        _saveData('summary', summaryController.text);
+        _tabController.animateTo(_tabController.index + 1);
+      },
+    ),
+  ]);
 
   Widget _buildEducation() => _buildTabContent([
-        _customTextField("University Name", 'universityName'),
-        _customTextField('Degree Name', 'degreeName'),
-        _customTextField('Country', 'educationCountry'),
-        _customTextField('GPA', 'gpa'),
-        gradientButton(
-          text: "Next",
-          onPressed: () {
-            final edu =
-                '${_getData("degreeName")} at ${_getData("universityName")} (${_getData("educationCountry")}) - GPA: ${_getData("gpa")}';
-            _saveData('education', edu);
-            _tabController.animateTo(_tabController.index + 1);
-          },
-        ),
-      ]);
+    _customTextField("School/Collage/University Name", 'universityName', controller: universityNameController),
+    _customTextField('Course/Degree Name', 'degreeName', controller: degreeNameController),
+    _customTextField('Country', 'educationCountry', controller: educationCountryController),
+    _customTextField('GPA', 'gpa', controller: gpaController),
+
+    SizedBox(height: 20),
+    gradientButton(
+      text: "Next",
+      onPressed: () {
+        _saveData('universityName', universityNameController.text);
+        _saveData('degreeName', degreeNameController.text);
+        _saveData('educationCountry', educationCountryController.text);
+        _saveData('gpa', gpaController.text);
+
+        final educationFormatted = '${degreeNameController.text} at ${universityNameController.text} '
+            '(${educationCountryController.text}) - GPA: ${gpaController.text}';
+        _saveData('education', educationFormatted);
+        _tabController.animateTo(_tabController.index + 1);
+      },
+    ),
+  ]);
 
   Widget _buildProjects() => _buildTabContent([
-        _customTextField('Project Title', 'projectTitle'),
-        _customTextField('Project Link', 'projectLink'),
+    _customTextField('Project Title', 'projectTitle', controller: projectTitleController),
+    _customTextField('Project Link', 'projectLink', controller: projectLinkController),
 
-        // Start Date TextField with DatePicker
-        GestureDetector(
-          onTap: () => _selectDate(context, 'projectStartDate'),
-          child: AbsorbPointer(
-            child: _customTextField('Start Date', 'projectStartDate',
-                controller: _projectStartDateController),
-          ),
-        ),
+    // Start Date TextField with DatePicker
+    GestureDetector(
+      onTap: () => _selectDate(context, 'projectStartDate'),
+      child: AbsorbPointer(
+        child: _customTextField('Start Date', 'projectStartDate' , controller: _projectStartDateController),
+      ),
+    ),
 
-        // End Date TextField with DatePicker
-        GestureDetector(
-          onTap: () => _selectDate(context, 'projectEndDate'),
-          child: AbsorbPointer(
-            child: _customTextField('End Date', 'projectEndDate',
-                controller: _projectEndDateController),
-          ),
-        ),
+    // End Date TextField with DatePicker
+    GestureDetector(
+      onTap: () => _selectDate(context, 'projectEndDate'),
+      child: AbsorbPointer(
+        child: _customTextField('End Date', 'projectEndDate' , controller: _projectEndDateController),
+      ),
+    ),
 
-        _customTextField('Summary about project', 'projectSummary',
-            maxLines: 7),
+    _customTextField(
+      'Summary about project',
+      'projectSummary',
+      maxLines: 7,
+      controller: projectSummaryController,
+    ),
 
-        gradientButton(
-          text: "Next",
-          onPressed: () {
-            final project =
-                '${_getData("projectTitle")} (${_getData("projectStartDate")} - ${_getData("projectEndDate")}): ${_getData("projectSummary")}';
-            _saveData('project', project);
-            _tabController.animateTo(_tabController.index + 1);
-          },
-        ),
-      ]);
+    SizedBox(height: 20),
+    gradientButton(
+      text: "Next",
+      onPressed: () {
+        _saveData('projectTitle', projectTitleController.text);
+        _saveData('projectLink', projectLinkController.text);
+        _saveData('projectSummary', projectSummaryController.text);
+        _saveData('projectStartDate', _projectStartDateController.text);
+        _saveData('projectEndDate', _projectEndDateController.text);
+
+        final projectFormatted = '${projectTitleController.text} - ${projectLinkController.text} '
+            '(${_projectStartDateController.text} to ${_projectEndDateController.text}): '
+            '${projectSummaryController.text}';
+        _saveData('project', projectFormatted);
+        _tabController.animateTo(_tabController.index + 1);
+      },
+    ),
+  ]);
 
   Widget _buildActivities() => _buildTabContent([
-        _customTextField(
-            'Feel free to share your personal activities and achievements  that make you shine!',
-            'activitiesAchievements',
-            maxLines: 10),
-        gradientButton(
-          text: "Next",
-          onPressed: () {
-            _saveData('activities', _getData('activitiesAchievements'));
-            _tabController.animateTo(_tabController.index + 1);
-          },
-        ),
-      ]);
+    _customTextField(
+      'Feel free to share your personal activities and achievements that make you shine!',
+      'activitiesAchievements',
+      maxLines: 10,
+      controller: activitiesController,
+    ),
+
+    SizedBox(height: 20),
+    gradientButton(
+      text: "Next",
+      onPressed: () {
+        _saveData('activities', activitiesController.text);
+        _tabController.animateTo(_tabController.index + 1);
+      },
+    ),
+  ]);
 
   Widget _buildInternship() => _buildTabContent([
-        _customTextField('Organization Name', 'internshipOrganization'),
-        _customTextField('Country', 'internshipCountry'),
+    _customTextField('Organization Name', 'internshipOrganization', controller: internshipOrganizationController),
+    _customTextField('Country', 'internshipCountry', controller: internshipCountryController),
 
-        GestureDetector(
-          onTap: () => _selectDate(context, 'internshipStartDate'),
-          child: AbsorbPointer(
-            child: _customTextField('Start Date', 'internshipStartDate',
-                controller: _internshipStartDateController),
-          ),
-        ),
+    GestureDetector(
+      onTap: () => _selectDate(context, 'internshipStartDate'),
+      child: AbsorbPointer(
+        child: _customTextField('Start Date', 'internshipStartDate', controller: _internshipStartDateController),
+      ),
+    ),
 
-        // End Date TextField with DatePicker
-        GestureDetector(
-          onTap: () => _selectDate(context, 'internshipEndDate'),
-          child: AbsorbPointer(
-            child: _customTextField('End Date', 'internshipEndDate',
-                controller: _internshipEndDateController),
-          ),
-        ),
+    // End Date TextField with DatePicker
+    GestureDetector(
+      onTap: () => _selectDate(context, 'internshipEndDate'),
+      child: AbsorbPointer(
+        child: _customTextField('End Date', 'internshipEndDate' , controller: _internshipEndDateController),
+      ),
+    ),
 
-        _customTextField('Provide a brief description about internship',
-            'internshipDescription',
-            maxLines: 5),
+    _customTextField(
+      'Provide a brief description about internship',
+      'internshipDescription',
+      maxLines: 5,
+      controller: internshipDescriptionController,
+    ),
 
-        gradientButton(
-          text: "Next",
-          onPressed: () {
-            final internship =
-                '${_getData("internshipOrganization")} (${_getData("internshipCountry")}) - ${_getData("internshipStartDate")} to ${_getData("internshipEndDate")}: ${_getData("internshipDescription")}';
-            _saveData('internship', internship);
-            _tabController.animateTo(_tabController.index + 1);
-          },
-        ),
-      ]);
+    SizedBox(height: 20),
+    gradientButton(
+      text: "Next",
+      onPressed: () {
+        _saveData('internshipOrganization', internshipOrganizationController.text);
+        _saveData('internshipCountry', internshipCountryController.text);
+        _saveData('internshipDescription', internshipDescriptionController.text);
+        _saveData('internshipStartDate', _internshipStartDateController.text);
+        _saveData('internshipEndDate', _internshipEndDateController.text);
+
+        final internshipFormatted = '${internshipOrganizationController.text} in ${internshipCountryController.text} '
+            '(${_internshipStartDateController.text} to ${_internshipEndDateController.text}): '
+            '${internshipDescriptionController.text}';
+        _saveData('internship', internshipFormatted);
+        _tabController.animateTo(_tabController.index + 1);
+      },
+    ),
+  ]);
 
   Widget _buildExperience() => _buildTabContent([
-        _customTextField('Job Title/Position', 'jobTitle'),
-        _customTextField('Company Name', 'companyName'),
-        GestureDetector(
-          onTap: () => _selectDate(context, 'experienceStartDate'),
-          child: AbsorbPointer(
-            child: _customTextField('Start Date', 'experienceStartDate',
-                controller: _experienceStartDateController),
-          ),
-        ),
-        GestureDetector(
-          onTap: () => _selectDate(context, 'experienceEndDate'),
-          child: AbsorbPointer(
-            child: _customTextField('End Date', 'experienceEndDate',
-                controller: _experienceEndDateController),
-          ),
-        ),
-        _customTextField('Your Experience', 'experienceDescription',
-            maxLines: 5),
-        gradientButton(
-          text: "Next",
-          onPressed: () {
-            final exp =
-                '${_getData("jobTitle")} at ${_getData("companyName")} (${_getData("experienceStartDate")} - ${_getData("experienceEndDate")}): ${_getData("experienceDescription")}';
-            _saveData('experience', exp);
-            _tabController.animateTo(_tabController.index + 1);
-          },
-        ),
-      ]);
+    _customTextField('Job Title/Position', 'jobTitle', controller: jobTitleController),
+    _customTextField('Company Name', 'companyName', controller: companyNameController),
+
+    GestureDetector(
+      onTap: () => _selectDate(context, 'experienceStartDate'),
+      child: AbsorbPointer(
+        child: _customTextField('Start Date', 'experienceStartDate' , controller: _experienceStartDateController),
+      ),
+    ),
+
+    GestureDetector(
+      onTap: () => _selectDate(context, 'experienceEndDate'),
+      child: AbsorbPointer(
+        child: _customTextField('End Date', 'experienceEndDate' , controller: _experienceEndDateController),
+      ),
+    ),
+
+    _customTextField(
+      'Your Experience',
+      'experienceDescription',
+      maxLines: 5,
+      controller: experienceDescriptionController,
+    ),
+
+    SizedBox(height: 20),
+    gradientButton(
+      text: "Next",
+      onPressed: () {
+        _saveData('jobTitle', jobTitleController.text);
+        _saveData('companyName', companyNameController.text);
+        _saveData('experienceDescription', experienceDescriptionController.text);
+        _saveData('experienceStartDate', _experienceStartDateController.text);
+        _saveData('experienceEndDate', _experienceEndDateController.text);
+
+        final experienceFormatted = '${jobTitleController.text} at ${companyNameController.text} '
+            '(${_experienceStartDateController.text} to ${_experienceEndDateController.text}): '
+            '${experienceDescriptionController.text}';
+        _saveData('experience', experienceFormatted);
+        _tabController.animateTo(_tabController.index + 1);
+      },
+    ),
+  ]);
 
   Widget _buildLanguage() {
-    List<String> languages = [
-      'English',
-      'French',
-      'German',
-      'Arabic',
-      'Spanish',
-      'Italian',
-      'Portuguese',
-      'Russian',
-      'Chinese',
-      'Japanese',
-      'Korean',
-      'Hindi',
-      'Dutch',
-      'Turkish',
-      'Swedish',
-      'Norwegian',
-      'Polish',
-      'Greek',
-      'Hebrew',
-      'Swahili',
-      'Bengali',
-      'Tamil',
-      'Punjabi',
-      'Gujarati',
-      'Malayalam',
-      'Marathi',
-      'Telugu',
-      'Urdu',
-      'Thai',
-      'Vietnamese',
-      'Indonesian',
-      'Filipino',
-      'Finnish',
-      'Czech',
-      'Hungarian',
-      'Romanian',
-      'Danish',
-      'Bulgarian',
-      'Slovak',
-      'Ukrainian',
-      'Croatian',
-      'Serbian',
-      'Slovenian',
-      'Lithuanian',
-      'Latvian',
-      'Estonian',
-      'Icelandic',
-      'Basque',
-      'Catalan',
-      'Welsh',
-      'Galician',
-      'Maltese',
-      'Afrikaans',
-      'Xhosa',
-      'Zulu',
-      'Amharic',
-      'Somali',
-      'Haitian Creole',
-      'Esperanto',
-      'Quechua',
-      'Māori',
-      'Hmong',
-      'Yiddish',
-      'Armenian',
-      'Georgian',
-      'Albanian',
-      'Bosnian',
-      'Macedonian',
-      'Malay',
-      'Kurdish',
-      'Khmer',
-      'Sinhalese',
-      'Burmese',
-      'Laotian',
-      'Nepali',
-      'Tajik',
-      'Kazakh',
-      'Uzbek',
-      'Azerbaijani',
-      'Tatar',
-      'Turkmen',
-      'Bashkir',
-    ];
-
     return StatefulBuilder(
-      builder: (context, setState) => _buildTabContent([
-        Text("Select Languages",
-            style: TextStyle(color: Colors.white, fontSize: 18)),
-        ...selectedLanguages.asMap().entries.map((entry) {
-          int index = entry.key;
-          String value = entry.value;
-          return Row(
-            children: [
-              Expanded(
-                child: DropdownButtonFormField<String>(
-                  value: languages.contains(value) ? value : null,
-                  dropdownColor: Color(0xFF7A4DB6),
-                  items: languages
-                      .map((lang) => DropdownMenuItem(
-                            value: lang,
-                            child: Text(
-                              lang,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Roboto',
-                                fontSize: 16,
-                              ),
-                            ),
-                          ))
-                      .toList(),
-                  onChanged: (newValue) =>
-                      setState(() => selectedLanguages[index] = newValue!),
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white10),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    fillColor: Colors.white10,
-                    filled: true,
+      builder: (context, setState) {
+        if (selectedLanguages.isEmpty) {
+          selectedLanguages.add('');
+        }
+
+        return _buildTabContent([
+          ...selectedLanguages.asMap().entries.map((entry) {
+            int index = entry.key;
+            String value = entry.value;
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
+              child: TextFormField(
+                initialValue: value,
+                onChanged: (newValue) {
+                  selectedLanguages[index] = newValue;
+                },
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: 'e.g., Language (B1, etc.)',
+                  hintStyle: TextStyle(color: Colors.white38),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white10),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF9860E4)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+
+
+                  suffixIcon: index == 0
+                      ? IconButton(
+                    icon: Icon(Icons.add_circle_outline, color: Colors.white),
+                    onPressed: () => setState(() => selectedLanguages.add('')),
+                  )
+                      : IconButton(
+                    icon: Icon(Icons.remove_circle_outline, color: Colors.white30),
+                    onPressed: () => setState(() => selectedLanguages.removeAt(index)),
                   ),
                 ),
               ),
-              if (index > 0)
-                IconButton(
-                  icon:
-                      Icon(Icons.remove_circle_outline, color: Colors.white30),
-                  onPressed: () =>
-                      setState(() => selectedLanguages.removeAt(index)),
-                )
-            ],
-          );
-        }),
-        TextButton.icon(
-          onPressed: () {
-            final newLang = languages.firstWhere(
-                (lang) => !selectedLanguages.contains(lang),
-                orElse: () => '');
-            if (newLang.isNotEmpty) {
-              setState(() => selectedLanguages.add(newLang));
-            }
-          },
-          icon: Icon(Icons.add, color: Colors.white),
-          label: Text("Add Language", style: TextStyle(color: Colors.white)),
-        ),
-        gradientButton(
-          text: "Next",
-          onPressed: () {
-            _saveData('languages', selectedLanguages.join(', '));
-            _tabController.animateTo(_tabController.index + 1);
-          },
-        ),
-      ]),
+            );
+          }).toList(),
+
+          SizedBox(height: 20),
+
+          gradientButton(
+            text: "Next",
+            onPressed: () {
+              selectedLanguages.removeWhere((lang) => lang.trim().isEmpty);
+              _saveData('languages', selectedLanguages.join(', '));
+              _tabController.animateTo(_tabController.index + 1);
+            },
+          ),
+        ]);
+      },
     );
   }
 
-  Widget _buildSkills() => Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildSkillCategory("Soft Skills", softSkills, selectedSoftSkills),
-            _buildSkillCategory(
-                "Technical Skills", technicalSkills, selectedTechnicalSkills),
-            gradientButton(
-              text: "Next",
-              onPressed: () {
-                _saveData(
-                    'skills',
-                    [
-                      ...selectedSoftSkills,
-                      ...selectedTechnicalSkills,
-                    ].join(', '));
-                _tabController.animateTo(_tabController.index + 1);
-              },
-            ),
-          ],
-        ),
-      );
+  Widget _buildSkills() {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        final softController = TextEditingController();
+        final techController = TextEditingController();
 
-  Widget _buildSkillCategory(
-          String title, List<String> skills, List<String> selectedSkills) =>
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () => _showSkillSelectionDialog(skills, selectedSkills),
-            child: Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                  color: Colors.white10,
-                  borderRadius: BorderRadius.circular(8)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(title, style: TextStyle(color: Colors.white)),
-                  Icon(Icons.add_circle_outline, color: Colors.white),
-                ],
+        Widget buildSkillSection(String hint, List<String> list, TextEditingController controller) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 12),
+              TextField(
+                controller: controller,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: hint,
+                  hintStyle: TextStyle(color: Colors.white38),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white10),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF9860E4)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.add_circle_outline, color: Colors.white),
+                    onPressed: () {
+                      final value = controller.text.trim();
+                      if (value.isNotEmpty && !list.contains(value)) {
+                        setState(() {
+                          list.add(value);
+                          controller.clear();
+                        });
+                      }
+                    },
+                  ),
+                ),
+                onSubmitted: (value) {
+                  if (value.trim().isNotEmpty && !list.contains(value.trim())) {
+                    setState(() {
+                      list.add(value.trim());
+                      controller.clear();
+                    });
+                  }
+                },
               ),
-            ),
-          ),
-          SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            children: selectedSkills
-                .map((skill) => Chip(
-                      label: Text(skill),
-                      backgroundColor: Colors.purple.shade700,
-                      labelStyle: TextStyle(color: Colors.white),
-                      deleteIcon:
-                          Icon(Icons.close, size: 18, color: Colors.white),
-                      onDeleted: () =>
-                          setState(() => selectedSkills.remove(skill)),
-                    ))
-                .toList(),
-          ),
-          SizedBox(height: 16),
-        ],
-      );
 
-  void _showSkillSelectionDialog(
-      List<String> skills, List<String> selectedSkills) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Select Skills", style: TextStyle(color: Colors.white)),
-          backgroundColor: Color(0xFF352250),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: skills.map((skill) {
-                return ListTile(
-                  title: Text(skill, style: TextStyle(color: Colors.white)),
-                  onTap: () {
-                    if (!selectedSkills.contains(skill)) {
-                      setState(() {
-                        selectedSkills.add(skill);
-                      });
-                      Navigator.of(context).pop();
-                    }
-                  },
-                );
-              }).toList(),
-            ),
+              SizedBox(height: 10),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: list.map((skill) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              skill,
+                              style: TextStyle(color: Color(0xFF9860E4), fontSize: 16),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.close, size: 18, color: Colors.white),
+                            onPressed: () => setState(() => list.remove(skill)),
+                            padding: EdgeInsets.zero,
+                            constraints: BoxConstraints(),
+                          )
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+              SizedBox(height: 16),
+            ],
+          );
+        }
+
+        return Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildSkillSection("Soft Skills (e.g., Communication)", selectedSoftSkills, softController),
+              buildSkillSection("Technical Skills (e.g., Flutter)", selectedTechnicalSkills, techController),
+              SizedBox(height: 20),
+              gradientButton(
+                text: "Next",
+                onPressed: () {
+                  _saveData('softSkills', selectedSoftSkills.join(', '));
+                  _saveData('technicalSkills', selectedTechnicalSkills.join(', '));
+                  _saveData('skills', [...selectedSoftSkills, ...selectedTechnicalSkills].join(', '));
+                  _tabController.animateTo(_tabController.index + 1);
+                },
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text("Cancel", style: TextStyle(color: Colors.white)),
-            ),
-          ],
         );
       },
     );
