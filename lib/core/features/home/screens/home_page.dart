@@ -2931,7 +2931,7 @@ class _PersonalDataState extends State<PersonalData> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.purple),
+          borderSide: BorderSide(color: Color(0xFF7E46CA)),
         ),
       ),
     );
