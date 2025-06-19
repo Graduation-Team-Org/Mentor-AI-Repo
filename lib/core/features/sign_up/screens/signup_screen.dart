@@ -349,13 +349,20 @@ class _SignUpScreenState extends State<SignUpScreen>
                       SizedBox(height: size.height * 0.02),
                       Row(
                         children: [
-                          Checkbox(
-                            value: _isChecked,
-                            onChanged: (value) {
-                              setState(() => _isChecked = value!);
-                            },
-                            activeColor: Colors.purpleAccent,
+                          Transform.scale(
+                            scale: 1.1,
+                            child: Checkbox(
+                              value: _isChecked,
+                              onChanged: (value) {
+                                setState(() => _isChecked = value!);
+                              },
+                              activeColor: Color(0xFF9860E4),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                            ),
                           ),
+
                           Text("I agree with ",
                               style: TextStyle(
                                   color: Colors.white, fontFamily: 'Inter')),
@@ -398,7 +405,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                         onTap: _isLoading ? null : _signUp,
                         child: Container(
                           width: double.infinity,
-                          height: size.height * 0.07,
+                          height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             gradient: const LinearGradient(
@@ -508,12 +515,42 @@ class _SignUpScreenState extends State<SignUpScreen>
           child: iconWidget,
         ),
 
-        border: OutlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
             width: 1,
-            color: const Color(0xFF605B6C),
+            color: Color(0xFF605B6C),
           ),
+        ),
+
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1,
+            color: Color(0xFF605B6C),
+          ),
+        ),
+
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: Color(0xFF9860E4),
+          ),
+        ),
+
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: Color(0xFF9860E4),
+          ),
+        ),
+
+        errorStyle: TextStyle(
+          color: Color(0xFF9860E4),
+          fontFamily: 'Inter',
+          fontSize: 12,
         ),
 
       ),
@@ -574,28 +611,43 @@ class _SignUpScreenState extends State<SignUpScreen>
           ),
           onPressed: toggleVisibility,
         ),
-        filled: true,
-        fillColor: Colors.white.withOpacity(0.1),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            width: 1,
-            color: const Color(0xFF605B6C),
-          ),
-        ),
+
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
             width: 1,
-            color: const Color(0xFF605B6C),
+            color: Color(0xFF605B6C),
           ),
         ),
+
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
             width: 1,
-            color: const Color(0xFF9860E4),
+            color: Color(0xFF605B6C),
           ),
+        ),
+
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: Color(0xFF9860E4),
+          ),
+        ),
+
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: Color(0xFF9860E4),
+          ),
+        ),
+
+        errorStyle: TextStyle(
+          color: Color(0xFF9860E4),
+          fontFamily: 'Inter',
+          fontSize: 12,
         ),
       ),
     );

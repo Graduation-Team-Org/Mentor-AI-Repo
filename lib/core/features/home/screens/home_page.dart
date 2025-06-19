@@ -285,28 +285,31 @@ class HomeScreen extends StatelessWidget {
     final email = user?.email ?? "";
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 2,
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2,
+                    ),
                   ),
-                ),
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundImage: user?.photoURL != null
-                      ? NetworkImage(user!.photoURL!)
-                      : AssetImage('assets/images/user.png') as ImageProvider,
-                  backgroundColor: Colors.transparent,
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundImage: user?.photoURL != null
+                        ? NetworkImage(user!.photoURL!)
+                        : AssetImage('assets/images/user.png') as ImageProvider,
+                    backgroundColor: Colors.transparent,
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
@@ -324,7 +327,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-          Icon(Icons.notifications, color: Colors.white),
         ],
       ),
     );
@@ -332,7 +334,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildServicesList(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.fromLTRB(20, 0, 20, 78),
       children: [
         _buildServiceCard(
             context,
@@ -603,7 +605,7 @@ class AboutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Padding(
-                      padding: const EdgeInsets.only(left: 60),
+                      padding: const EdgeInsets.only(left: 40),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -628,7 +630,7 @@ class AboutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.only(left: 60),
+                      padding: const EdgeInsets.only(left: 40),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -653,7 +655,7 @@ class AboutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.only(left: 60),
+                      padding: const EdgeInsets.only(left: 40),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -678,7 +680,7 @@ class AboutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.only(left: 60),
+                      padding: const EdgeInsets.only(left: 40),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -731,7 +733,7 @@ class _ServiceCard extends StatelessWidget {
     return Container(
       height: 200,
       decoration: BoxDecoration(
-        color: const Color(0xFF3D1E70).withOpacity(0.3),
+        color: Colors.white.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),
       ),
       padding: const EdgeInsets.all(16),
@@ -1037,15 +1039,6 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                                   if ((userData['all_feedbacks']
                                                           as List)
                                                       .isNotEmpty) ...[
-                                                    const Text(
-                                                      "Feedback:",
-                                                      style: TextStyle(
-                                                        color: Colors.white70,
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
                                                     const SizedBox(height: 4),
                                                     ...(userData[
                                                                 'all_feedbacks']
@@ -1069,15 +1062,6 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                                                   ],
                                                   if (userData['ratings'] !=
                                                       null) ...[
-                                                    const Text(
-                                                      "Ratings:",
-                                                      style: TextStyle(
-                                                        color: Colors.white70,
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
                                                     const SizedBox(height: 4),
                                                     ...(userData['ratings']
                                                             as Map)
@@ -1251,10 +1235,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final user = _auth.currentUser;
       if (user != null) {
         await user.delete();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage1()),
-        );
+        if (context.mounted) {
+          context.go(AppRouter.home1);
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Account deleted successfully')),
         );
@@ -1269,10 +1252,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _signOut() async {
     try {
       await _auth.signOut();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage1()),
-      );
+      if (context.mounted) {
+        context.go(AppRouter.home1);
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Logged out successfully')),
       );
@@ -1356,7 +1338,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 child: SingleChildScrollView(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
                   child: Column(
                     children: <Widget>[
                       Padding(
@@ -1589,6 +1571,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       },
       child: Container(
+        height: 50,
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -1602,7 +1585,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(
                 fontFamily: 'Inter',
                 color: const Color(0xFF7E46CA),
-                fontSize: 20,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -1618,12 +1601,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return InkWell(
       onTap: onPressed,
       child: Container(
+        height: 50,
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: const Color(0xFF7E46CA),
+            color: const Color(0xFF605B6C),
             width: 2,
           ),
         ),
@@ -1632,7 +1616,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             label,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 14,
             ),
           ),
         ),
@@ -2658,10 +2642,7 @@ class _PersonalDataState extends State<PersonalData> {
       final user = _auth.currentUser;
       if (user != null) {
         await user.delete();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage1()),
-        );
+        context.go(AppRouter.home1);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Account deleted successfully')),
         );
@@ -2676,10 +2657,7 @@ class _PersonalDataState extends State<PersonalData> {
   Future<void> _signOut() async {
     try {
       await _auth.signOut();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage1()),
-      );
+      context.go(AppRouter.home1);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Logged out successfully')),
       );
@@ -2953,7 +2931,7 @@ class _PersonalDataState extends State<PersonalData> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.purple),
+          borderSide: BorderSide(color: Color(0xFF7E46CA)),
         ),
       ),
     );

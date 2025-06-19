@@ -227,7 +227,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
                     onTap: resetPassword,
                     child: Container(
                       width: double.infinity,
-                      height: size.height * 0.07,
+                      height: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         gradient: const LinearGradient(
@@ -303,12 +303,42 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
           onPressed: toggleVisibility,
         ),
 
-        border: OutlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
             width: 1,
-            color: const Color(0xFF605B6C),
+            color: Color(0xFF605B6C),
           ),
+        ),
+
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1,
+            color: Color(0xFF605B6C),
+          ),
+        ),
+
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: Color(0xFF9860E4),
+          ),
+        ),
+
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: Color(0xFF9860E4),
+          ),
+        ),
+
+        errorStyle: TextStyle(
+          color: Color(0xFF9860E4),
+          fontFamily: 'Inter',
+          fontSize: 12,
         ),
       ),
     );
