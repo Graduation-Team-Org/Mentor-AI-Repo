@@ -159,17 +159,11 @@ class _CvAnalysisPageState extends State<CvAnalysisPage> {
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundColor: Colors.transparent,
-                                    child: ClipOval(
-                                      child: Image.asset(
-                                        "assets/images/home3.png",
-                                        width: 60,
-                                        height: 60,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                                  SvgPicture.asset(
+                                    'assets/images/icon_upload.svg',
+                                    width: 40,
+                                    height: 40,
+                                    color: Colors.white70,
                                   ),
                                   SizedBox(height: 10),
                                   Text(
