@@ -349,13 +349,20 @@ class _SignUpScreenState extends State<SignUpScreen>
                       SizedBox(height: size.height * 0.02),
                       Row(
                         children: [
-                          Checkbox(
-                            value: _isChecked,
-                            onChanged: (value) {
-                              setState(() => _isChecked = value!);
-                            },
-                            activeColor: Colors.purpleAccent,
+                          Transform.scale(
+                            scale: 1.1,
+                            child: Checkbox(
+                              value: _isChecked,
+                              onChanged: (value) {
+                                setState(() => _isChecked = value!);
+                              },
+                              activeColor: Color(0xFF9860E4),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                            ),
                           ),
+
                           Text("I agree with ",
                               style: TextStyle(
                                   color: Colors.white, fontFamily: 'Inter')),
