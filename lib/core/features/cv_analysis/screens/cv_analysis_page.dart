@@ -127,7 +127,15 @@ class _CvAnalysisPageState extends State<CvAnalysisPage> {
               SizedBox(height: 60),
               CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage("assets/images/home3.png"),
+                backgroundColor: Colors.transparent,
+                child: ClipOval(
+                  child: Image.asset(
+                    "assets/images/home3.png",
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
               SizedBox(height: 40),
               Padding(
@@ -151,11 +159,17 @@ class _CvAnalysisPageState extends State<CvAnalysisPage> {
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SvgPicture.asset(
-                                    'assets/images/icon_upload.svg',
-                                    width: 40,
-                                    height: 40,
-                                    color: Colors.white70,
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: Colors.transparent,
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        "assets/images/home3.png",
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
                                   SizedBox(height: 10),
                                   Text(
@@ -368,8 +382,16 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 5.0),
               child: CircleAvatar(
-                radius: 15,
-                backgroundImage: AssetImage('assets/images/home3.png'),
+                radius: 30,
+                backgroundColor: Colors.transparent,
+                child: ClipOval(
+                  child: Image.asset(
+                    "assets/images/home3.png",
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
           Expanded(
@@ -543,9 +565,16 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CircleAvatar(
-                                radius: 50,
-                                backgroundImage:
-                                    AssetImage('assets/images/home3.png'),
+                                radius: 30,
+                                backgroundColor: Colors.transparent,
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    "assets/images/home3.png",
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
                               SizedBox(height: 10),
                               Text(
