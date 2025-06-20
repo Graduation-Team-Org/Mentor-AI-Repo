@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'preferred_messages_model.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 2)
 class PreferredAnalyzeResumeMessagesModel extends HiveObject {
   @HiveField(0)
   final String msgContent;

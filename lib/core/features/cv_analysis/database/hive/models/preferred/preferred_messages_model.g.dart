@@ -9,7 +9,7 @@ part of 'preferred_messages_model.dart';
 class PreferredAnalyzeResumeMessagesModelAdapter
     extends TypeAdapter<PreferredAnalyzeResumeMessagesModel> {
   @override
-  final int typeId = 0;
+  final int typeId = 2;
 
   @override
   PreferredAnalyzeResumeMessagesModel read(BinaryReader reader) {
