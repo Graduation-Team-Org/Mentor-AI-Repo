@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:road_map_mentor/core/features/build_cv/screens/build_cv_page.dart';
-import 'package:road_map_mentor/core/features/chat_with_doc/screens/chatscreen.dart';
-import 'package:road_map_mentor/core/features/cv_analysis/screens/cv_analysis_page.dart';
-import 'package:road_map_mentor/core/features/interview/screens/interview_page.dart';
-import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:ui';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/screens/chat_message_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:road_map_mentor/core/utils/app_routers.dart';
 
 class HomePage extends StatefulWidget {
   final String? username;
 
-  HomePage({this.username});
+  const HomePage({super.key, this.username});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {

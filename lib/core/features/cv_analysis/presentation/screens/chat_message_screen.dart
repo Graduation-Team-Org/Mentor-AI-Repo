@@ -10,23 +10,22 @@ import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/cha
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/custom_end_drawer.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/prompt_text_field.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/send_prompt_button.dart';
-import 'package:road_map_mentor/core/utils/app_routers.dart';
 import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
 import 'dart:ui'; // Import this for ImageFilter
 import 'package:go_router/go_router.dart';
 
-class RoadMapChatScreen extends StatefulWidget {
+class AnalyzeResumeChatScreen extends StatefulWidget {
   final String? threadId;
-  const RoadMapChatScreen({
+  const AnalyzeResumeChatScreen({
     super.key,
     this.threadId,
   });
 
   @override
-  State<RoadMapChatScreen> createState() => _ChatScreenState();
+  State<AnalyzeResumeChatScreen> createState() => _AnalyzeResumeState();
 }
 
-class _ChatScreenState extends State<RoadMapChatScreen> {
+class _AnalyzeResumeState extends State<AnalyzeResumeChatScreen> {
   final TextEditingController _controller = TextEditingController();
   final TextEditingController _chatSearchcontroller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -59,7 +58,7 @@ class _ChatScreenState extends State<RoadMapChatScreen> {
           forceMaterialTransparency: true,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => context.go(AppRouter.homePage),
+            onPressed: () => context.go('/home'),
           ),
           title: const Text('Chat', style: TextStyle(color: Colors.white)),
           centerTitle: true,

@@ -8,8 +8,6 @@ import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/his
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/preferred/preferred_messages_model.dart';
 import 'package:road_map_mentor/core/utils/app_routers.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart';
-import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
 import 'package:road_map_mentor/core/features/splash/presentation/screens/splash_screen.dart';
 
 void main() async {
@@ -22,9 +20,11 @@ void main() async {
     // Register the adapters for your models
     Hive.registerAdapter(PreferredMessagesModelAdapter());
     Hive.registerAdapter(ChatSessionModelAdapter());
+    Hive.registerAdapter(PreferredMessagesModelAdapter());
 
     // Open the boxes
     await Hive.openBox<PreferredMessagesModel>(kPreferredMessages);
+    await Hive.openBox<PreferredMessagesModel>(kAnalyzeResumePreferredMessages);
     await Hive.openBox<ChatSessionModel>(kChatSessions);
 
     // Load environment variables
