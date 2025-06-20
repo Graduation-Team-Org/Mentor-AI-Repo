@@ -25,14 +25,6 @@ abstract class AppRouter {
 
   static final router = GoRouter(
     initialLocation: '/',
-    redirect: (context, state) {
-      if (state.matchedLocation == '/') {
-        Future.delayed(const Duration(seconds: 2), () {
-          context.go(startingScreen);
-        });
-      }
-      return null;
-    },
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SpScreen()),
       GoRoute(path: home1, builder: (context, state) => const HomePage1()),
