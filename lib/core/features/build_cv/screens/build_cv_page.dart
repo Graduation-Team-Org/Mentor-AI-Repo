@@ -8,10 +8,9 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:hive/hive.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:intl/intl.dart';
 
 class BuildCvPage extends StatefulWidget {
-  const BuildCvPage({super.key});
-
   @override
   State<BuildCvPage> createState() => _BuildCVPageState();
 }
@@ -193,6 +192,15 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
 
   String _getData(String key) {
     return cvDataBox.get(key, defaultValue: "");
+  }
+
+  String formatDate(String inputDate) {
+    try {
+      final parsedDate = DateFormat('yyyy-MM-dd').parse(inputDate);
+      return DateFormat('MMM yyyy').format(parsedDate);
+    } catch (e) {
+      return inputDate;
+    }
   }
 
   @override
@@ -502,8 +510,10 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
         _saveData('educationCountry', educationCountryController.text);
         _saveData('gpa', gpaController.text);
 
-        final educationFormatted = '${degreeNameController.text} at ${universityNameController.text} '
-            '(${educationCountryController.text}) - GPA: ${gpaController.text}';
+        final educationFormatted = '${universityNameController.text}  '
+            ' ${degreeNameController.text} '
+            '${educationCountryController.text} '
+            'GPA: ${gpaController.text}';
         _saveData('education', educationFormatted);
         _tabController.animateTo(_tabController.index + 1);
       },
@@ -538,6 +548,8 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
     ),
 
     SizedBox(height: 20),
+
+
     gradientButton(
       text: "Next",
       onPressed: () {
@@ -547,8 +559,12 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
         _saveData('projectStartDate', _projectStartDateController.text);
         _saveData('projectEndDate', _projectEndDateController.text);
 
-        final projectFormatted = '${projectTitleController.text} - ${projectLinkController.text} '
-            '(${_projectStartDateController.text} to ${_projectEndDateController.text}): '
+        final formattedStartDate = formatDate(_projectStartDateController.text);
+        final formattedEndDate = formatDate(_projectEndDateController.text);
+
+        final projectFormatted = '${projectTitleController.text} '
+            ' ${projectLinkController.text} '
+            '$formattedStartDate - $formattedEndDate '
             '${projectSummaryController.text}';
         _saveData('project', projectFormatted);
         _tabController.animateTo(_tabController.index + 1);
@@ -610,8 +626,14 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
         _saveData('internshipStartDate', _internshipStartDateController.text);
         _saveData('internshipEndDate', _internshipEndDateController.text);
 
-        final internshipFormatted = '${internshipOrganizationController.text} in ${internshipCountryController.text} '
-            '(${_internshipStartDateController.text} to ${_internshipEndDateController.text}): '
+
+
+        final formattedStartDate = formatDate(_internshipStartDateController.text);
+        final formattedEndDate = formatDate(_internshipEndDateController.text);
+
+        final internshipFormatted = '${internshipOrganizationController.text} '
+            ' ${internshipCountryController.text} '
+            '$formattedStartDate - $formattedEndDate '
             '${internshipDescriptionController.text}';
         _saveData('internship', internshipFormatted);
         _tabController.animateTo(_tabController.index + 1);
@@ -654,8 +676,12 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
         _saveData('experienceStartDate', _experienceStartDateController.text);
         _saveData('experienceEndDate', _experienceEndDateController.text);
 
-        final experienceFormatted = '${jobTitleController.text} at ${companyNameController.text} '
-            '(${_experienceStartDateController.text} to ${_experienceEndDateController.text}): '
+        final formattedStartDate = formatDate(_experienceStartDateController.text);
+        final formattedEndDate = formatDate(_experienceEndDateController.text);
+
+        final experienceFormatted = ' ${companyNameController.text} '
+            '${jobTitleController.text} '
+            '$formattedStartDate - $formattedEndDate '
             '${experienceDescriptionController.text}';
         _saveData('experience', experienceFormatted);
         _tabController.animateTo(_tabController.index + 1);
@@ -835,700 +861,609 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
   }
 
   Widget _buildExport() => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 5,
-                    offset: Offset(0, 2),
-                  ),
-                ],
+    padding: const EdgeInsets.all(16.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 5,
+                offset: Offset(0, 2),
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+            ],
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Full Name
+                Text(
+                  _getData('fullName'),
+                  textAlign: TextAlign.center,  // Center the text
+                  style: TextStyle(
+                    fontFamily: 'Inter',  // Font family as requested
+                    fontSize: 18,  // Font size as requested
+                    fontWeight: FontWeight.w600,  // Font weight as requested
+                    color: Color(0xFF000000),  // Color as requested
+                    fontStyle: FontStyle.normal,  // Normal style
+                  ),
+                ),
+                SizedBox(height: 4),
+
+                // Contact Info
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,  // Center the row content
                   children: [
-                    // Full Name
                     Text(
-                      _getData('fullName'),
-                      textAlign: TextAlign.center, // Center the text
+                      "P: ${_getData('phone')} | ${_getData('email')} | ${_getData('linkedin')} | ${_getData('github')}",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontFamily: 'Inter', // Font family as requested
-                        fontSize: 18, // Font size as requested
-                        fontWeight: FontWeight.w600, // Font weight as requested
-                        color: Color(0xFF000000), // Color as requested
-                        fontStyle: FontStyle.normal, // Normal style
+                        color: Color(0xFF000000),
+                        fontFamily: 'Inter',
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+                SizedBox(height: 16),
+
+                // Summary
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Summary".toUpperCase(),
+                      style: TextStyle(
+                        color: Color(0xFF000000),
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w700,
+                        height: 1.0,
+                        letterSpacing: 0.5,
                       ),
                     ),
                     SizedBox(height: 4),
 
-                    // Contact Info
+
+                    Container(
+                      color: Color(0xFF000000),
+                      width: 348,
+                      height: 0.5,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start, // Center the row content
-                      children: [
-                        Icon(Icons.email_outlined,
-                            color: Colors.grey.shade600, size: 16),
-                        SizedBox(width: 4),
-                        Text(
-                          "${_getData('email')}  |  ",
-                          style: TextStyle(
-                            color: Color(0xFF000000), // Color as requested
-                            fontFamily: 'Inter', // Font family as requested
-                            fontSize: 10, // Font size as requested
-                            fontStyle: FontStyle.normal, // Normal style
-                            fontWeight:
-                                FontWeight.w400, // Font weight as requested
-                            height:
-                                1.30684, // Line height as requested (130.684%)
-                          ),
-                        ),
-                        Icon(Icons.phone_outlined,
-                            color: Colors.grey.shade600, size: 16),
-                        SizedBox(width: 4),
-                        Text(
-                          "${_getData('phone')}  |  ",
-                          style: TextStyle(
-                            color: Color(0xFF000000), // Color as requested
-                            fontFamily: 'Inter', // Font family as requested
-                            fontSize: 10, // Font size as requested
-                            fontStyle: FontStyle.normal, // Normal style
-                            fontWeight:
-                                FontWeight.w400, // Font weight as requested
-                            height:
-                                1.30684, // Line height as requested (130.684%)
-                          ),
-                        ),
-                        if (_getData('linkedin').isNotEmpty) ...[
-                          Icon(Icons.link,
-                              color: Colors.grey.shade600, size: 16),
-                          SizedBox(width: 4),
-                          Expanded(
-                            child: Text(
-                              "${_getData('linkedin')}  |  ",
-                              style: TextStyle(
-                                color: Color(0xFF000000), // Color as requested
-                                fontFamily: 'Inter', // Font family as requested
-                                fontSize: 10, // Font size as requested
-                                fontStyle: FontStyle.normal, // Normal style
-                                fontWeight:
-                                    FontWeight.w400, // Font weight as requested
-                                height:
-                                    1.30684, // Line height as requested (130.684%)
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                        if (_getData('github').isNotEmpty) ...[
-                          Icon(Icons.code,
-                              color: Colors.grey.shade600, size: 16),
-                          SizedBox(width: 4),
-                          Expanded(
-                            child: Text(
-                              _getData('github'),
-                              style: TextStyle(
-                                color: Color(0xFF000000), // Color as requested
-                                fontFamily: 'Inter', // Font family as requested
-                                fontSize: 10, // Font size as requested
-                                fontStyle: FontStyle.normal, // Normal style
-                                fontWeight:
-                                    FontWeight.w400, // Font weight as requested
-                                height:
-                                    1.30684, // Line height as requested (130.684%)
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                    SizedBox(height: 16),
-
-                    // Summary
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Summary".toUpperCase(),
+                          " •  ",
                           style: TextStyle(
-                            color: Color(0xFF000000),
+                            color: Colors.black,
                             fontFamily: 'Inter',
-                            fontSize: 12,
+                            fontSize: 10,
                             fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w700,
-                            height: 1.0,
-                            letterSpacing: 0.5,
+                            fontWeight: FontWeight.w400,
+                            height: 1.4,
                           ),
                         ),
-                        SizedBox(height: 4),
-                        Container(
-                          color: Color(0xFF000000),
-                          width: 348,
-                          height: 0.5,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              " •  ",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Inter',
-                                fontSize: 10,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w400,
-                                height: 1.4,
-                              ),
+                        Expanded(
+                          child: Text(
+                            _getData('summary'),
+                            style: TextStyle(
+                              color: Color(0xFF000000),
+                              fontFamily: 'Inter',
+                              fontSize: 10,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
+                              height: 1.4,
                             ),
-                            Expanded(
-                              child: Text(
-                                _getData('summary'),
-                                style: TextStyle(
-                                  color: Color(0xFF000000),
-                                  fontFamily: 'Inter',
-                                  fontSize: 10,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.4,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                        SizedBox(height: 16),
                       ],
                     ),
                     SizedBox(height: 16),
+                  ],
+                ),
+                SizedBox(height: 16),
 
-                    // Education
+                // Education
 
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Title - "Summary" with the requested style
-                        Text(
-                          "Education".toUpperCase(),
-                          style: TextStyle(
-                            color: Color(0xFF000000), // Color as requested
-                            fontFamily: 'Inter', // Font family as requested
-                            fontSize: 12, // Font size as requested
-                            fontStyle: FontStyle.normal, // Normal style
-                            fontWeight:
-                                FontWeight.w700, // Font weight as requested
-                            height: 1.0, // Line height as requested
-                            letterSpacing:
-                                0.5, // Optional: To make it look slightly spaced out// Uppercase text
-                          ),
-                        ),
-                        SizedBox(height: 4),
-
-                        // Line Underneath with the requested styling
-                        Container(
-                          color: Color(0xFF000000), // Background color (black)
-                          width: 348, // Width as requested
-                          height: 0.5, // Height as requested (line thickness)
-                        ),
-                      ],
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title - "Summary" with the requested style
+                    Text(
+                      "Education".toUpperCase(),
+                      style: TextStyle(
+                        color: Color(0xFF000000),  // Color as requested
+                        fontFamily: 'Inter',  // Font family as requested
+                        fontSize: 12,  // Font size as requested
+                        fontStyle: FontStyle.normal,  // Normal style
+                        fontWeight: FontWeight.w700,  // Font weight as requested
+                        height: 1.0,  // Line height as requested
+                        letterSpacing: 0.5,  // Optional: To make it look slightly spaced out// Uppercase text
+                      ),
                     ),
                     SizedBox(height: 4),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              " •  ",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Inter',
-                                fontSize: 10,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w400,
-                                height: 1.4,
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                _getData('education'),
-                                style: TextStyle(
-                                  color: Color(0xFF000000),
-                                  fontFamily: 'Inter',
-                                  fontSize: 10,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.4,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 16),
-                      ],
-                    ),
-                    SizedBox(height: 16),
 
-                    // Project
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    // Line Underneath with the requested styling
+                    Container(
+                      color: Color(0xFF000000),  // Background color (black)
+                      width: 348,  // Width as requested
+                      height: 0.5,  // Height as requested (line thickness)
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
                         Text(
-                          "Project".toUpperCase(),
+                          " •  ",
                           style: TextStyle(
-                            color: Color(0xFF000000),
+                            color: Colors.black,
                             fontFamily: 'Inter',
-                            fontSize: 12,
+                            fontSize: 10,
                             fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w700,
-                            height: 1.0,
-                            letterSpacing: 0.5,
+                            fontWeight: FontWeight.w400,
+                            height: 1.4,
                           ),
                         ),
-                        SizedBox(height: 4),
-                        Container(
-                          color: Color(0xFF000000),
-                          width: 348,
-                          height: 0.5,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              " •  ",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Inter',
-                                fontSize: 10,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w400,
-                                height: 1.4,
-                              ),
+                        Expanded(
+                          child: Text(
+                            _getData('education'),
+                            style: TextStyle(
+                              color: Color(0xFF000000),
+                              fontFamily: 'Inter',
+                              fontSize: 10,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
+                              height: 1.4,
                             ),
-                            Expanded(
-                              child: Text(
-                                _getData('project'),
-                                style: TextStyle(
-                                  color: Color(0xFF000000),
-                                  fontFamily: 'Inter',
-                                  fontSize: 10,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.4,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                        SizedBox(height: 16),
                       ],
                     ),
                     SizedBox(height: 16),
+                  ],
+                ),
+                SizedBox(height: 16),
 
-                    // Activities
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Activities".toUpperCase(),
-                          style: TextStyle(
-                            color: Color(0xFF000000),
-                            fontFamily: 'Inter',
-                            fontSize: 12,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w700,
-                            height: 1.0,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Container(
-                          color: Color(0xFF000000),
-                          width: 348,
-                          height: 0.5,
-                        ),
-                      ],
+                // Project
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Project".toUpperCase(),
+                      style: TextStyle(
+                        color: Color(0xFF000000),
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w700,
+                        height: 1.0,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                     SizedBox(height: 4),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+
+
+                    Container(
+                      color: Color(0xFF000000),
+                      width: 348,
+                      height: 0.5,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              " •  ",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Inter',
-                                fontSize: 10,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w400,
-                                height: 1.4,
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                _getData('activities'),
-                                style: TextStyle(
-                                  color: Color(0xFF000000),
-                                  fontFamily: 'Inter',
-                                  fontSize: 10,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.4,
-                                ),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          " •  ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Inter',
+                            fontSize: 10,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400,
+                            height: 1.4,
+                          ),
                         ),
-                        SizedBox(height: 16),
+                        Expanded(
+                          child: Text(
+                            _getData('project'),
+                            style: TextStyle(
+                              color: Color(0xFF000000),
+                              fontFamily: 'Inter',
+                              fontSize: 10,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(height: 16),
+                  ],
+                ),
+                SizedBox(height: 16),
 
-                    // Internship
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Internship".toUpperCase(),
-                          style: TextStyle(
-                            color: Color(0xFF000000),
-                            fontFamily: 'Inter',
-                            fontSize: 12,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w700,
-                            height: 1.0,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Container(
-                          color: Color(0xFF000000),
-                          width: 348,
-                          height: 0.5,
-                        ),
-                      ],
+                // Activities
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Activities".toUpperCase(),
+                      style: TextStyle(
+                        color: Color(0xFF000000),
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w700,
+                        height: 1.0,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                     SizedBox(height: 4),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+
+
+                    Container(
+                      color: Color(0xFF000000),
+                      width: 348,
+                      height: 0.5,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              " •  ",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Inter',
-                                fontSize: 10,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w400,
-                                height: 1.4,
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                _getData('internship'),
-                                style: TextStyle(
-                                  color: Color(0xFF000000),
-                                  fontFamily: 'Inter',
-                                  fontSize: 10,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.4,
-                                ),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          " •  ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Inter',
+                            fontSize: 10,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400,
+                            height: 1.4,
+                          ),
                         ),
-                        SizedBox(height: 16),
+                        Expanded(
+                          child: Text(
+                            _getData('activities'),
+                            style: TextStyle(
+                              color: Color(0xFF000000),
+                              fontFamily: 'Inter',
+                              fontSize: 10,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(height: 16),
+                  ],
+                ),
+                SizedBox(height: 16),
 
-                    // Experience
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Experience".toUpperCase(),
-                          style: TextStyle(
-                            color: Color(0xFF000000),
-                            fontFamily: 'Inter',
-                            fontSize: 12,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w700,
-                            height: 1.0,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Container(
-                          color: Color(0xFF000000),
-                          width: 348,
-                          height: 0.5,
-                        ),
-                      ],
+                // Internship
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Internship".toUpperCase(),
+                      style: TextStyle(
+                        color: Color(0xFF000000),
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w700,
+                        height: 1.0,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                     SizedBox(height: 4),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+
+
+                    Container(
+                      color: Color(0xFF000000),
+                      width: 348,
+                      height: 0.5,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              " •  ",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Inter',
-                                fontSize: 10,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w400,
-                                height: 1.4,
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                _getData('experience'),
-                                style: TextStyle(
-                                  color: Color(0xFF000000),
-                                  fontFamily: 'Inter',
-                                  fontSize: 10,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.4,
-                                ),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          " •  ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Inter',
+                            fontSize: 10,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400,
+                            height: 1.4,
+                          ),
                         ),
-                        SizedBox(height: 16),
+                        Expanded(
+                          child: Text(
+                            _getData('internship'),
+                            style: TextStyle(
+                              color: Color(0xFF000000),
+                              fontFamily: 'Inter',
+                              fontSize: 10,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(height: 16),
+                  ],
+                ),
+                SizedBox(height: 16),
 
-                    // Languages
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Languages".toUpperCase(),
-                          style: TextStyle(
-                            color: Color(0xFF000000),
-                            fontFamily: 'Inter',
-                            fontSize: 12,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w700,
-                            height: 1.0,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Container(
-                          color: Color(0xFF000000),
-                          width: 348,
-                          height: 0.5,
-                        ),
-                      ],
+                // Experience
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Experience".toUpperCase(),
+                      style: TextStyle(
+                        color: Color(0xFF000000),
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w700,
+                        height: 1.0,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                     SizedBox(height: 4),
-                    Wrap(
-                      spacing: 8,
-                      children: _getData('languages').split(', ').map((lang) {
-                        return Row(
-                          children: [
-                            Text(
-                              "• ",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Inter',
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600,
-                                height: 1.3,
-                              ),
+
+
+                    Container(
+                      color: Color(0xFF000000),
+                      width: 348,
+                      height: 0.5,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          " •  ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Inter',
+                            fontSize: 10,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400,
+                            height: 1.4,
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            _getData('experience'),
+                            style: TextStyle(
+                              color: Color(0xFF000000),
+                              fontFamily: 'Inter',
+                              fontSize: 10,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
+                              height: 1.4,
                             ),
-                            Chip(
-                              label: Text(
-                                lang,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Inter',
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                  height: 1.3,
-                                ),
-                              ),
-                              backgroundColor: Colors.transparent,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              side: BorderSide(color: Colors.black),
-                            ),
-                          ],
-                        );
-                      }).toList(),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 16),
+                  ],
+                ),
+                SizedBox(height: 16),
 
-                    // Skills
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Skills".toUpperCase(),
-                          style: TextStyle(
-                            color: Color(0xFF000000),
-                            fontFamily: 'Inter',
-                            fontSize: 12,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w700,
-                            height: 1.0,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Container(
-                          color: Color(0xFF000000),
-                          width: 348,
-                          height: 0.5,
-                        ),
-                      ],
+                // Languages
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Languages".toUpperCase(),
+                      style: TextStyle(
+                        color: Color(0xFF000000),
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w700,
+                        height: 1.0,
+                        letterSpacing: 0.5,
+                      ),
                     ),
-
                     SizedBox(height: 4),
-                    Wrap(
-                      spacing: 8,
-                      children: _getData('skills').split(', ').map((skill) {
-                        return Row(
-                          children: [
-                            Text(
-                              "• ",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Inter',
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600,
-                                height: 1.3,
-                              ),
-                            ),
-                            Chip(
-                              label: Text(
-                                skill,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Inter',
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                  height: 1.3,
-                                ),
-                              ),
-                              backgroundColor: Colors.transparent,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              side: BorderSide(color: Colors.black),
-                            ),
-                          ],
-                        );
-                      }).toList(),
+
+
+                    Container(
+                      color: Color(0xFF000000),
+                      width: 348,
+                      height: 0.5,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _getData('languages').split(', ').map((lang) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Text(
+                        "• $lang",
+                        style: TextStyle(
+                          color: Color(0xFF000000),
+                          fontFamily: 'Inter',
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                          height: 1.4,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(height: 16),
+
+                // Skills
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Skills".toUpperCase(),
+                      style: TextStyle(
+                        color: Color(0xFF000000),
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w700,
+                        height: 1.0,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+
+
+                    Container(
+                      color: Color(0xFF000000),
+                      width: 348,
+                      height: 0.5,
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 4),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _getData('skills').split(', ').map((skill) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Text(
+                        "• $skill",
+                        style: TextStyle(
+                          color: Color(0xFF000000),
+                          fontFamily: 'Inter',
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                          height: 1.4,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 20),
+        // Export to PDF Button
+        Column(
+          children: [
+            GestureDetector(
+              onTap: _exportToPdf,
+              child: Container(
+                width: double.infinity,
+                height: 55,
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF7A4DB6), Color(0xFFDFCEF7), Color(0xFFF0E7FB)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.picture_as_pdf, color: Color(0xFF352250)),
+                    SizedBox(width: 8),
+                    Text(
+                      "Export to PDF",
+                      style: TextStyle(
+                        color: Color(0xFF352250),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Inter',
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            // Export to PDF Button
-            Column(
-              children: [
-                GestureDetector(
-                  onTap: _exportToPdf,
-                  child: Container(
-                    width: double.infinity,
-                    height: 55,
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xFF7A4DB6),
-                          Color(0xFFDFCEF7),
-                          Color(0xFFF0E7FB)
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.picture_as_pdf, color: Color(0xFF352250)),
-                        SizedBox(width: 8),
-                        Text(
-                          "Export to PDF",
-                          style: TextStyle(
-                            color: Color(0xFF352250),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'Inter',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
-      );
+      ],
+    ),
+  );
 
   Future<void> _exportToPdf() async {
     final pdf = pw.Document();
 
     final headerStyle = pw.TextStyle(
-      fontSize: 22,
+      fontSize: 30,
       fontWeight: pw.FontWeight.bold,
       color: PdfColors.black,
     );
 
     final sectionTitleStyle = pw.TextStyle(
-      fontSize: 16,
+      fontSize: 24,
       fontWeight: pw.FontWeight.bold,
       color: PdfColors.black,
     );
 
     final normalTextStyle = pw.TextStyle(
       color: PdfColor.fromInt(0xFF000000),
-      fontSize: 10,
+      fontSize: 15,
       fontWeight: pw.FontWeight.normal,
       height: 1.4,
     );
 
-    final smallTextStyle =
-        const pw.TextStyle(fontSize: 10, color: PdfColors.grey600);
+    final smallTextStyle = const pw.TextStyle(fontSize: 15, color: PdfColors.black);
 
-    sectionTitle(String title) => pw.Padding(
-          padding: const pw.EdgeInsets.only(top: 12, bottom: 6),
-          child: pw.Text(title, style: sectionTitleStyle),
-        );
+    final sectionTitle = (String title) => pw.Padding(
+      padding: const pw.EdgeInsets.only(top: 12, bottom: 6),
+      child: pw.Text(title, style: sectionTitleStyle),
+    );
 
     pdf.addPage(
       pw.MultiPage(
@@ -1548,6 +1483,7 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
                 ),
               ),
               pw.SizedBox(height: 8),
+
               pw.Center(
                 child: pw.Text(
                   "P: ${_getData('phone')} | ${_getData('email')} | ${_getData('linkedin')} | ${_getData('github')}",
@@ -1556,60 +1492,88 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
                 ),
               ),
               pw.SizedBox(height: 16),
+
               _buildSection("Summary", _getData('summary')),
-              _buildSection("Education", _getData('education')),
-              _buildSection("Experience", _getData('experience')),
-              _buildSection("Internship", _getData('internship')),
-              _buildSection("Projects", _getData('project')),
-              _buildSection("Activities", _getData('activities')),
-              pw.Text(
-                "Languages".toUpperCase(),
-                style: _sectionHeaderStyle(),
-              ),
-              pw.Divider(),
-              pw.Wrap(
-                spacing: 8,
-                runSpacing: 4,
-                children: _getData('languages')
-                    .split(', ')
-                    .map((lang) => pw.Bullet(
-                          text: lang.trim(),
-                          style: normalTextStyle,
-                          bulletColor: PdfColors.black,
-                          bulletSize: 3,
-                        ))
-                    .toList(),
-              ),
-              pw.SizedBox(height: 16),
+
               pw.Text(
                 "Skills".toUpperCase(),
                 style: _sectionHeaderStyle(),
               ),
               pw.Divider(),
-              pw.Wrap(
-                spacing: 8,
-                runSpacing: 4,
-                children: _getData('skills')
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  if (_getData('softSkills').isNotEmpty)
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.only(bottom: 4),
+                      child: pw.Bullet(
+                        text: "Soft Skills: ${_getData('softSkills')}",
+                        style: pw.TextStyle(
+                          fontSize: 15,
+                          color: PdfColors.black,
+                          height: 1.3,
+                        ),
+                        bulletSize: 4,
+                        bulletColor: PdfColors.black,
+                      ),
+                    ),
+
+                  if (_getData('technicalSkills').isNotEmpty)
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.only(bottom: 4),
+                      child: pw.Bullet(
+                        text:  "Technical Skills: ${_getData('technicalSkills')}",
+                        style: pw.TextStyle(
+                          fontSize: 15,
+                          color: PdfColors.black,
+                          height: 1.3,
+                        ),
+                        bulletSize: 4,
+                        bulletColor: PdfColors.black,
+                      ),
+                    ),
+
+                ],
+              ),
+
+              // Education Section (Customized Layout)
+              pw.SizedBox(height: 16),
+              _buildEducationRow("Education", _getData('education')),
+              _buildExperienceRow("Experience", _getData('experience')),
+              _buildInternshipRow("Internship", _getData('internship')),
+              _buildProjectRow("Projects", _getData('project')),
+              _buildSection("Activities", _getData('activities')),
+
+              pw.SizedBox(height: 16),
+              pw.Text(
+                "Languages".toUpperCase(),
+                style: _sectionHeaderStyle(),
+              ),
+              pw.Divider(),
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: _getData('languages')
                     .split(', ')
-                    .map((skill) => pw.Container(
-                          padding: const pw.EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: pw.BoxDecoration(
-                            border: pw.Border.all(color: PdfColors.black),
-                            color: PdfColors.white,
-                          ),
-                          child: pw.Text(
-                            skill.trim(),
-                            style: pw.TextStyle(
-                              color: PdfColors.black,
-                              fontSize: 10,
-                              fontWeight: pw.FontWeight.bold,
-                              height: 1.3,
-                            ),
-                          ),
-                        ))
+                    .where((line) => line.trim().isNotEmpty)
+                    .map((lang) => pw.Padding(
+                  padding: const pw.EdgeInsets.only(bottom: 10),
+                  child: pw.Bullet(
+                    text: lang.trim(),
+                    style: pw.TextStyle(
+                      fontSize: 15,
+                      color: PdfColors.black,
+                      height: 1.4,
+                    ),
+                    bulletSize: 4,
+                    bulletColor: PdfColors.black,
+
+                  ),
+                ))
                     .toList(),
               ),
+
+
+
             ],
           ),
         ],
@@ -1641,10 +1605,252 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
     }
   }
 
+  pw.Widget _buildProjectRow(String title, String content) {
+    String formatDate(String inputDate) {
+      try {
+        final parsedDate = DateFormat('yyyy-MM-dd').parse(inputDate);
+        return DateFormat('MMM yyyy').format(parsedDate);
+      } catch (e) {
+        return inputDate;
+      }
+    }
+
+    final formattedStartDate = formatDate(_projectStartDateController.text);
+    final formattedEndDate = formatDate(_projectEndDateController.text);
+
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(
+          title.toUpperCase(),
+          style: _sectionHeaderStyle(),
+        ),
+        pw.Divider(),
+        pw.SizedBox(height: 6),
+        pw.Padding(
+          padding: const pw.EdgeInsets.only(left: 20),
+          child: pw.Wrap(
+            spacing: 30,
+            runSpacing: 10,
+            children: [
+              pw.Text(
+                projectTitleController.text.trim(),
+                style: pw.TextStyle(fontSize: 15),
+              ),
+              pw.Text(
+                projectLinkController.text.trim(),
+                style: pw.TextStyle(fontSize: 15),
+              ),
+              pw.Text(
+                '$formattedStartDate - $formattedEndDate',
+                style: pw.TextStyle(fontSize: 15),
+              ),
+            ],
+          ),
+        ),
+
+        pw.SizedBox(height: 12),
+
+        pw.Bullet(
+          text: projectSummaryController.text.trim(),
+          style: pw.TextStyle(
+            fontSize: 15,
+            color: PdfColors.black,
+            height: 1.4,
+          ),
+          bulletSize: 4,
+          bulletColor: PdfColors.black,
+        ),
+
+        pw.SizedBox(height: 16),
+      ],
+    );
+  }
+
+  pw.Widget _buildInternshipRow(String title, String content) {
+
+    String formatDate(String inputDate) {
+      try {
+        final parsedDate = DateFormat('yyyy-MM-dd').parse(inputDate);
+        return DateFormat('MMM yyyy').format(parsedDate);
+      } catch (e) {
+        return inputDate;
+      }
+    }
+
+    final formattedStartDate = formatDate(_internshipStartDateController.text);
+    final formattedEndDate = formatDate(_internshipEndDateController.text);
+
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(
+          title.toUpperCase(),
+          style: _sectionHeaderStyle(),
+        ),
+        pw.Divider(),
+        pw.SizedBox(height: 6),
+        pw.Padding(
+          padding: const pw.EdgeInsets.only(left: 20),
+          child: pw.Wrap(
+            spacing: 60,
+            runSpacing: 10,
+
+            children: [
+              pw.Text(
+                internshipOrganizationController.text.trim(),
+                style: pw.TextStyle(fontSize: 15),
+              ),
+              pw.Text(
+                internshipCountryController.text.trim(),
+                style: pw.TextStyle(fontSize: 15),
+              ),
+              pw.Text(
+                '$formattedStartDate - $formattedEndDate',
+                style: pw.TextStyle(fontSize: 15),
+              ),
+            ],
+          ),
+        ),
+
+
+
+        pw.SizedBox(height: 12),
+
+        pw.Bullet(
+          text: internshipDescriptionController.text.trim(),
+          style: pw.TextStyle(
+            fontSize: 15,
+            color: PdfColors.black,
+            height: 1.4,
+          ),
+          bulletSize: 4,
+          bulletColor: PdfColors.black,
+        ),
+
+
+        pw.SizedBox(height: 16),
+      ],
+    );
+
+  }
+
+  pw.Widget _buildExperienceRow(String title, String content) {
+
+    String formatDate(String inputDate) {
+      try {
+        final parsedDate = DateFormat('yyyy-MM-dd').parse(inputDate);
+        return DateFormat('MMM yyyy').format(parsedDate);
+      } catch (e) {
+        return inputDate;
+      }
+    }
+
+    final formattedStartDate = formatDate(_experienceStartDateController.text);
+    final formattedEndDate = formatDate(_experienceEndDateController.text);
+
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(
+          title.toUpperCase(),
+          style: _sectionHeaderStyle(),
+        ),
+        pw.Divider(),
+        pw.SizedBox(height: 6),
+        pw.Padding(
+          padding: const pw.EdgeInsets.only(left: 20),
+          child: pw.Wrap(
+            spacing: 60,
+            runSpacing: 10,
+            children: [
+              pw.Text(
+                companyNameController.text.trim(),
+                style: pw.TextStyle(fontSize: 15),
+              ),
+              pw.Text(
+                jobTitleController.text.trim(),
+                style: pw.TextStyle(fontSize: 15),
+              ),
+              pw.Text(
+                '$formattedStartDate - $formattedEndDate',
+                style: pw.TextStyle(fontSize: 15),
+              ),
+            ],
+          ),
+        ),
+
+
+
+        pw.SizedBox(height: 12),
+
+        pw.Bullet(
+          text: experienceDescriptionController.text.trim(),
+          style: pw.TextStyle(
+            fontSize: 15,
+            color: PdfColors.black,
+            height: 1.4,
+          ),
+          bulletSize: 4,
+          bulletColor: PdfColors.black,
+        ),
+
+
+        pw.SizedBox(height: 16),
+      ],
+    );
+
+  }
+
+  pw.Widget _buildEducationRow(String title, String content) {
+
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(
+          title.toUpperCase(),
+          style: _sectionHeaderStyle(),
+        ),
+        pw.Divider(),
+        pw.SizedBox(height: 6),
+        pw.Padding(
+          padding: const pw.EdgeInsets.only(left: 20),
+          child: pw.Wrap(
+            spacing: 30,
+            runSpacing: 10,
+            children: [
+              pw.Text(
+                universityNameController.text.trim(),
+                style: pw.TextStyle(fontSize: 15),
+              ),
+              pw.Text(
+                degreeNameController.text.trim(),
+                style: pw.TextStyle(fontSize: 15),
+              ),
+              pw.Text(
+                educationCountryController.text.trim(),
+                style: pw.TextStyle(fontSize: 15),
+              ),
+              pw.Text(
+                'GPA: ${gpaController.text.trim()}',
+                style: pw.TextStyle(fontSize: 15),
+              ),
+
+
+
+            ],
+          ),
+        ),
+        pw.SizedBox(height: 16),
+      ],
+    );
+
+  }
+
   pw.TextStyle _sectionHeaderStyle() {
     return pw.TextStyle(
       color: PdfColors.black,
-      fontSize: 12,
+      fontSize: 18,
       fontWeight: pw.FontWeight.bold,
       height: 1.0,
       letterSpacing: 0.5,
@@ -1662,14 +1868,16 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
         pw.Divider(),
         ...data.split('\n').map(
               (line) => pw.Bullet(
-                text: line.trim(),
-                style: pw.TextStyle(
-                  fontSize: 10,
-                  color: PdfColors.black,
-                  height: 1.4,
-                ),
-              ),
+            text: line.trim(),
+            style: pw.TextStyle(
+              fontSize: 15,
+              color: PdfColors.black,
+              height: 1.4,
             ),
+            bulletSize: 4, // حجم النقطة
+            bulletColor: PdfColors.black,
+          ),
+        ),
         pw.SizedBox(height: 16),
       ],
     );
@@ -1684,8 +1892,7 @@ class _BuildCVPageState extends State<BuildCvPage> with SingleTickerProviderStat
     );
 
     if (pickedDate != null) {
-      final formattedDate =
-          "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+      final formattedDate = "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
 
       _saveData(field, formattedDate);
       if (field == 'projectStartDate') {
