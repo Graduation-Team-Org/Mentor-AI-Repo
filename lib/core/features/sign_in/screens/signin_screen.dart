@@ -248,8 +248,8 @@ class _SignInScreenState extends State<SignInScreen>
                       _buildTextField(
                           SvgPicture.asset(
                             'assets/images/Letter.svg',
-                            width: 24,
-                            height: 24,
+                            width: 16,
+                            height: 16,
                             color: Colors.grey,
                             errorBuilder: (context, error, stackTrace) {
                               debugPrint('Error loading SVG: $error');
