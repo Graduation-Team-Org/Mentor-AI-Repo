@@ -81,7 +81,7 @@ abstract class AppRouter {
       // Build CV Route
       GoRoute(
         path: buildCvPage,
-        builder: (context, state) => const BuildCvPage(),
+        builder: (context, state) =>  BuildCvPage(),
       ),
       // Interview Feature Routes
       GoRoute(
