@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/presentation/widgets/history/history_list_view.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/animated_text_widget.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/history/history_list_view.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
-class HistoryColumn extends StatelessWidget {
-  const HistoryColumn({super.key});
+class AnalyzeResumeHistoryColumn extends StatelessWidget {
+  const AnalyzeResumeHistoryColumn({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class HistoryColumn extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           // Using a key to force rebuild when navigating back
-          Expanded(child: HistoryListView(key: UniqueKey())),
+          Expanded(child: AnalyzeResumeHistoryListView(key: UniqueKey())),
         ],
       ),
     );

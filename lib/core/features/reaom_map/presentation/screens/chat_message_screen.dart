@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/presentation/widgets/drawer/custom_end_drawer.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
@@ -10,10 +11,8 @@ import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/cha
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/custom_end_drawer.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/prompt_text_field.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/send_prompt_button.dart';
-import 'package:road_map_mentor/core/utils/app_routers.dart';
 import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
 import 'dart:ui'; // Import this for ImageFilter
-import 'package:go_router/go_router.dart';
 
 class RoadMapChatScreen extends StatefulWidget {
   final String? threadId;
@@ -54,17 +53,7 @@ class _ChatScreenState extends State<RoadMapChatScreen> {
       child: Scaffold(
         key: scaffoldKey,
         resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          elevation: 0,
-          forceMaterialTransparency: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => context.go(AppRouter.homePage),
-          ),
-          title: const Text('Chat', style: TextStyle(color: Colors.white)),
-          centerTitle: true,
-        ),
-        endDrawer: CustomEndDrawer(
+        endDrawer: AnalayzeResumeCustomEndDrawer(
           chatSearchcontroller: _chatSearchcontroller,
           scaffoldKey: scaffoldKey,
         ),

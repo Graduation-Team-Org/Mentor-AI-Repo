@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:road_map_mentor/core/features/reaom_map/services/chat_session_service.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/services/analyze_resume_chat_session.dart';
 import 'package:road_map_mentor/core/utils/app_routers.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
-class HistoryListView extends StatefulWidget {
-  const HistoryListView({super.key});
+class AnalyzeResumeHistoryListView extends StatefulWidget {
+  const AnalyzeResumeHistoryListView({super.key});
 
   @override
-  State<HistoryListView> createState() => _HistoryListViewState();
+  State<AnalyzeResumeHistoryListView> createState() => _AnalyzeResumeHistoryListViewState();
 }
 
-class _HistoryListViewState extends State<HistoryListView> {
+class _AnalyzeResumeHistoryListViewState extends State<AnalyzeResumeHistoryListView> {
   List<Map<String, dynamic>> _sessions = [];
   bool _isLoading = true;
 
@@ -24,7 +24,7 @@ class _HistoryListViewState extends State<HistoryListView> {
   }
 
   Future<void> _loadSessions() async {
-    final sessions = await ChatSessionService.getAllChatSessions();
+    final sessions = await AnalyzeResumeChatSessionService.getAllChatSessions();
     setState(() {
       _sessions = sessions;
       _isLoading = false;

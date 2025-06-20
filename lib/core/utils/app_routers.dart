@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/data/repos/analyze_resume_repos_imp.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/presentation/screens/chat_message_screen.dart';
 import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
@@ -74,13 +75,19 @@ abstract class AppRouter {
         ),
       ),
       GoRoute(
-        path: chatScreen,
+        path: analyzeResumeScreen,
         builder: (context, state) => MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => AnalyzeReumeAllMessagesCubit(_analizeResumeRepos),
+              create: (context) =>
+                  AnalyzeReumeAllMessagesCubit(_analizeResumeRepos),
             ),
-            BlocProvider(create: (context) => AnalyzeResumePreferredMessagesCubit()),
+            BlocProvider(
+              create: (context) => AnalyzeResumePreferredMessagesCubit(),
+            ),
+            BlocProvider(
+              create: (context) => GetAllAnalyzeResumePreferredMessagesCubit(),
+            ),
           ],
           child: const AnalyzeResumeChatScreen(),
         ),
@@ -98,7 +105,7 @@ abstract class AppRouter {
       // Build CV Route
       GoRoute(
         path: buildCvPage,
-        builder: (context, state) =>  BuildCvPage(),
+        builder: (context, state) => BuildCvPage(),
       ),
       // Interview Feature Routes
       GoRoute(

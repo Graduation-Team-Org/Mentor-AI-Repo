@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
-import 'package:road_map_mentor/core/features/reaom_map/functions/fun.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/functions/fun.dart';
 
-class SendPromptButtom extends StatelessWidget {
-  const SendPromptButtom({
+class AnalyzeResumeSendPromptButtom extends StatelessWidget {
+  const AnalyzeResumeSendPromptButtom({
     super.key,
     required this.controller,
     required this.scrollController,
@@ -23,10 +23,10 @@ class SendPromptButtom extends StatelessWidget {
             icon: SvgPicture.asset('assets/images/Plain_2.svg',width: 27,height: 27,),
             onPressed: () {
               if (controller.text.trim().isNotEmpty) {
-                BlocProvider.of<AllMessagesCubit>(context)
+                BlocProvider.of<AnalyzeReumeAllMessagesCubit>(context)
                     .addmessage(content: controller.text, context: context);
                 controller.clear();
-                Fun().scrollToBottom(
+                AnalyzeResumeFun().scrollToBottom(
                   scrollController: scrollController,
                 );
               }

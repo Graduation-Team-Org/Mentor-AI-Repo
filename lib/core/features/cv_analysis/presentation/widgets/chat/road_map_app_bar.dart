@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/draw_oppener_conainer.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/new_chat_container.dart';
+import 'package:road_map_mentor/core/utils/app_routers.dart';
 import 'package:road_map_mentor/core/utils/widgets/back_button.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
-class RoadMapAppBar extends StatelessWidget {
+class AnalyzeResumeAppBar extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const RoadMapAppBar({
+  const AnalyzeResumeAppBar({
     super.key,
     required this.scaffoldKey,
   });
@@ -22,14 +24,14 @@ class RoadMapAppBar extends StatelessWidget {
       child: Row(
         children: [
           MyBackButton(
-            backButtononPressed: () {},
+            backButtononPressed: () => context.go(AppRouter.homePage),
           ),
           Padding(
             padding:
                 EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.23),
             child: Text(
-              'Roadmap',
-              style: title1Bold,
+              'Cv Analysis',
+              style: title2Bold,
             ),
           ),
           Padding(

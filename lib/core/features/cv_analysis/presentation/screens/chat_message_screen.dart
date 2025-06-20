@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
-import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
-import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
-import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/chat_body_list_view.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/data/repos/analyze_resume_repos_imp.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/presentation/widgets/chat/chat_body_list_view.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/presentation/widgets/chat/send_prompt_button.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/presentation/widgets/drawer/custom_end_drawer.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/custom_elipse_circule.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/keep_alive_widget.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/custom_end_drawer.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/prompt_text_field.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/send_prompt_button.dart';
 import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
 import 'dart:ui'; // Import this for ImageFilter
 import 'package:go_router/go_router.dart';
@@ -39,31 +40,21 @@ class _AnalyzeResumeState extends State<AnalyzeResumeChatScreen> {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AllMessagesCubit>(
-          create: (context) => AllMessagesCubit(RoadMapReposImp()),
+        BlocProvider(
+          create: (context) =>
+              AnalyzeReumeAllMessagesCubit(AnalyzeResumeReposImp()),
         ),
-        BlocProvider<GetAllPreferredMessagesCubit>(
-          create: (context) => GetAllPreferredMessagesCubit(),
+        BlocProvider(
+          create: (context) => AnalyzeResumePreferredMessagesCubit(),
         ),
-        // Add this provider for PreferredMessagesCubit
-        BlocProvider<PreferredMessagesCubit>(
-          create: (context) => PreferredMessagesCubit(),
+        BlocProvider(
+          create: (context) => GetAllAnalyzeResumePreferredMessagesCubit(),
         ),
       ],
       child: Scaffold(
         key: scaffoldKey,
         resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          elevation: 0,
-          forceMaterialTransparency: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => context.go('/home'),
-          ),
-          title: const Text('Chat', style: TextStyle(color: Colors.white)),
-          centerTitle: true,
-        ),
-        endDrawer: CustomEndDrawer(
+        endDrawer: AnalayzeResumeCustomEndDrawer(
           chatSearchcontroller: _chatSearchcontroller,
           scaffoldKey: scaffoldKey,
         ),
@@ -95,7 +86,7 @@ class _AnalyzeResumeState extends State<AnalyzeResumeChatScreen> {
                       imageFilter: ImageFilter.blur(sigmaX: 300, sigmaY: 300),
                     ),
                     KeepWidgetAlive(
-                      aliveGivenWidget: ChatBodyListView(
+                      aliveGivenWidget: AnalyzeResumeChatBodyListView(
                         scrollController: _scrollController,
                         scaffoldKey: scaffoldKey,
                       ),
@@ -111,7 +102,7 @@ class _AnalyzeResumeState extends State<AnalyzeResumeChatScreen> {
                       PromptTextField(
                         controller: _controller,
                       ),
-                      SendPromptButtom(
+                      AnalyzeResumeSendPromptButtom(
                         controller: _controller,
                         scrollController: _scrollController,
                       ),

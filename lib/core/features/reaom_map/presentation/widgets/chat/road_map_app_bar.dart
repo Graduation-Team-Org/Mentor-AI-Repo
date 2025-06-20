@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/draw_oppener_conainer.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/new_chat_container.dart';
+import 'package:road_map_mentor/core/utils/app_routers.dart';
 import 'package:road_map_mentor/core/utils/widgets/back_button.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
@@ -22,7 +24,7 @@ class RoadMapAppBar extends StatelessWidget {
       child: Row(
         children: [
           MyBackButton(
-            backButtononPressed: () {},
+            backButtononPressed:  () => context.go(AppRouter.homePage),
           ),
           Padding(
             padding:

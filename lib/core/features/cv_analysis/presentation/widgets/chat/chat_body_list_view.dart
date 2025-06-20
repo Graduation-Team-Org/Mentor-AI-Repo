@@ -2,39 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:popover/popover.dart';
-import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/functions/fun.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/presentation/widgets/chat/road_map_app_bar.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/presentation/widgets/chat/steve_say_hi.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
-import 'package:road_map_mentor/core/features/reaom_map/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
-import 'package:road_map_mentor/core/features/reaom_map/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
-import 'package:road_map_mentor/core/features/reaom_map/functions/fun.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/road_map_app_bar.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/popover_list_items.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/respnse_widget.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/steve_say_hi.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/typing_animation.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
 
 import 'sender_avatar.dart';
 
-class ChatBodyListView extends StatefulWidget {
+class AnalyzeResumeChatBodyListView extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
   final ScrollController scrollController;
 
-  const ChatBodyListView({
+  const AnalyzeResumeChatBodyListView({
     super.key,
     required this.scaffoldKey,
     required this.scrollController,
   });
 
   @override
-  State<ChatBodyListView> createState() => _ChatBodyListViewState();
+  State<AnalyzeResumeChatBodyListView> createState() => _AnalyzeResumeChatBodyListViewState();
 }
 
-class _ChatBodyListViewState extends State<ChatBodyListView> {
+class _AnalyzeResumeChatBodyListViewState extends State<AnalyzeResumeChatBodyListView> {
   @override
   void initState() {
     super.initState();
-    Fun().initializePrefs(context: context);
+    AnalyzeResumeFun().initializePrefs(context: context);
   }
 
   @override
@@ -43,34 +43,35 @@ class _ChatBodyListViewState extends State<ChatBodyListView> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     // Try to get the PreferredMessagesCubit safely
-    PreferredMessagesCubit? preferredMessagesCubit;
-    GetAllPreferredMessagesCubit? getAllPreferredMessagesCubit;
+    AnalyzeResumePreferredMessagesCubit? preferredMessagesCubit;
+    GetAllAnalyzeResumePreferredMessagesCubit? getAllPreferredMessagesCubit;
 
     try {
-      preferredMessagesCubit = context.read<PreferredMessagesCubit>();
+      preferredMessagesCubit = context.read<AnalyzeResumePreferredMessagesCubit>();
       getAllPreferredMessagesCubit =
-          context.read<GetAllPreferredMessagesCubit>();
+          context.read<GetAllAnalyzeResumePreferredMessagesCubit>();
     } catch (e) {
       print('Cubit not available in this context: $e');
     }
 
-    return BlocConsumer<AllMessagesCubit, AllMessagesState>(
+    return BlocConsumer<AnalyzeReumeAllMessagesCubit, AnalyzeResumeAllMessagesState>(
       listener: (context, state) {
         // Remove the auto-adding of messages here
         // We'll only add messages when the user clicks the like button
       },
       builder: (context, state) {
         final List<ChatMessageModel> messages =
-            state is AllMessagesScussess ? state.chatMessagesModel : [];
+            state is AnalyzeResumeAllMessagesScussess ? state.chatMessagesModel : [];
 
         return ListView(
           controller: widget.scrollController,
           children: [
-            RoadMapAppBar(scaffoldKey: widget.scaffoldKey),
-            const SteveSayHi(),
+            AnalyzeResumeAppBar(scaffoldKey: widget.scaffoldKey),
+            const MarcusDayHi(),
             // Show all messages
             ...messages.map(
               (message) => Column(

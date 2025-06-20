@@ -1,17 +1,17 @@
 part of 'add_messages_cubit.dart';
 
-abstract class AllMessagesState {}
+abstract class AnalyzeResumeAllMessagesState {}
 
-class AllMessagesInitial extends AllMessagesState {}
+class AllMessagesInitial extends AnalyzeResumeAllMessagesState {}
 
-class AllMessagesLoading extends AllMessagesState {}
+class AllMessagesLoading extends AnalyzeResumeAllMessagesState {}
 
-class AllMessagesScussess extends AllMessagesState {
+class AnalyzeResumeAllMessagesScussess extends AnalyzeResumeAllMessagesState {
   final List<ChatMessageModel> chatMessagesModel;
-  AllMessagesScussess({required this.chatMessagesModel});
+  AnalyzeResumeAllMessagesScussess({required this.chatMessagesModel});
 }
 
-class AllMessagesFailure extends AllMessagesState {
+class AnalyzeResumeAllMessagesFailure extends AnalyzeResumeAllMessagesState {
   final String errorMessage;
-  AllMessagesFailure({required this.errorMessage});
+  AnalyzeResumeAllMessagesFailure({required this.errorMessage});
 }

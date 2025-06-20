@@ -3,20 +3,20 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/data/repos/analyze_resume_repos_imp.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/presentation/widgets/history/hitory_column.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/enum/drawer_content.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/chat_search_text_field.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/custom_activites_column.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/drawer/custom_drawer_header.dart';
-import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/history/hitory_column.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
 import 'package:road_map_mentor/core/utils/app_routers.dart';
 import 'package:road_map_mentor/core/utils/colors.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
-class CustomEndDrawer extends StatefulWidget {
-  const CustomEndDrawer({
+class AnalayzeResumeCustomEndDrawer extends StatefulWidget {
+  const AnalayzeResumeCustomEndDrawer({
     super.key,
     required TextEditingController chatSearchcontroller,
     required this.scaffoldKey,
@@ -26,10 +26,10 @@ class CustomEndDrawer extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
-  State<CustomEndDrawer> createState() => _CustomEndDrawerState();
+  State<AnalayzeResumeCustomEndDrawer> createState() => _AnalayzeResumeCustomEndDrawerState();
 }
 
-class _CustomEndDrawerState extends State<CustomEndDrawer> {
+class _AnalayzeResumeCustomEndDrawerState extends State<AnalayzeResumeCustomEndDrawer> {
   DrawerContent _currentContent = DrawerContent.history;
 
   void _switchContent(DrawerContent content) {
@@ -48,8 +48,8 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
           width: keyboardVisible ? MediaQuery.of(context).size.width : 250,
           child: MultiBlocProvider(
             providers: [
-              BlocProvider<AllMessagesCubit>(
-                create: (context) => AllMessagesCubit(RoadMapReposImp()),
+              BlocProvider<AnalyzeReumeAllMessagesCubit>(
+                create: (context) => AnalyzeReumeAllMessagesCubit(AnalyzeResumeReposImp()),
               ),
             ],
             child: Drawer(
@@ -105,7 +105,7 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
                             currentContent: _currentContent,
                           ),
                           if (_currentContent == DrawerContent.history)
-                            const HistoryColumn(),
+                            const AnalyzeResumeHistoryColumn(),
                           Padding(
                             padding: const EdgeInsets.only(top: 20, bottom: 30),
                             child: Row(

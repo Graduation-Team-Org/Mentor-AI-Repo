@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/animated_text_widget.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
-class SteveSayHi extends StatelessWidget {
-  const SteveSayHi({
+class MarcusDayHi extends StatelessWidget {
+  const MarcusDayHi({
     super.key,
   });
 
@@ -16,7 +16,7 @@ class SteveSayHi extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(50),
             child: Image.asset(
-              'assets/images/steve.png',
+              'assets/images/back2.png',
               fit: BoxFit.cover,
               width: 100,
               height: 100,
@@ -34,7 +34,7 @@ class SteveSayHi extends StatelessWidget {
               children: [
                 Center(
                   child: AnimatedTextWidget(
-                    response: 'Hello, I ’m Steve 👋',
+                    response: 'Hello, I ’m Marcus 👋',
                     textStyle: bodyBold,
                     widgetDuration: 50,
                   ),
