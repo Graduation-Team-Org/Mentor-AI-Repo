@@ -25,9 +25,15 @@ void main() async {
 
     // Open the boxes
     await Hive.openBox<PreferredMessagesModel>(kPreferredMessages);
-    await Hive.openBox<PreferredAnalyzeResumeMessagesModel>(kAnalyzeResumePreferredMessages);
+    await Hive.openBox<PreferredAnalyzeResumeMessagesModel>(
+        kAnalyzeResumePreferredMessages);
     await Hive.openBox<ChatSessionModel>(kChatSessions);
 
+    await Hive.openBox('reviews');
+    await Hive.openBox('feedbacks');
+    await Hive.openBox('ratings');
+    await Hive.openBox('about');
+    
     // Load environment variables
     await dotenv.load(fileName: ".env");
 

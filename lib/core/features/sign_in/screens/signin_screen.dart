@@ -246,16 +246,20 @@ class _SignInScreenState extends State<SignInScreen>
 
                       // Email field
                       _buildTextField(
-                          SvgPicture.asset(
-                            'assets/images/Letter.svg',
+                           Container(
                             width: 16,
                             height: 16,
-                            color: Colors.grey,
-                            errorBuilder: (context, error, stackTrace) {
-                              debugPrint('Error loading SVG: $error');
-                              return const Icon(Icons.email,
-                                  color: Colors.grey);
-                            },
+                            alignment: Alignment.center,
+                            child: SvgPicture.asset(
+                              'assets/images/Letter.svg',
+                              color: Colors.grey,
+                              fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) {
+                                debugPrint('Error loading SVG: $error');
+                                return Icon(Icons.email, size: 16, color: Colors.grey);
+                              },
+                            ),
+
                           ),
                           "Email",
                           _emailController, (value) {
