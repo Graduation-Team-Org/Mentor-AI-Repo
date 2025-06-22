@@ -7,7 +7,7 @@ class AllMessagesInitial extends AnalyzeResumeAllMessagesState {}
 class AllMessagesLoading extends AnalyzeResumeAllMessagesState {}
 
 class AnalyzeResumeAllMessagesScussess extends AnalyzeResumeAllMessagesState {
-  final List<ChatMessageModel> chatMessagesModel;
+  final List<AnalyzeResumeChatMessageModel> chatMessagesModel;
   AnalyzeResumeAllMessagesScussess({required this.chatMessagesModel});
 }
 

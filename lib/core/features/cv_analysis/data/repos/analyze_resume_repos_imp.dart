@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:road_map_mentor/core/constants/constants.dart';
 import 'package:road_map_mentor/core/errors/dio_erros.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/data/models/chat_messages_model.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/data/repos/road_map_repos.dart';
-import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/preferences/shared_preferences.dart';
 import 'package:road_map_mentor/core/features/reaom_map/utils/services/custom_gpt_api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +11,7 @@ class AnalyzeResumeReposImp extends AnalyzeResumeRepos {
   SharedPreferences? preferences;
   String? threadId;
 
-  List<ChatMessageModel> messages = [];
+  List<AnalyzeResumeChatMessageModel> messages = [];
 
   AnalyzeResumeReposImp({
     this.preferences,
@@ -66,7 +66,7 @@ class AnalyzeResumeReposImp extends AnalyzeResumeRepos {
   }
 
   @override
-  Future<List<ChatMessageModel>> addMessage(String content) async {
+  Future<List<AnalyzeResumeChatMessageModel>> addMessage(String content) async {
     if (threadId == null) {
       print("ThreadId is null, creating new thread");
       await createThread();
@@ -77,7 +77,7 @@ class AnalyzeResumeReposImp extends AnalyzeResumeRepos {
 
     try {
       // Add and return user message immediately
-      final userMessage = ChatMessageModel(
+      final userMessage = AnalyzeResumeChatMessageModel(
         content: content,
         isUser: true,
         senderName: "Mahmoud",
@@ -86,7 +86,7 @@ class AnalyzeResumeReposImp extends AnalyzeResumeRepos {
       messages.add(userMessage);
 
       // Return immediately with just the user message
-      List<ChatMessageModel> currentMessages = List.from(messages);
+      List<AnalyzeResumeChatMessageModel> currentMessages = List.from(messages);
 
       // Start processing the API calls without waiting
       _processApiCalls(content);
@@ -103,7 +103,7 @@ class AnalyzeResumeReposImp extends AnalyzeResumeRepos {
   }
 
   // New method to handle API calls separately
-  Future<List<ChatMessageModel>> _processApiCalls(String content) async {
+  Future<List<AnalyzeResumeChatMessageModel>> _processApiCalls(String content) async {
     try {
       await SharedPreferencesDB(prefs: preferences!)
           .removeEmptyThread(threadId!);
@@ -177,7 +177,7 @@ class AnalyzeResumeReposImp extends AnalyzeResumeRepos {
   }
 
   @override
-  Future<List<ChatMessageModel>> getMessages() async {
+  Future<List<AnalyzeResumeChatMessageModel>> getMessages() async {
     if (threadId == null) return [];
     try {
       final response = await CustomGptApiService()
@@ -188,11 +188,11 @@ class AnalyzeResumeReposImp extends AnalyzeResumeRepos {
         if (message['role'] == 'assistant') {
           for (var content in message['content']) {
             if (content['type'] == 'text' && content['text'] != null) {
-              final newMessage = ChatMessageModel(
+              final newMessage = AnalyzeResumeChatMessageModel(
                 content: content['text']['value'],
                 isUser: false,
-                senderName: "Steve",
-                senderAvatar: 'assets/images/steve.png',
+                senderName: "Marcus",
+                senderAvatar: 'assets/images/back2.png',
               );
 
               if (!messages

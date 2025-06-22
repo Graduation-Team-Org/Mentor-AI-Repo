@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:popover/popover.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/data/models/chat_messages_model.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/functions/fun.dart';
@@ -64,7 +65,7 @@ class _AnalyzeResumeChatBodyListViewState extends State<AnalyzeResumeChatBodyLis
         // We'll only add messages when the user clicks the like button
       },
       builder: (context, state) {
-        final List<ChatMessageModel> messages =
+        final List<AnalyzeResumeChatMessageModel> messages =
             state is AnalyzeResumeAllMessagesScussess ? state.chatMessagesModel : [];
 
         return ListView(

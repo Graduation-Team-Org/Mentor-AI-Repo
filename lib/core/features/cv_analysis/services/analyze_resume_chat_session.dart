@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:road_map_mentor/core/features/cv_analysis/data/models/chat_messages_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
 import 'package:uuid/uuid.dart';
 
 class AnalyzeResumeChatSessionService {
@@ -8,7 +8,7 @@ class AnalyzeResumeChatSessionService {
   static const String _sessionIdsKey = 'chat_session_ids';
   
   // Save a chat session
-  static Future<String> saveChatSession(List<ChatMessageModel> messages) async {
+  static Future<String> saveChatSession(List<AnalyzeResumeChatMessageModel> messages) async {
     if (messages.isEmpty) return '';
     
     final prefs = await SharedPreferences.getInstance();

@@ -18,14 +18,14 @@ class CustomDrawerHeader extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.asset(
-            'assets/images/back2.png',
+            'assets/images/steve.png',
             width: 35,
             height: 35,
           ),
         ),
         const SizedBox(width: 8),
         Text(
-          'Marcus',
+          'Steve',
           style: title2Bold,
         ),
       ],

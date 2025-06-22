@@ -1,15 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/data/models/chat_messages_model.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/data/repos/analyze_resume_repos_imp.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/data/repos/road_map_repos.dart';
 import 'package:road_map_mentor/core/features/cv_analysis/services/analyze_resume_chat_session.dart';
-import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
-import 'package:road_map_mentor/core/features/reaom_map/data/repos/road_map_repos_imp.dart';
 
 part 'add_messages_state.dart';
 
 class AnalyzeReumeAllMessagesCubit extends Cubit<AnalyzeResumeAllMessagesState> {
   final AnalyzeResumeRepos analyzeResumeRepos;
-  List<ChatMessageModel> messages = [];
+  List<AnalyzeResumeChatMessageModel> messages = [];
   String? currentSessionId;
 
   AnalyzeReumeAllMessagesCubit(this.analyzeResumeRepos)
@@ -35,7 +35,7 @@ class AnalyzeReumeAllMessagesCubit extends Cubit<AnalyzeResumeAllMessagesState> 
       // Poll for new messages
       for (int i = 0; i < 10; i++) {
         final assistantMessages =
-            await (analyzeResumeRepos as RoadMapReposImp).getMessages();
+            await (analyzeResumeRepos as AnalyzeResumeReposImp).getMessages();
 
         if (assistantMessages.length > messages.length) {
           // We have new messages from the assistant
@@ -67,7 +67,7 @@ class AnalyzeReumeAllMessagesCubit extends Cubit<AnalyzeResumeAllMessagesState> 
       if (sessionData != null) {
         final List<dynamic> messagesJson = sessionData['messages'];
         final loadedMessages = messagesJson
-            .map((json) => ChatMessageModel.fromJson(json))
+            .map((json) => AnalyzeResumeChatMessageModel.fromJson(json))
             .toList();
 
         messages = loadedMessages;
