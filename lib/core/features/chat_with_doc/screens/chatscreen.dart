@@ -790,93 +790,27 @@ class _ChatWithDocPageState extends State<ChatWithDocPage> {
                         },
                       ),
                     ),
-                    if (_files
-                            .where((file) => file['isCompleted'])
-                            .isNotEmpty &&
-                        _files.every(
-                          (file) => file['isCompleted'] || file['uploadFailed'],
-                        ))
+                    if (_files.where((file) => file['isCompleted']).isNotEmpty)
                       Align(
                         alignment: Alignment.center,
                         child: Padding(
-                          padding:
-                              const EdgeInsets.only(top: 16.0, bottom: 40.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'Files uploaded successfully!',
-                                style: TextStyle(
-                                    color: Colors.white70, fontSize: 16),
-                              ),
-                              SizedBox(height: 16),
-                              FloatingActionButton.extended(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ProcessingScreen(
-                                          file: File(_files.first['path']!)),
-                                    ),
-                                  );
-                                },
-                                label: const Text('Next'),
-                                icon: const Icon(Icons.arrow_forward_ios),
-                              ),
-                              SizedBox(
-                                height: _files.length > 1 ? 10 : 0,
-                              ), // Spacing only if more than one file
-                              FloatingActionButton.extended(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ChatWithDocumentScreen(
-                                              chatHistory: []),
-                                    ),
-                                  );
-                                },
-                                label: const Text('Skip'),
-                                icon: const Icon(Icons.skip_next),
-                              ),
-                            ],
+                          padding: const EdgeInsets.only(top: 16.0, bottom: 40.0), // أضف مسافة من الأسفل
+                          child: FloatingActionButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProcessingScreen(
+                                      file: File(_files.first['path']!)),
+                                ),
+                              );
+                            },
+                            backgroundColor:const Color(0xFF9860E4),
+                            child: const Icon(Icons.arrow_forward, color: Colors.white),
+                            shape: StadiumBorder(),
                           ),
                         ),
-                      ),
-                    if (_files.isEmpty)
-                      Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.only(top: 16.0, bottom: 40.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'Or continue without uploading',
-                                style: TextStyle(
-                                    color: Colors.white70, fontSize: 16),
-                              ),
-                              SizedBox(height: 16),
-                              FloatingActionButton.extended(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ChatWithDocumentScreen(
-                                              chatHistory: []),
-                                    ),
-                                  );
-                                },
-                                label: const Text('Skip'),
-                                icon: const Icon(Icons.skip_next),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      )
                   ],
                 ),
               ],
@@ -1615,164 +1549,235 @@ class _ChatWithDocumentScreenState extends State<ChatWithDocumentScreen>
           if (_isSidebarOpen)
             AnimatedPositioned(
               duration: Duration(milliseconds: 300),
-              left: 0,
+              right: 0,
               top: 0,
               bottom: 0,
               child: Container(
                 width: 250,
-                color: Color(0xFF110A2B),
-                padding: const EdgeInsets.all(16),
-                child: Column(
+                child: Stack(
                   children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFF110A2B),
+                      ),
+                    ),
+                    Positioned(
+                      top: 300,
+                      left: 60,
+                      child: ImageFiltered(
+                        imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                        child: Container(
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFF352250),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: -30,
+                      right: -70,
+                      child: ImageFiltered(
+                        imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                        child: Container(
+                          width: 200,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFF9860E4),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 100,
+                      left: 200,
+                      child: ImageFiltered(
+                        imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFF9860E4),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 50,
+                      right: 50,
+                      child: ImageFiltered(
+                        imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                        child: Container(
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFF40174C),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Colors.transparent,
+                                        child: ClipOval(
+                                          child: Image.asset(
+                                            'assets/images/home2.png',
+                                            width: 60,
+                                            height: 60,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        "Serena",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20),
+                                  TextField(
+                                    controller: _searchController,
+                                    decoration: InputDecoration(
+                                      hintText: "Search",
+                                      hintStyle: TextStyle(color: Colors.white70),
+                                      suffixIcon: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                        ),
+                                        child: SvgPicture.asset(
+                                          'assets/images/fi_search.svg',
+                                          width: 20,
+                                          height: 20,
+                                          color: Colors.white70,
+                                        ),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white10,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                    ),
+                                    style: TextStyle(color: Colors.white),
+                                    onChanged: _filterChatHistory,
+                                  ),
+                                  SizedBox(height: 20),
+                                  ListTile(
+                                    leading: SvgPicture.asset(
+                                      'assets/images/fi_share-2.svg',
+                                      width: 24,
+                                      height: 24,
+                                      color: Colors.white,
+                                    ),
+                                    title: Text(
+                                      "Share Chat",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onTap: _shareChat,
+                                  ),
+                                  ListTile(
+                                    leading: SvgPicture.asset(
+                                      'assets/images/Pen_New_Square_cv.svg',
+                                      width: 24,
+                                      height: 24,
+                                      color: Colors.white,
+                                    ),
+                                    title: Text(
+                                      "New Chat",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onTap: _startNewChat,
+                                  ),
+                                  ListTile(
+                                    leading: SvgPicture.asset(
+                                      'assets/images/Document_Text.svg',
+                                      width: 24,
+                                      height: 24,
+                                      color: Colors.white,
+                                    ),
+                                    title: Text(
+                                      "History",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onTap: _refreshChatHistoryList,
+                                  ),
+                                  ListTile(
+                                    leading: SvgPicture.asset(
+                                      'assets/images/Heart_Angle.svg',
+                                      width: 24,
+                                      height: 24,
+                                      color: Colors.white,
+                                    ),
+                                    title: Text(
+                                      "Preferred message",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onTap: () {},
+                                  ),
+                                  SizedBox(height: 20),
+                                  Text(
+                                    'History:',
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                  ..._filteredChatHistory.map((history) {
+                                    return ListTile(
+                                      title: Text(
+                                        history,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      onTap: () {
+                                        _loadConversation(history);
+                                        setState(() {
+                                          _isSidebarOpen = false;
+                                        });
+                                      },
+                                    );
+                                  }).toList(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
                               children: [
                                 CircleAvatar(
+                                  radius: 15,
                                   backgroundColor: Colors.transparent,
                                   child: ClipOval(
                                     child: Image.asset(
-                                      'assets/images/home2.png',
-                                      width: 60,
-                                      height: 60,
+                                      "assets/images/user.png",
+                                      width: 30,
+                                      height: 30,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
                                 SizedBox(width: 10),
-                                Text(
-                                  "Serena",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                                Text('User', style: TextStyle(color: Colors.white70)),
                               ],
                             ),
-                            SizedBox(height: 20),
-                            TextField(
-                              controller: _searchController,
-                              decoration: InputDecoration(
-                                hintText: "Search",
-                                hintStyle: TextStyle(color: Colors.white70),
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    'assets/images/fi_search.svg',
-                                    width: 20,
-                                    height: 20,
-                                    color: Colors.white70,
-                                  ),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white10,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                              style: TextStyle(color: Colors.white),
-                              onChanged: _filterChatHistory,
-                            ),
-                            SizedBox(height: 20),
-                            ListTile(
-                              leading: SvgPicture.asset(
-                                'assets/images/fi_share-2.svg',
-                                width: 24,
-                                height: 24,
-                                color: Colors.white,
-                              ),
-                              title: Text(
-                                "Share Chat",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              onTap: _shareChat,
-                            ),
-                            ListTile(
-                              leading: SvgPicture.asset(
-                                'assets/images/Pen_New_Square_cv.svg',
-                                width: 24,
-                                height: 24,
-                                color: Colors.white,
-                              ),
-                              title: Text(
-                                "New Chat",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              onTap: _startNewChat,
-                            ),
-                            ListTile(
-                              leading: SvgPicture.asset(
-                                'assets/images/Document_Text.svg',
-                                width: 24,
-                                height: 24,
-                                color: Colors.white,
-                              ),
-                              title: Text(
-                                "History",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              onTap: _refreshChatHistoryList,
-                            ),
-                            ListTile(
-                              leading: SvgPicture.asset(
-                                'assets/images/Heart_Angle.svg',
-                                width: 24,
-                                height: 24,
-                                color: Colors.white,
-                              ),
-                              title: Text(
-                                "Preferred message",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              onTap: () {},
-                            ),
-                            SizedBox(height: 20),
-                            Text(
-                              'History:',
-                              style: TextStyle(color: Colors.white70),
-                            ),
-                            ..._filteredChatHistory.map((history) {
-                              return ListTile(
-                                title: Text(
-                                  history,
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                onTap: () {
-                                  _loadConversation(history);
-                                  setState(() {
-                                    _isSidebarOpen = false;
-                                  });
-                                },
-                              );
-                            }).toList(),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 15,
-                            backgroundColor: Colors.transparent,
-                            child: ClipOval(
-                              child: Image.asset(
-                                "assets/images/user.png",
-                                width: 30,
-                                height: 30,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
                           ),
-                          SizedBox(width: 10),
-                          Text('User', style: TextStyle(color: Colors.white70)),
                         ],
                       ),
                     ),

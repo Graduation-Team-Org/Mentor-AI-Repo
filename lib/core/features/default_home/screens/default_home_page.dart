@@ -294,17 +294,20 @@ class _HomePage1State extends State<HomePage1> with SingleTickerProviderStateMix
                   top: 0,
                   left: 0,
                   child: Container(
-                    margin: EdgeInsets.all(5),
+                    width: 20,
+                    height: 20,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.black.withOpacity(0.7),
                       border: Border.all(color: Color(0xFF9860E4), width: 1.5),
                     ),
-                    child: IconButton(
-                      icon: Icon(Icons.close, color: Colors.white, size: 15),
-                      onPressed: () => Navigator.pop(context),
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(),
+                    child: Center(
+                      child: IconButton(
+                        icon: Icon(Icons.close, color: Colors.white, size: 14),
+                        onPressed: () => Navigator.pop(context),
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
+                      ),
                     ),
                   ),
                 ),
