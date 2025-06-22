@@ -1,0 +1,7 @@
+part of 'get_all_preferred_messages_cubit.dart';
+
+@immutable
+sealed class GetAllAnalyzeResumePreferredMessagesCubitState {}
+
+final class GetAllAnalyzeResumePreferredMessagesCubitInitial extends GetAllAnalyzeResumePreferredMessagesCubitState {}
+final class GetAllAnalyzeResumePreferredMessagesCubitSuccess extends GetAllAnalyzeResumePreferredMessagesCubitState {}

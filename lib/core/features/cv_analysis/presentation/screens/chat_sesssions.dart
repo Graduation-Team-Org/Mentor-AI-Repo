@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/services/analyze_resume_chat_session.dart';
 import 'package:road_map_mentor/core/features/reaom_map/data/models/chat_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/custom_elipse_circule.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/chat/keep_alive_widget.dart';
 import 'package:road_map_mentor/core/features/reaom_map/presentation/widgets/history/chat_session_list_view.dart';
-import 'package:road_map_mentor/core/features/reaom_map/services/chat_session_service.dart';
 import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
 import 'package:road_map_mentor/core/utils/widgets/back_button.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 import 'dart:ui'; // Import this for ImageFilter
 
-class ChatSessionsScreen extends StatefulWidget {
+class AnalyzeResumeChatSessionsScreen extends StatefulWidget {
   final Map<String, dynamic>? extra;
 
-  const ChatSessionsScreen({
+  const AnalyzeResumeChatSessionsScreen({
     super.key,
     this.extra,
   });
 
   @override
-  State<ChatSessionsScreen> createState() => _ChatSessionsScreenState();
+  State<AnalyzeResumeChatSessionsScreen> createState() => _AnalyzeResumeChatSessionsScreenState();
 }
 
-class _ChatSessionsScreenState extends State<ChatSessionsScreen> {
+class _AnalyzeResumeChatSessionsScreenState extends State<AnalyzeResumeChatSessionsScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   String? _sessionTitle;
   List<ChatMessageModel> _messages = [];
@@ -37,7 +37,7 @@ class _ChatSessionsScreenState extends State<ChatSessionsScreen> {
   Future<void> _loadSession() async {
     if (widget.extra != null && widget.extra!.containsKey('sessionId')) {
       final sessionId = widget.extra!['sessionId'];
-      final sessionData = await ChatSessionService.getChatSession(sessionId);
+      final sessionData = await AnalyzeResumeChatSessionService.getChatSession(sessionId);
 
       if (sessionData != null) {
         final List<dynamic> messagesJson = sessionData['messages'];

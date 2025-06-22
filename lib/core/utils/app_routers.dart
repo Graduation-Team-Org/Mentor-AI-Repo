@@ -1,5 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/data/repos/analyze_resume_repos_imp.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/database/hive/get_all_preferred_mesages_cubit/get_all_preferred_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/database/hive/preferred_messages_cubit/preferred_messages_cubit.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/presentation/screens/chat_message_screen.dart';
 import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
 import 'package:road_map_mentor/core/features/home/screens/home_page.dart';
 import 'package:road_map_mentor/core/features/reaom_map/buiseness_logic/all_messages_cubit/cubit/add_messages_cubit.dart';
@@ -17,11 +22,12 @@ import 'package:road_map_mentor/core/features/interview/screens/history_screen.d
 import 'package:road_map_mentor/core/features/interview/screens/score_screen.dart';
 import 'package:road_map_mentor/core/features/interview/screens/interview_screen.dart';
 import 'package:road_map_mentor/core/features/chat_with_doc/screens/chatscreen.dart';
-import 'package:road_map_mentor/core/features/cv_analysis/screens/cv_analysis_page.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/presentation/screens/cv_analysis_page.dart';
 import 'package:road_map_mentor/core/features/build_cv/screens/build_cv_page.dart';
 
 abstract class AppRouter {
   static final _roadMapRepos = RoadMapReposImp();
+  static final _analizeResumeRepos = AnalyzeResumeReposImp();
 
   static final router = GoRouter(
     initialLocation: '/',
@@ -60,6 +66,24 @@ abstract class AppRouter {
           child: const RoadMapChatScreen(),
         ),
       ),
+      GoRoute(
+        path: analyzeResumeScreen,
+        builder: (context, state) => MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) =>
+                  AnalyzeReumeAllMessagesCubit(_analizeResumeRepos),
+            ),
+            BlocProvider(
+              create: (context) => AnalyzeResumePreferredMessagesCubit(),
+            ),
+            BlocProvider(
+              create: (context) => GetAllAnalyzeResumePreferredMessagesCubit(),
+            ),
+          ],
+          child: const AnalyzeResumeChatScreen(),
+        ),
+      ),
       // Chat with Doc Routes
       GoRoute(
         path: chatWithDocPage,
@@ -73,7 +97,7 @@ abstract class AppRouter {
       // Build CV Route
       GoRoute(
         path: buildCvPage,
-        builder: (context, state) =>  BuildCvPage(),
+        builder: (context, state) => BuildCvPage(),
       ),
       // Interview Feature Routes
       GoRoute(
@@ -119,6 +143,7 @@ abstract class AppRouter {
   // Route Constants
   static const String savedAllMessagesScreen = '/saved';
   static const String preferredMessagesScreen = '/preferredMessagesScreen';
+  static const String analyzeResumeScreen = '/analyzeResumeScreen';
   static const String chatSessions = '/chatSessions';
   static const String chatScreen = '/chatScreen';
   static const String startingScreen = '/startingScreen';

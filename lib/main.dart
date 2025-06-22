@@ -3,13 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:road_map_mentor/core/features/cv_analysis/database/hive/models/preferred/preferred_messages_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/constants/hive_constants.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/history/chat_session_model.dart';
 import 'package:road_map_mentor/core/features/reaom_map/database/hive/models/preferred/preferred_messages_model.dart';
 import 'package:road_map_mentor/core/utils/app_routers.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:road_map_mentor/core/features/sign_in/screens/signin_screen.dart';
-import 'package:road_map_mentor/core/features/default_home/screens/default_home_page.dart';
 import 'package:road_map_mentor/core/features/splash/presentation/screens/splash_screen.dart';
 
 void main() async {
@@ -22,11 +21,19 @@ void main() async {
     // Register the adapters for your models
     Hive.registerAdapter(PreferredMessagesModelAdapter());
     Hive.registerAdapter(ChatSessionModelAdapter());
+    Hive.registerAdapter(PreferredAnalyzeResumeMessagesModelAdapter());
 
     // Open the boxes
     await Hive.openBox<PreferredMessagesModel>(kPreferredMessages);
+    await Hive.openBox<PreferredAnalyzeResumeMessagesModel>(
+        kAnalyzeResumePreferredMessages);
     await Hive.openBox<ChatSessionModel>(kChatSessions);
 
+    await Hive.openBox('reviews');
+    await Hive.openBox('feedbacks');
+    await Hive.openBox('ratings');
+    await Hive.openBox('about');
+    
     // Load environment variables
     await dotenv.load(fileName: ".env");
 

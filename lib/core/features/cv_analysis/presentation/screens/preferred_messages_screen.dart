@@ -6,15 +6,15 @@ import 'package:road_map_mentor/core/utils/widgets/app_theme_view.dart';
 import 'package:road_map_mentor/core/utils/widgets/back_button.dart';
 import 'package:road_map_mentor/core/utils/widgets/text.dart';
 
-class PreferredMessagesScreen extends StatefulWidget {
-  const PreferredMessagesScreen({super.key});
+class AnalyzeResumePreferredMessagesScreen extends StatefulWidget {
+  const AnalyzeResumePreferredMessagesScreen({super.key});
 
   @override
-  State<PreferredMessagesScreen> createState() =>
-      _PreferredMessagesScreenState();
+  State<AnalyzeResumePreferredMessagesScreen> createState() =>
+      _AnalyzeResumePreferredMessagesScreenState();
 }
 
-class _PreferredMessagesScreenState extends State<PreferredMessagesScreen> {
+class _AnalyzeResumePreferredMessagesScreenState extends State<AnalyzeResumePreferredMessagesScreen> {
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
